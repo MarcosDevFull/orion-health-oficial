@@ -1,0 +1,509 @@
+/* ============================================== */
+/* --- ESTILOS GERAIS E RESET --- */
+/* ============================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa; /* Cor de fundo principal */
+    color: #333;
+    line-height: 1.6;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px; /* Aumentado para acomodar os cards */
+    margin: 0 auto;
+    padding: 24px;
+    flex-grow: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+
+/* ============================================== */
+/* --- CABEÇALHO PRINCIPAL E CABEÇALHOS DE LOGIN --- */
+/* ============================================== */
+
+/* Regra base para todos os cabeçalhos azuis */
+header.header {
+    background-color: #41b8d5; /* Cor principal Orion */
+    color: white;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* A CURVA - Aplica a forma de arco suave */
+.header-curve {
+    border-radius: 0; /* Reseta por segurança */
+    border-bottom-left-radius: 20%;
+    border-bottom-right-radius: 20%;
+}
+
+.header-top {
+    display: flex;
+    justify-content: center; /* Centraliza o logo */
+    align-items: center;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.logo-main {
+    height: 50px;
+}
+
+.header-content {
+    text-align: center;
+    margin-top: 16px;
+    
+    
+}
+
+/* Títulos como "Acesso Profissional" ou "Acesso Paciente" */
+.header-content h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+/* Subtítulos como "É cuidado com empatia..." ou "Junte-se a milhões..." */
+.header-content p {
+    font-size: 1rem;
+    margin-top: 8px;
+    opacity: 0.9;
+}
+.subtitulo-pagina1 {
+    font-size: 1rem;
+    margin-top: 8px;
+    opacity: 0.9;
+}
+/* Cabeçalho específico do Login Profissional (para botão "Voltar") */
+/* Cabeçalho específico do Login Profissional (para botão "Voltar") */
+.header-top-professional {
+  display: flex;
+  justify-content: flex-start; /* Alinha "Voltar" à esquerda */
+  align-items: center;
+  width: 100%;
+  /* max-width e margin removidos para que a seta fique à esquerda do header */
+}
+
+.back-button {
+    color: white; /* Garante que o SVG seja branco */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-right: auto; /* Empurra o botão para a esquerda */
+    line-height: 1;
+    text-decoration: none; /* Remove sublinhado se for <a> */
+}
+
+.back-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ============================================== */
+/* --- SECÇÃO: SELEÇÃO DE PERFIL (Layout Cards) --- */
+/* ============================================== */
+
+#user-type-selection {
+    width: 100%;
+}
+
+#user-type-selection h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 32px;
+}
+
+.profile-selection-container {
+    display: flex;
+    flex-direction: column; /* Mobile-first: empilhado */
+    align-items: stretch;
+    gap: 24px;
+    width: 100%;
+}
+
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 32px 24px;
+    text-align: left; /* Padrão à esquerda */
+    display: flex;
+    flex-direction: column;
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.profile-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background-color: #41b8d5; /* Cor oficial Orion */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto; /* Centraliza o ícone */
+    box-shadow: 0 4px 10px rgba(65, 184, 213, 0.3);
+    flex-shrink: 0;
+}
+
+.profile-icon img {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1); /* Força o ícone a ficar branco */
+}
+
+.profile-title {
+    text-align: center; /* Centraliza SÓ o título */
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 8px 0;
+}
+
+.profile-description {
+    text-align: center; /* Descrição centralizada */
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    margin: 0 0 24px 0;
+}
+
+.profile-features {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1; /* Empurra o botão para baixo */
+}
+
+.profile-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.profile-features img {
+    width: 20px !important; /* Garante o tamanho */
+    height: 20px !important; /* Garante o tamanho */
+    flex-shrink: 0;
+}
+
+/* Botões de seleção de perfil */
+.btn-profile-select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: auto; /* Alinha os botões ao fundo */
+}
+
+.btn-profile-select.primary {
+    background-color: #41b8d5; /* Cor oficial Orion */
+    color: #ffffff; /* Cor oficial Orion */
+    border: none;
+}
+.btn-profile-select.primary:hover {
+    background-color: #3197b1; /* Tom mais escuro para hover */
+}
+
+.btn-profile-select.secondary {
+    background-color: #f0f9fc; /* Fundo azul bem claro */
+    color: #3197b1; /* Cor do texto azul escuro */
+    border: 1px solid #b6e3f0; /* Borda azul clara */
+}
+.btn-profile-select.secondary:hover {
+    background-color: #e0f2f7; /* Fundo mais escuro no hover */
+}
+
+/* ============================================== */
+/* --- FORMULÁRIOS (Login/Registo Paciente) --- */
+/* ============================================== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 14px 14px 14px 45px; /* Espaço para o icone */
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+input:focus {
+    outline: none;
+    border-color: #41b8d5;
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.3);
+}
+
+/* ============================================== */
+/* --- BOTÕES GERAIS (Btn, Google) --- */
+/* ============================================== */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: #41b8d5;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #3197b1; /* Mais escuro */
+}
+
+.btn-google {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-google:hover {
+    background-color: #f8f8f8;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* ============================================== */
+/* --- LINKS E SEPARADORES (Formulários) --- */
+/* ============================================== */
+.form-link {
+    text-align: center;
+    color: #41b8d5;
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.form-link:hover {
+    text-decoration: underline;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #888;
+    font-size: 0.875rem;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.separator span {
+    padding: 0 10px;
+}
+
+.form-switch {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.form-switch a {
+    color: #41b8d5;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.form-switch a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================== */
+/* --- RODAPÉ --- */
+/* ============================================== */
+footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 0.75rem;
+    color: #888;
+}
+
+footer a {
+    color: #555;
+    text-decoration: underline;
+}
+
+/* ============================================== */
+/* --- CLASSES AUXILIARES E FEEDBACK --- */
+/* ============================================== */
+#error-message, #error-message-prof {
+    color: #d9534f; /* Vermelho para erro */
+    text-align: center;
+    min-height: 20px;
+    font-weight: 500;
+}
+
+#loading-overlay, #loading-overlay-prof {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ======================================================= */
+/* --- PADRONIZAÇÃO HEADER PACIENTE E SETA VOLTAR --- */
+/* ======================================================= */
+.patient-login-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 450px;
+    margin: 0 auto 24px auto;
+    width: 100%;
+}
+
+.back-button-patient-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    color: #41b8d5;
+    opacity: 0.8;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.back-button-patient-icon:hover {
+    opacity: 1;
+    color: #3197b1;
+}
+
+.back-button-patient-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.patient-header-content {
+    flex-grow: 1;
+    text-align: left;
+}
+.patient-header-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.2;
+    margin: 0 0 8px 0;
+}
+.patient-header-content p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ============================================== */
+/* --- RESPONSIVIDADE (MEDIA QUERIES) --- */
+/* ============================================== */
+
+@media (min-width: 768px) {
+    .profile-selection-container {
+        flex-direction: row; /* Lado a lado */
+    }
+    
+}

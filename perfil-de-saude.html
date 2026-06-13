@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil de Saúde - Orion.Health</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="perfil-de-saude.css">
+    <link rel="manifest" href="manifest.json">
+    
+</head>
+<body>
+
+    
+
+    <div id="loading-overlay" role="status" aria-label="Carregando perfil de saúde">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="page-wrapper" class="hidden">
+
+        <header class="patient-header">
+            
+            <a href="paciente-perfil.html" class="back-button" aria-label="Voltar para o Dashboard">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        
+            <div class="patient-header-info">
+                <img id="patient-photo" src="https://placehold.co/60x60/a0d9e5/41b8d5?text=M" alt="Foto do Paciente" class="patient-photo">
+                <div class="patient-details">
+                    <h1 id="patient-name">Carregando...</h1>
+                    <p id="patient-meta-info">
+                        <span id="patient-convenio">...</span>
+                        <span id="patient-id">ID: ...</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <button id="btn-registro-diario-atalho" class="btn-header-action">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Novo Registro Diário</span>
+                </button>
+                <!--
+                <button id="btn-notificacoes" class="btn-header-action-icon" aria-label="Notificações">
+                    <i class="fa-solid fa-bell"></i>
+                </button>-->
+            </div>
+        
+            <button id="hamburger-menu" class="hamburger-menu mobile-only" aria-label="Abrir menu de navegação">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </header>
+
+        <aside id="mobile-nav-menu" class="mobile-nav">
+            <div class="mobile-nav-header">
+                <h3>Meu Perfil de Saúde</h3>
+                <button id="close-mobile-menu-button" class="close-button" aria-label="Fechar menu">&times;</button>
+            </div>
+            <nav class="mobile-nav-list" id="mobile-nav-list-container">
+                </nav>
+        </aside>
+        <div id="backdrop" class="backdrop hidden"></div>
+
+        
+        <nav class="tab-nav-container">
+            <div class="tab-nav" role="tablist" aria-label="Navegação do perfil">
+                <button class="tab-btn active" role="tab" data-tab="receitas">
+                    <i class="fa-solid fa-prescription-bottle-medical"></i><span>Receitas</span>
+                </button>
+                <button class="tab-btn" role="tab" data-tab="exames">
+                    <i class="fa-solid fa-file-medical"></i><span>Exames</span>
+                </button>
+                <button class="tab-btn" role="tab" data-tab="encaminhamentos">
+                    <i class="fa-solid fa-share-from-square"></i><span>Encaminhamentos</span>
+                </button>
+                <button class="tab-btn" role="tab" data-tab="atestados">
+                    <i class="fa-solid fa-file-invoice"></i><span>Atestados</span>
+                </button>
+                <button class="tab-btn" role="tab" data-tab="acompanhamentos">
+                    <i class="fa-solid fa-calendar-check"></i><span>Acompanhamentos</span>
+                </button>
+                <button class="tab-btn" role="tab" data-tab="anamnese">
+                    <i class="fa-solid fa-file-waveform"></i><span>Anamnese</span>
+                </button>
+                <button class="tab-btn" role="tab" data-tab="registros-diarios">
+                    <i class="fa-solid fa-clipboard-list"></i><span>Registros Diários</span>
+                </button>
+                <button class="tab-btn" role="tab" data-tab="vacinas">
+                    <i class="fa-solid fa-syringe"></i><span>Vacinas</span>
+                </button>
+            </div>
+        </nav>
+
+        
+        <main class="container">
+            <div class="tab-content-container">
+                
+                <div id="tab-receitas" class="tab-panel active" role="tabpanel">
+                    <div class="panel-header">
+                        <h2>Receitas Médicas</h2>
+                        <span id="receitas-filter-status" class="filter-status">Carregando...</span>
+                    </div>
+                    <div class="panel-toolbar">
+                        <input type="search" id="recipe-search-input" placeholder="Buscar medicamento...">
+                        <div id="recipe-filter-group" class="filter-group" style="margin-left: auto;">
+                            <button class="filter-btn-small active" data-filter="todas">Todas</button>
+                            <button class="filter-btn-small" data-filter="ativa">Ativas</button>
+                            <button class="filter-btn-small" data-filter="arquivada">Arquivadas</button>
+                        </div>
+                    </div>
+                    <div class="add-button-container">
+                        <button class="btn-primary-outline" id="btn-abrir-upload-receita">
+                            <i class="fa-solid fa-plus"></i> Adicionar Receita
+                        </button>
+                    </div>
+                    <div id="recipe-list" class="card-list">
+                        <p class="placeholder">Carregando receitas...</p>
+                    </div>
+                </div>
+
+                <div id="tab-exames" class="tab-panel hidden" role="tabpanel">
+                    <div class="panel-header">
+                        <h2>Exames</h2>
+                        <span id="exames-filter-status" class="filter-status">Carregando...</span>
+                    </div>
+                    <div class="panel-toolbar">
+                        <input type="search" id="exame-search-input" placeholder="Buscar por nome do exame ou laboratório...">
+                        <div id="exame-filter-group" class="filter-group" style="margin-left: auto;">
+                            <button class="filter-btn-small active" data-filter="todos">Todos</button>
+                            <button class="filter-btn-small" data-filter="agendados">Agendados</button>
+                            <button class="filter-btn-small" data-filter="realizados">Realizados</button>
+                            <button class="filter-btn-small" data-filter="pendentes">Pendentes</button>
+                        </div>
+                    </div>
+                    <div class="add-button-container">
+                        <button class="btn-primary-outline" id="btn-abrir-upload-exame">
+                            <i class="fa-solid fa-plus"></i> Adicionar Exame
+                        </button>
+                    </div>
+                    <div id="exames-lista" class="card-list">
+                        <p class="placeholder">Carregando exames...</p>
+                    </div>
+                </div>
+                
+                <div id="tab-encaminhamentos" class="tab-panel hidden" role="tabpanel">
+                    <div class="panel-header">
+                        <h2>Encaminhamentos</h2>
+                        <span id="encaminhamentos-filter-status" class="filter-status">Carregando...</span>
+                    </div>
+                    <div class="panel-toolbar">
+                        <input type="search" id="encaminhamento-search-input" placeholder="Buscar por especialidade ou médico...">
+                        <div id="encaminhamento-filter-group" class="filter-group" style="margin-left: auto;">
+                            <button class="filter-btn-small active" data-filter="todos">Todos</button>
+                            <button class="filter-btn-small" data-filter="pendentes">Pendentes</button>
+                            <button class="filter-btn-small" data-filter="agendados">Agendados</button>
+                        </div>
+                    </div>
+                    <div class="add-button-container">
+                        <button class="btn-primary-outline" id="btn-abrir-upload-encaminhamento">
+                            <i class="fa-solid fa-plus"></i> Adicionar Encaminhamento
+                        </button>
+                    </div>
+                    <div id="encaminhamentos-lista" class="card-list">
+                        <p class="placeholder">Carregando encaminhamentos...</p>
+                    </div>
+                </div>
+
+                <div id="tab-atestados" class="tab-panel hidden" role="tabpanel">
+                    <div class="panel-header">
+                        <h2>Atestados</h2>
+                        <span id="atestados-filter-status" class="filter-status">Carregando...</span>
+                    </div>
+                    <div class="panel-toolbar">
+                        <input type="search" id="atestado-search-input" placeholder="Buscar por médico ou motivo...">
+                        <div id="atestado-filter-group" class="filter-group" style="margin-left: auto;">
+                            <button class="filter-btn-small active" data-filter="todos">Todos</button>
+                            <button class="filter-btn-small" data-filter="validos">Válidos</button>
+                            <button class="filter-btn-small" data-filter="expirados">Expirados</button>
+                        </div>
+                    </div>
+                    <div class="add-button-container">
+                        <button class="btn-primary-outline" id="btn-abrir-upload-atestado">
+                            <i class="fa-solid fa-plus"></i> Adicionar Atestado
+                        </button>
+                    </div>
+                    <div id="atestados-lista" class="card-list">
+                        <p class="placeholder">Carregando atestados...</p>
+                    </div>
+                </div>
+                
+                <div id="tab-acompanhamentos" class="tab-panel hidden" role="tabpanel">
+                    <div class="panel-header">
+                        <h2>Acompanhamentos Ativos</h2>
+                        <span id="acompanhamentos-filter-status" class="filter-status">Carregando...</span>
+                    </div>
+                    <div class="panel-toolbar">
+                        <div id="acompanhamento-filter-group" class="filter-group" style="margin-left: auto;">
+                            <button class="filter-btn-small active" data-filter="todos">Todos</button>
+                            <button class="filter-btn-small" data-filter="em-andamento">Ativo</button>
+                            <button class="filter-btn-small" data-filter="concluidos">Concluídos</button>
+                        </div>
+                    </div>
+                    <div id="acompanhamentos-lista" class="card-list">
+                        <p class="placeholder">Carregando acompanhamentos...</p>
+                    </div>
+                </div>
+                
+                <div id="tab-anamnese" class="tab-panel hidden" role="tabpanel">
+                    
+                    <div id="anamnese-estado-vazio" class="anamnese-placeholder hidden">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <h3>Nenhuma anamnese preenchida</h3>
+                        <p>Preencha sua anamnese para manter seus dados de saúde atualizados</p>
+                        <button id="btn-preencher-anamnese-vazio" class="btn-card-primary-exame">
+                            <i class="fa-solid fa-pen-to-square"></i> Preencher Anamnese
+                        </button>
+                    </div>
+            
+                    <div id="anamnese-estado-preenchido" class="recipe-card hidden">
+                        
+                        <div class="anamnese-card-header" style="flex-direction: column; align-items: stretch;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 12px;">
+                                <div>
+                                    <h3>Anamnese Pessoal</h3>
+                                    <p>Última atualização: <span id="anamnese-data-atualizacao">...</span></p> 
+                                </div>
+                                <span id="anamnese-progresso-texto" class="anamnese-progresso-texto">Carregando...</span>
+                            </div>
+                            
+                            <div class="anamnese-progress-bar-container">
+                                <div id="anamnese-progress-bar-fill" class="anamnese-progress-bar-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="anamnese-card-body">
+                            <div class="anamnese-item-resumo">
+                                <label>MEDICAÇÕES EM USO</label>
+                                <p id="anamnese-resumo-medicacoes">...</p>
+                            </div>
+                            <div class="anamnese-item-resumo">
+                                <label>ALERGIAS</label>
+                                <p id="anamnese-resumo-alergias">...</p>
+                            </div>
+                            <div class="anamnese-item-resumo">
+                                <label>DOENÇAS PRÉVIAS</label>
+                                <p id="anamnese-resumo-doencas">...</p>
+                            </div>
+                        </div>
+            
+                        <div class="anamnese-card-footer">
+                            
+                            <button id="btn-editar-anamnese" class="btn-card-secondary">
+                                <i class="fa-solid fa-edit"></i> Editar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="tab-registros-diarios" class="tab-panel hidden" role="tabpanel">
+
+                    <div class="chart-filters" id="historico-periodo-filtros" style="padding-bottom: 16px; border-bottom: 1px solid var(--borda-suave);">
+                        <button class="filter-btn-small active" data-period="7">Últimos 7 dias</button>
+                        <button class="filter-btn-small" data-period="30">Últimos 30 dias</button>
+                        </div>
+
+                    <div class="sub-tab-nav" id="historico-sub-tab-nav" style="margin-top: 24px;">
+                        <button class="sub-tab-btn active" data-subtab="sono"><i class="fa-solid fa-moon"></i> Sono</button>
+                        <button class="sub-tab-btn" data-subtab="humor"><i class="fa-solid fa-face-smile"></i> Humor</button>
+                        <button class="sub-tab-btn" data-subtab="medicacoes"><i class="fa-solid fa-pills"></i> Medicações</button>
+                        <button class="sub-tab-btn" data-subtab="alimentacao"><i class="fa-solid fa-utensils"></i> Alimentação</button>
+                        <button class="sub-tab-btn" data-subtab="dor"><i class="fa-solid fa-bandage"></i> Dor</button>
+                        <button class="sub-tab-btn" data-subtab="atividade"><i class="fa-solid fa-dumbbell"></i> Atividade Física</button>
+                        <button class="sub-tab-btn" data-subtab="biometricos"><i class="fa-solid fa-heart-pulse"></i> Biométricos</button>
+                    </div>
+
+                    <div class="consulta-tab-content" id="historico-content-container" style="padding-top: 24px;">
+
+                        <div id="historico-tab-sono" class="sub-tab-panel">
+                            <h4>Evolução do Sono</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-sono" role="img" aria-label="Gráfico de evolução do sono"></canvas>
+                            </div>
+                            
+                        </div>
+
+                        <div id="historico-tab-humor" class="sub-tab-panel hidden">
+                            <h4>Evolução do Humor</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-humor" role="img" aria-label="Gráfico de evolução do humor"></canvas>
+                            </div>
+                            
+                        </div>
+
+                        <div id="historico-tab-medicacoes" class="sub-tab-panel hidden">
+                            <h4>Evolução da Medicação</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-medicacoes" role="img" aria-label="Gráfico de evolução das medicações"></canvas>
+                            </div>
+                            
+                        </div>
+
+                        <div id="historico-tab-alimentacao" class="sub-tab-panel hidden">
+                            <h4>Evolução da Alimentação</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-alimentacao" role="img" aria-label="Gráfico de evolução da alimentação"></canvas>
+                            </div>
+                            
+                        </div>
+
+                        <div id="historico-tab-dor" class="sub-tab-panel hidden">
+                            <h4>Evolução da Dor</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-dor" role="img" aria-label="Gráfico de evolução da dor"></canvas>
+                            </div>
+                            
+                        </div>
+
+                        <div id="historico-tab-atividade" class="sub-tab-panel hidden">
+                            <h4>Evolução da Atividade Física</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-atividade" role="img" aria-label="Gráfico de evolução da atividade física"></canvas>
+                            </div>
+                    
+                        </div>
+
+                        <div id="historico-tab-biometricos" class="sub-tab-panel hidden">
+                            <h4 style="margin-top: 0;">Pressão Arterial (mmHg)</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-pressao" role="img" aria-label="Gráfico de evolução da pressão arterial"></canvas>
+                            </div>
+                            <h4>Glicemia (mg/dL)</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-glicemia" role="img" aria-label="Gráfico de evolução da glicemia"></canvas>
+                            </div>
+                            <h4>Frequência Cardíaca (bpm)</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-freqCardiaca" role="img" aria-label="Gráfico de evolução da frequência cardíaca"></canvas>
+                            </div>
+                            <h4>Saturação de Oxigênio (SpO₂ %)</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-saturacaoO2" role="img" aria-label="Gráfico de evolução da saturação de oxigênio"></canvas>
+                            </div>
+                            <h4>Temperatura (°C)</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-temperatura" role="img" aria-label="Gráfico de evolução da temperatura"></canvas>
+                            </div>
+                            <h4>Peso (kg)</h4>
+                            <div class="chart-container" style="height: 250px; margin-bottom: 32px;">
+                                <canvas id="historico-chart-peso" role="img" aria-label="Gráfico de evolução do peso"></canvas>
+                            </div>
+                        </div>
+
+    </div> </div>
+                
+                       <div id="tab-vacinas" class="tab-panel hidden" role="tabpanel">
+
+    <div class="panel-header">
+        <h2>Carteirinha de Vacinação</h2>
+        <span id="vacinas-filter-status" class="filter-status">Carregando...</span>
+    </div>
+
+    <div class="panel-toolbar">
+        <input type="search" id="vacina-search-input" placeholder="Buscar por vacina...">
+        <div id="vacina-filter-group" class="filter-group" style="margin-left: auto;">
+            <button class="filter-btn-small active" data-filter="todos">Todas</button>
+            <button class="filter-btn-small" data-filter="validas">Válidas</button>
+            <button class="filter-btn-small" data-filter="expiradas">Expiradas</button>
+        </div>
+    </div>
+    <div class="add-button-container">
+        <button class="btn-primary-outline" id="btn-abrir-upload-vacina">
+            <i class="fa-solid fa-plus"></i> Adicionar Carteirinha de Vacina
+        </button>
+    </div>
+
+    <div id="vacinas-lista" class="card-list">
+        <p class="placeholder">Carregando carteirinhas de vacinação...</p>
+    </div>
+
+</div>
+            
+
+    </main>
+ 
+    </div> <div id="upload-receita-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="upload-receita-title">
+        <div class="modal-card" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 id="upload-receita-title" class="modal-title"><i class="fa-solid fa-upload"></i> Adicionar Receita Externa</h2>
+                <button id="close-upload-receita-modal" class="modal-close" aria-label="Fechar">&times;</button>
+            </div>
+            <form id="form-upload-receita">
+                <div class="consulta-tab-content" style="padding-bottom: 0; max-height: 70vh;">
+                    <p class="master-checkin-subtitle" style="margin-bottom: 24px;">Suba uma foto ou PDF de uma receita que você recebeu fora do Orion.Health.</p>
+                    <div class="form-group">
+                        <label for="upload-medicamento-nome">Medicamento Principal (para identificação)</label>
+                        <input type="text" id="upload-medicamento-nome" placeholder="Ex: Losartana 50mg" required>
+                    </div>
+                    
+                    <div class="form-group">
+                            <label for="upload-medico-nome">Médico que prescreveu (Opcional)</label>
+                            <input type="text" id="upload-medico-nome" placeholder="Ex: Dr. Carlos (Clínica Local)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Qual é o status desta receita?</label>
+                            <div class="radio-button-group">
+                                <input type="radio" id="status-ativa" name="upload-status" value="Ativa" checked>
+                                <label for="status-ativa" class="radio-button-label">
+                                    <i class="fa-solid fa-check"></i> Ativa (Em uso)
+                                </label>
+                                
+                                <input type="radio" id="status-arquivada" name="upload-status" value="Arquivada">
+                                <label for="status-arquivada" class="radio-button-label">
+                                    <i class="fa-solid fa-archive"></i> Arquivada (Histórico)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-receita-file">Arquivo da Receita (PDF ou Imagem)</label>
+                            <input type="file" id="upload-receita-file" accept="image/*,application/pdf" required>
+                            <small style="font-size: 0.8rem; color: var(--texto-suave); margin-top: 5px;">Tamanho máximo: 40MB</small>
+                        </div>
+                <div class="modal-footer-actions">
+                    <button type="button" id="cancel-upload-receita-btn" class="btn-secondary-painel">Cancelar</button>
+                    <button type="submit" id="salvar-upload-receita-btn" class="btn-primary-painel">
+                        <i class="fa-solid fa-save"></i> Salvar Receita
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="anamnese-visualizar-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="anamnese-visualizar-title">
+            <div class="modal-card modal-consulta-largo modal-visualizar-anamnese">
+
+                <div class="modal-header vis-header-paciente">
+                    <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="vis-header-logo-img"> 
+                    
+                    <button id="close-anamnese-visualizar-modal" class="modal-close" aria-label="Fechar">&times;</button>
+                </div>
+
+                <hr class="modal-header-divider">
+
+                <h2 class="modal-main-title">Minha Anamnese</h2>
+                <div class="anamnese-info-bar">
+                    <span><strong>Paciente:</strong> <span id="vis-nome-paciente-bar">...</span></span>
+                    <span><strong>Última atualização:</strong> <span id="vis-data-atualizacao-bar">...</span></span>
+                </div>
+
+                <div class="consulta-tab-content anamnese-accordion">
+
+                    <details open>
+                        <summary>
+                            <i class="fa-solid fa-file-medical"></i>
+                            História Patológica Pregressa
+                        </summary>
+                        <div class="vis-content-box">
+                            <div class="anamnese-view-group"><label>Doenças importantes?</label><p id="vis-anamnese-doencas">...</p></div>
+                            <div class="anamnese-view-group"><label>Hospitalizações?</label><p id="vis-anamnese-hospitalizacao">...</p></div>
+                            <div class="anamnese-view-group"><label>Cirurgias?</label><p id="vis-anamnese-cirurgias">...</p></div>
+                            <div class="anamnese-view-group"><label>Alergias?</label><p id="vis-anamnese-alergias">...</p></div>
+                            <div class="anamnese-view-group"><label>Transfusões de sangue?</label><p id="vis-anamnese-transfusoes">...</p></div>
+                            <div class="anamnese-view-group"><label>Medicamentos de uso contínuo?</label><p id="vis-anamnese-medicamentos-uso">...</p></div>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <i class="fa-solid fa-users"></i>
+                            História Familiar
+                        </summary>
+                        <div class="vis-content-box">
+                            <div class="anamnese-view-group"><label>Hipertensão?</label><p id="vis-anamnese-fam-hipertensao">...</p></div>
+                            <div class="anamnese-view-group"><label>Diabetes?</label><p id="vis-anamnese-fam-diabetes">...</p></div>
+                            <div class="anamnese-view-group"><label>Câncer?</label><p id="vis-anamnese-fam-cancer">...</p></div>
+                            <div class="anamnese-view-group"><label>Doenças cardíacas?</label><p id="vis-anamnese-fam-cardiacas">...</p></div>
+                            <div class="anamnese-view-group"><label>Doenças mentais?</label><p id="vis-anamnese-fam-mentais">...</p></div>
+                            <div class="anamnese-view-group"><label>Outras doenças hereditárias?</label><p id="vis-anamnese-fam-outras">...</p></div>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <i class="fa-solid fa-person-walking"></i>
+                            História Psicossocial e Hábitos de Vida
+                        </summary>
+                        <div class="vis-content-box">
+                            <div class="anamnese-view-group"><label>Humor recente?</label><p id="vis-anamnese-hab-humor">...</p></div>
+                            <div class="anamnese-view-group"><label>Estresse ou ansiedade?</label><p id="vis-anamnese-hab-estresse">...</p></div>
+                            <div class="anamnese-view-group"><label>Rotina de sono?</label><p id="vis-anamnese-hab-sono-rotina">...</p></div>
+                            <div class="anamnese-view-group"><label>Apoio familiar/social?</label><p id="vis-anamnese-hab-apoio">...</p></div>
+                            <div class="anamnese-view-group"><label>Consumo de álcool?</label><p id="vis-anamnese-hab-alcool">...</p></div>
+                            <div class="anamnese-view-group"><label>Uso de drogas ilícitas?</label><p id="vis-anamnese-hab-drogas">...</p></div>
+                            <div class="anamnese-view-group"><label>Tabagismo?</label><p id="vis-anamnese-hab-fumo">...</p></div>
+                            <div class="anamnese-view-group"><label>Alimentação diária?</label><p id="vis-anamnese-hab-alimentacao">...</p></div>
+                            <div class="anamnese-view-group"><label>Atividade física?</label><p id="vis-anamnese-hab-atividade">...</p></div>
+                            <div class="anamnese-view-group"><label>Suplementos ou fitoterápicos?</label><p id="vis-anamnese-hab-suplementos">...</p></div>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <i class="fa-solid fa-heart-pulse"></i>
+                            Revisão de Sistemas
+                        </summary>
+                        <div class="vis-content-box">
+                            <div class="anamnese-view-group"><label>Sistema Digestivo:</label><p id="vis-anamnese-sis-digestivo">...</p></div>
+                            <div class="anamnese-view-group"><label>Sistema Urinário:</label><p id="vis-anamnese-sis-urinario">...</p></div>
+                            <div class="anamnese-view-group"><label>Sistema Cardiovascular:</label><p id="vis-anamnese-sis-cardio">...</p></div>
+                            <div class="anamnese-view-group"><label>Sistema Respiratório:</label><p id="vis-anamnese-sis-respiratorio">...</p></div>
+                            <div class="anamnese-view-group"><label>Sistema Músculo-Esquelético:</label><p id="vis-anamnese-sis-musculo">...</p></div>
+                            <div class="anamnese-view-group"><label>Sistema Neurológico:</label><p id="vis-anamnese-sis-neuro">...</p></div>
+                            <div class="anamnese-view-group"><label>Sistema Endócrino:</label><p id="vis-anamnese-sis-endocrino">...</p></div>
+                            <div class="anamnese-view-group"><label>Sistema Hematológico:</label><p id="vis-anamnese-sis-hemato">...</p></div>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>
+                            <i class="fa-solid fa-venus-mars"></i>
+                            Exames, Vacinas e Saúde Específica
+                        </summary>
+                        <div class="vis-content-box">
+                            <div class="anamnese-view-group"><label>Exames e Vacinas:</label><p id="vis-anamnese-exames">...</p></div>
+                            <div class="anamnese-view-group"><label>Saúde da Mulher (se aplicável):</label><p id="vis-anamnese-saude-mulher">...</p></div>
+                            <div class="anamnese-view-group"><label>Saúde do Homem (se aplicável):</label><p id="vis-anamnese-saude-homem">...</p></div>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="modal-footer-actions">
+                    <button type="button" id="fechar-anamnese-visualizar-button" class="btn-secondary-painel">Fechar</button>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+</div>
+
+    <!--Modal de visualização-->
+     
+    <div id="anamnese-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="anamnese-modal-title">
+        <div class="modal-card modal-consulta-largo">
+            
+            <div class="modal-header" style="background-color: var(--cor-fundo);">
+                <h2 id="anamnese-modal-title" class="modal-title" style="color: var(--texto-principal);">
+                    <i class="fa-solid fa-file-waveform" style="color: var(--cor-primaria);"></i>
+                    Preencher Anamnese
+                </h2>
+                <button id="close-anamnese-modal" class="modal-close" aria-label="Fechar">&times;</button>
+            </div>
+            
+            <form id="form-anamnese">
+                <div class="consulta-tab-content" style="max-height: 70vh;">
+                    
+                    <section class="vis-section">
+                        <h3>História Patológica Pregressa</h3>
+                        <div class="vis-content-box">
+                            <div class="form-group">
+                                <label for="anamnese-doencas">Você já teve alguma doença importante? Quais?</label>
+                                <textarea id="anamnese-doencas" rows="3" placeholder="Ex: Diabetes, Hipertensão, Asma..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-hospitalizacao">Já foi hospitalizado(a)? Quando e por qual motivo?</label>
+                                <textarea id="anamnese-hospitalizacao" rows="3" placeholder="Ex: Apendicite em 2010..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-cirurgias">Já foi submetido(a) a alguma cirurgia? Qual?</label>
+                                <textarea id="anamnese-cirurgias" rows="3" placeholder="Ex: Remoção de amígdalas..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-alergias">Possui alguma alergia? A quê?</label>
+                                <textarea id="anamnese-alergias" rows="3" placeholder="Ex: Alergia a Penicilina, poeira, camarão..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-transfusoes">Já teve transfusões de sangue?</label>
+                                <input type="text" id="anamnese-transfusoes" placeholder="Ex: Sim, em 2015 / Não">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-medicamentos-uso">Faz uso contínuo de medicamentos? Quais?</label>
+                                <textarea id="anamnese-medicamentos-uso" rows="3" placeholder="Ex: Metformina 500mg (1x dia), Losartana 50mg (1x dia)..."></textarea>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="vis-section">
+                        <h3>História Familiar</h3>
+                        <div class="vis-content-box">
+                             <div class="form-group">
+                                <label for="anamnese-fam-hipertensao">Hipertensão na família?</label>
+                                <input type="text" id="anamnese-fam-hipertensao" placeholder="Ex: Sim, pai e mãe / Não">
+                            </div>
+                             <div class="form-group">
+                                <label for="anamnese-fam-diabetes">Diabetes na família?</label>
+                                <input type="text" id="anamnese-fam-diabetes" placeholder="Ex: Sim, avó materna">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-fam-cancer">Câncer na família? Qual tipo?</label>
+                                <input type="text" id="anamnese-fam-cancer" placeholder="Ex: Sim, tia (câncer de mama)">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-fam-cardiacas">Doenças cardíacas na família?</label>
+                                <input type="text" id="anamnese-fam-cardiacas" placeholder="Ex: Sim, avô (infarto)">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-fam-mentais">Doenças mentais na família?</label>
+                                <input type="text" id="anamnese-fam-mentais" placeholder="Ex: Sim, irmão (depressão)">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-fam-outras">Outras doenças hereditárias?</label>
+                                <textarea id="anamnese-fam-outras" rows="2" placeholder="Descreva..."></textarea>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="vis-section">
+                        <h3>História Psicossocial e Hábitos de Vida</h3>
+                        <div class="vis-content-box form-grid two-columns">
+                            <div class="form-group">
+                                <label for="anamnese-hab-humor">Como está seu humor ultimamente?</label>
+                                <input type="text" id="anamnese-hab-humor" placeholder="Ex: Ansioso, normal, triste...">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-hab-estresse">Tem enfrentado estresse ou ansiedade?</label>
+                                <input type="text" id="anamnese-hab-estresse" placeholder="Ex: Sim, devido ao trabalho">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-hab-sono-rotina">Como é sua rotina de sono?</label>
+                                <input type="text" id="anamnese-hab-sono-rotina" placeholder="Ex: Durmo 6h por noite, acordo cansado">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-hab-apoio">Tem apoio familiar ou social?</label>
+                                <input type="text" id="anamnese-hab-apoio" placeholder="Ex: Sim / Não">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-hab-alcool">Faz uso de álcool?</label>
+                                <input type="text" id="anamnese-hab-alcool" placeholder="Ex: Socialmente, 1x por semana">
+                            </div>
+                             <div class="form-group">
+                                <label for="anamnese-hab-drogas">Usa ou já usou drogas ilícitas?</label>
+                                <input type="text" id="anamnese-hab-drogas" placeholder="Ex: Nunca / Sim">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-hab-fumo">Fuma ou já fumou?</label>
+                                <input type="text" id="anamnese-hab-fumo" placeholder="Ex: Nunca fumei / Fumei por 10 anos">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-hab-alimentacao">Como é sua alimentação diária?</label>
+                                <input type="text" id="anamnese-hab-alimentacao" placeholder="Ex: Balanceada, como fast food 3x/semana">
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-hab-atividade">Pratica atividade física?</label>
+                                <input type="text" id="anamnese-hab-atividade" placeholder="Ex: Caminhada 3x por semana">
+                            </div>
+                             <div class="form-group">
+                                <label for="anamnese-hab-suplementos">Usa suplementos ou fitoterápicos?</label>
+                                <input type="text" id="anamnese-hab-suplementos" placeholder="Ex: Whey protein, Chá de camomila">
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="vis-section">
+                        <h3>Revisão de Sistemas</h3>
+                        <div class="vis-content-box">
+                            <div class="form-group">
+                                <label for="anamnese-sis-digestivo">Sistema Digestivo (azia, refluxo, apetite, prisão de ventre...)</label>
+                                <textarea id="anamnese-sis-digestivo" rows="3" placeholder="Descreva qualquer sintoma..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-sis-urinario">Sistema Urinário (dor ao urinar, infecção, frequência...)</label>
+                                <textarea id="anamnese-sis-urinario" rows="3" placeholder="Descreva qualquer sintoma..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-sis-cardio">Sistema Cardiovascular (dor no peito, palpitações, falta de ar...)</label>
+                                <textarea id="anamnese-sis-cardio" rows="3" placeholder="Descreva qualquer sintoma..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-sis-respiratorio">Sistema Respiratório (tosse, asma, falta de ar...)</label>
+                                <textarea id="anamnese-sis-respiratorio" rows="3" placeholder="Descreva qualquer sintoma..."></textarea>
+                            </div>
+                             <div class="form-group">
+                                <label for="anamnese-sis-musculo">Sistema Músculo-Esquelético (dores, fraturas, locomoção...)</label>
+                                <textarea id="anamnese-sis-musculo" rows="3" placeholder="Descreva qualquer sintoma..."></textarea>
+                            </div>
+                             <div class="form-group">
+                                <label for="anamnese-sis-neuro">Sistema Neurológico (desmaios, tonturas, dor de cabeça...)</label>
+                                <textarea id="anamnese-sis-neuro" rows="3" placeholder="Descreva qualquer sintoma..."></textarea>
+                            </div>
+                             <div class="form-group">
+                                <label for="anamnese-sis-endocrino">Sistema Endócrino (alteração de peso, hormônios...)</label>
+                                <textarea id="anamnese-sis-endocrino" rows="3" placeholder="Descreva qualquer sintoma..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="anamnese-sis-hemato">Sistema Hematológico (anemia, sangramentos, hematomas...)</label>
+                                <textarea id="anamnese-sis-hemato" rows="3" placeholder="Descreva qualquer sintoma..."></textarea>
+                            </div>
+                        </div>
+                    </section>
+                    
+                     <section class="vis-section">
+                        <h3>Exames, Vacinas e Saúde Específica</h3>
+                        <div class="vis-content-box">
+                            <div class="form-group">
+                                <label for="anamnese-exames">Exames e Vacinas (Últimos exames, vacinas em dia, preventivos...)</label>
+                                <textarea id="anamnese-exames" rows="3" placeholder="Ex: Último exame de sangue em 01/2025..."></textarea>
+                            </div>
+                             <div class="form-group">
+                                <label for="anamnese-saude-mulher">Saúde da Mulher (se aplicável)</label>
+                                <textarea id="anamnese-saude-mulher" rows="3" placeholder="Ex: Menstruação, contraceptivo, gestações..."></textarea>
+                            </div>
+                             <div class="form-group">
+                                <label for="anamnese-saude-homem">Saúde do Homem (se aplicável)</label>
+                                <textarea id="anamnese-saude-homem" rows="3" placeholder="Ex: Exame de próstata, ISTs..."></textarea>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+
+                <p id="anamnese-feedback-message" class="feedback-message hidden" role="alert"></p>
+                
+                <div class="modal-footer-actions">
+                    
+                    <button type="button" id="cancel-anamnese-button" class="btn-secondary-painel">Cancelar</button>
+                    <button type="submit" id="salvar-anamnese-button" class="btn-primary-painel">
+                        <i class="fa-solid fa-save"></i> Salvar Anamnese
+                    </button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="checkin-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="checkin-modal-title">
+
+  <div class="modal-card" style="max-width: 450px;">
+
+    <div class="modal-header" style="background-color: var(--cor-fundo); border-bottom: 1px solid var(--borda-suave);">
+      <h2 id="checkin-modal-title" class="modal-title" style="color: var(--texto-principal);">
+        <i class="fa-solid fa-check-double icon-checkin-header"></i>
+        Check-in Diário
+      </h2>
+      <button id="close-checkin-modal" class="modal-close" aria-label="Fechar">&times;</button>
+    </div>
+
+    <form id="form-checkin-diario">
+      <div class="consulta-tab-content" style="background-color: var(--cor-elemento); padding: 24px;">
+
+        <p id="checkin-data-atual" class="master-checkin-subtitle" style="text-align: center; margin-top: 0; margin-bottom: 24px; font-weight: 500;">
+          Segunda-feira, 10 de novembro de 2025
+        </p>
+
+        <div class="progresso-container-checkin">
+          <div class="progresso-info">
+            <label>Progresso do dia</label>
+            <span id="checkin-progresso-texto">0/5</span>
+          </div>
+          <div class="anamnese-progress-bar-container" style="height: 10px;">
+            <div id="checkin-progresso-barra" class="anamnese-progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <label class="form-label-bold" style="margin-top: 24px; margin-bottom: 12px; display: block;">Suas metas de hoje</label>
+        
+        <div id="checkin-lista-metas" class="lista-metas-checkin">
+          <button type="button" class="meta-item-checkin concluido" data-meta-id="meta_medicacao">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>Tomar medicação prescrita</span>
+          </button>
+
+          <button type="button" class="meta-item-checkin" data-meta-id="meta_sono">
+            <i class="fa-regular fa-circle"></i>
+            <span>Dormir pelo menos 7 horas</span>
+          </button>
+
+          <button type="button" class="meta-item-checkin" data-meta-id="meta_humor">
+            <i class="fa-regular fa-circle"></i>
+            <span>Registrar humor do dia</span>
+          </button>
+
+          <button type="button" class="meta-item-checkin" data-meta-id="meta_alimentacao">
+            <i class="fa-regular fa-circle"></i>
+            <span>Alimentação saudável (3 refeições)</span>
+          </button>
+
+          <button type="button" class="meta-item-checkin" data-meta-id="meta_agua">
+            <i class="fa-regular fa-circle"></i>
+            <span>Beber 2 litros de água</span>
+          </button>
+        </div>
+
+        <label class="form-label-bold" style="margin-top: 24px; margin-bottom: 12px; display: block;"></label>
+        <div class="form-group-extra-meta">
+            
+          </button>
+        </div>
+
+      </div> <div class="modal-footer-actions">
+        <button type="submit" id="salvar-checkin-btn" class="btn-primary-painel">
+          <i class="fa-solid fa-save"></i>
+          Salvar Check-in
+        </button>
+      </div>
+    </form>
+
+  </div> </div>
+  
+
+
+<div id="lembrete-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="lembrete-modal-title">
+    <div class="modal-card modal-consulta-largo">
+        
+        <div class="modal-header">
+            <h2 id="lembrete-modal-title" class="modal-title">
+                <i class="fa-solid fa-bell"></i> Configurar Lembretes de Medicação
+            </h2>
+            <button id="close-lembrete-modal" class="modal-close" aria-label="Fechar">&times;</button>
+        </div>
+
+        <form id="form-lembrete">
+            <div class="consulta-tab-content" style="max-height: 60vh;">
+                
+                <p class="master-checkin-subtitle" style="margin-top:0; margin-bottom: 24px;">
+                    Configure os horários para o Orion.Health lembrar você de tomar suas medicações.
+                </p>
+
+                <div id="medicamentos-lembrete-lista" style="display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <section class="vis-section" data-medicamento-index="0">
+                        <div class="vis-content-box">
+                            <div class="form-group">
+                                <label for="lembrete-nome-0">Medicamento</label>
+                                <input type="text" id="lembrete-nome-0" name="lembrete-nome" placeholder="Ex: Losartana 50mg" required>
+                            </div>
+
+                            <div class="form-grid two-columns">
+                                <div class="form-group">
+                                    <label for="lembrete-inicio-0">Data de Início</label>
+                                    <input type="date" id="lembrete-inicio-0" name="lembrete-inicio" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lembrete-duracao-0">Duração (em dias)</label>
+                                    <input type="number" id="lembrete-duracao-0" name="lembrete-duracao" placeholder="Ex: 30" min="1">
+                                </div>
+                            </div>
+                            
+                         </div> <div class="form-grid two-columns">
+    
+                            <div class="form-group">
+                                <label for="lembrete-contagem-0">Quantas vezes ao dia?</label>
+                                <select id="lembrete-contagem-0" name="lembrete-contagem" class="lembrete-contagem-select">
+                                    <option value="0">Selecione (ex: 3)</option>
+                                    <option value="1">1 vez</option>
+                                    <option value="2">2 vezes</option>
+                                    <option value="3">3 vezes</option>
+                                    <option value="4">4 vezes</option>
+                                    <option value="5">5 vezes</option>
+                                    </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lembrete-intervalo-0">Intervalo (em horas)</label>
+                                <select id="lembrete-intervalo-0" name="lembrete-intervalo" class="lembrete-intervalo-select">
+                                    <option value="0">Selecione (ex: 8 em 8)</option>
+                                    <option value="24">A cada 24 horas</option>
+                                    <option value="12">A cada 12 horas</option>
+                                    <option value="8">A cada 8 horas</option>
+                                    <option value="6">A cada 6 horas</option>
+                                    <option value="4">A cada 4 horas</option>
+                                </select>
+                            </div>
+
+                        </div> <div id="lembrete-horarios-container-0" class="lembrete-horarios-container">
+                            </div>
+                    </section>
+                    
+                    </div>
+
+                <button type="button" id="btn-add-medicacao-lembrete" class="btn-add-external-med" style="margin-top: 20px;">
+                    <i class="fa-solid fa-plus"></i> Adicionar outra medicação desta receita
+                </button>
+            </div>
+            
+            <div class="modal-footer-actions">
+                <button type="button" id="cancel-lembrete-btn" class="btn-secondary-painel">Cancelar</button>
+                <button type="submit" id="salvar-lembrete-btn" class="btn-primary-painel">
+                    <i class="fa-solid fa-save"></i> Salvar Lembretes
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+        <!--Modal do botao registros diarios-->
+
+
+        <div id="novo-registro-diario-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="novo-registro-title">
+            <div class="modal-card modal-consulta-largo">
+                <div class="modal-header">
+                    <h2 id="novo-registro-title" class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Novo Registro Diário</h2>
+                    <button id="close-novo-registro-modal" class="modal-close" aria-label="Fechar">&times;</button>
+                </div>
+                <form id="form-novo-registro-diario">
+                    <div class="consulta-tab-content" style="max-height: 65vh;">
+
+                        <section class="vis-section">
+                            <h3><i class="fa-solid fa-moon"></i> Sono</h3>
+                            <div class="vis-content-box form-grid two-columns">
+                                <div class="form-group">
+                                    <label for="registro-horas-sono">Horas de sono</label>
+                                    <select id="registro-horas-sono">
+                                        <option value="">Selecione...</option>
+                                        <option value="4">4 horas</option>
+                                        <option value="5">5 horas</option>
+                                        <option value="6">6 horas</option>
+                                        <option value="7">7 horas</option>
+                                        <option value="8">8 horas</option>
+                                        <option value="9">9+ horas</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registro-qualidade-sono">Qualidade do sono</label>
+                                    <input type="text" id="registro-qualidade-sono" placeholder="Ex: Regular, Acordei muito...">
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="vis-section">
+                            <h3><i class="fa-solid fa-face-smile"></i> Humor</h3>
+                            <div class="vis-content-box">
+                                <label for="registro-humor-slider">Como você está se sentindo?</label>
+                                <input type="range" id="registro-humor-slider" min="1" max="5" value="3" class="humor-slider">
+                                <div class="humor-labels">
+                                    <span>Muito Triste (1)</span>
+                                    <span>Triste (2)</span>
+                                    <span>Neutro (3)</span>
+                                    <span>Feliz (4)</span>
+                                    <span>Muito Feliz (5)</span>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label for="registro-humor-obs">Observações (Opcional)</label>
+                                    <textarea id="registro-humor-obs" rows="2" placeholder="Descreva como você está se sentindo..."></textarea>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="vis-section">
+                            <h3><i class="fa-solid fa-bolt"></i> Dor</h3>
+                            <div class="vis-content-box">
+                                <label class="meta-item">
+                                    <input type="checkbox" id="registro-dor-checkbox">
+                                    <span>Estou sentindo dor hoje</span>
+                                </label>
+                                <div id="registro-dor-detalhes" class="hidden" style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">
+                                    <div class="form-group">
+                                        <label for="registro-dor-local">Local da dor</label>
+                                        <input type="text" id="registro-dor-local" placeholder="Ex: Cabeça, Costas...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="registro-dor-intensidade">Intensidade (0 = Sem dor, 10 = Pior dor)</label>
+                                        <input type="number" id="registro-dor-intensidade" min="0" max="10" placeholder="0-10">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="vis-section">
+                            <h3><i class="fa-solid fa-pills"></i> Medicações</h3>
+                            <div class="vis-content-box" style="display: flex; flex-direction: column; gap: 15px;">
+                                <label class="meta-item">
+                                    <input type="checkbox" id="registro-med-tomou">
+                                    <span>Tomei as minhas medicações hoje</span>
+                                </label>
+                                <div id="registro-med-lista" class="hidden" style="padding: 10px; background-color: var(--cor-fundo); border-radius: 6px; border: 1px solid var(--borda-suave);">
+                                    <label class="form-label-bold" style="font-size: 0.9rem; margin-bottom: 10px;">Confirmar cada medicação:</label>
+                                    <div id="registro-med-lista-checkboxes">
+                                        </div>
+                                    <button type="button" class="btn-add-external-med" id="btn-abrir-modal-med-externa">
+                                        <i class="fa-solid fa-plus"></i> Adicionar medicação (Ex: Analgésico)
+                                    </button>
+                                </div>
+                                <label class="meta-item" style="margin-top: 10px;">
+                                    <input type="checkbox" id="registro-med-efeitos">
+                                    <span>Estou sentindo efeitos colaterais</span>
+                                </label>
+                                <div id="registro-med-efeitos-detalhes" class="hidden" style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">
+                                    <div class="form-group">
+                                        <label for="registro-med-efeitos-obs">Descreva os efeitos colaterais</label>
+                                        <textarea id="registro-med-efeitos-obs" rows="2" placeholder="Ex: Sonolência, náusea..."></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Intensidade dos Efeitos (0-4)</label>
+                                        <select id="registro-med-efeitos-escala">
+                                            <option value="">Selecione...</option>
+                                            <option value="0">0 - Sem efeito</option>
+                                            <option value="1">1 - Efeito moderado</option>
+                                            <option value="2">2 - Com efeito colateral</option>
+                                            <option value="3">3 - Muito efeito colateral</option>
+                                            <option value="4">4 - Tanto efeito que nem consigo tomar</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="vis-section">
+                            <h3><i class="fa-solid fa-utensils"></i> Alimentação</h3>
+                            <div class="vis-content-box" style="display: flex; flex-direction: column; gap: 15px;">
+                                <label class="form-label-bold">Quais refeições você realizou?</label>
+
+                                <div class="meal-check-group">
+                                    <label class="meta-item">
+                                        <input type="checkbox" id="check-refeicao-cafe" data-target="detalhes-cafe">
+                                        <span>Café da Manhã</span>
+                                    </label>
+                                    <div class="form-group meal-details hidden" id="detalhes-cafe">
+                                        <label for="input-refeicao-cafe">O que você comeu no café da manhã? (Opcional)</label>
+                                        <textarea id="input-refeicao-cafe" rows="2" placeholder="Ex: Pão integral, ovo, café..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="meal-check-group">
+                                    <label class="meta-item">
+                                        <input type="checkbox" id="check-refeicao-almoco" data-target="detalhes-almoco">
+                                        <span>Almoço</span>
+                                    </label>
+                                    <div class="form-group meal-details hidden" id="detalhes-almoco">
+                                        <label for="input-refeicao-almoco">O que você comeu no almoço? (Opcional)</label>
+                                        <textarea id="input-refeicao-almoco" rows="2" placeholder="Ex: Arroz, feijão, frango grelhado..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="meal-check-group">
+                                    <label class="meta-item">
+                                        <input type="checkbox" id="check-refeicao-tarde" data-target="detalhes-tarde">
+                                        <span>Café da Tarde / Lanche</span>
+                                    </label>
+                                    <div class="form-group meal-details hidden" id="detalhes-tarde">
+                                        <label for="input-refeicao-tarde">O que você comeu no lanche? (Opcional)</label>
+                                        <textarea id="input-refeicao-tarde" rows="2" placeholder="Ex: Frutas, iogurte..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="meal-check-group">
+                                    <label class="meta-item">
+                                        <input type="checkbox" id="check-refeicao-janta" data-target="detalhes-janta">
+                                        <span>Jantar</span>
+                                    </label>
+                                    <div class="form-group meal-details hidden" id="detalhes-janta">
+                                        <label for="input-refeicao-janta">O que você comeu no jantar? (Opcional)</label>
+                                        <textarea id="input-refeicao-janta" rows="2" placeholder="Ex: Sopa, salada..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div id="registro-refeicoes-externas-lista" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                                    </div>
+                                <button type="button" class="btn-add-external-med" id="btn-abrir-modal-refeicao-externa">
+                                    <i class="fa-solid fa-plus"></i> Adicionar outra refeição (Ex: Pizza, Ceia)
+                                </button>
+
+                                <hr class="form-divider" style="margin-top: 15px; margin-bottom: 0;">
+
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label for="registro-alim-agua">Ingestão de água (litros)</label>
+                                    <input type="number" id="registro-alim-agua" step="0.1" placeholder="Ex: 2.5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="registro-alim-obs">Observações gerais sobre hoje (Opcional)</label>
+                                    <textarea id="registro-alim-obs" rows="2" placeholder="Ex: Comi mais frutas hoje, evitei doces"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registro-alim-escala">Como você avalia sua alimentação hoje? (0-5)</label>
+                                    <input type="range" id="registro-alim-escala" min="0" max="5" value="3" class="humor-slider">
+                                    <div class="humor-labels" style="justify-content: space-between;">
+                                        <span>0 (Má)</span>
+                                        <span>...</span>
+                                        <span>5 (Ótima)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="vis-section">
+                            <h3><i class="fa-solid fa-ruler-combined"></i> Medições Físicas (Opcional)</h3>
+                            <div class="vis-content-box form-grid two-columns">
+                                <div class="form-group"><label for="reg-pressao-sistolica">Pressão Sistólica (mmHg)</label><input type="number" id="reg-pressao-sistolica" placeholder="Ex: 120"></div>
+                                <div class="form-group"><label for="reg-pressao-diastolica">Pressão Diastólica (mmHg)</label><input type="number" id="reg-pressao-diastolica" placeholder="Ex: 80"></div>
+                                <div class="form-group"><label for="reg-glicemia">Glicemia (mg/dL)</label><input type="number" id="reg-glicemia" placeholder="Ex: 95"></div>
+                                <div class="form-group"><label for="reg-saturacao-o2">Saturação de Oxigênio (SpO2 %)</label><input type="number" id="reg-saturacao-o2" placeholder="Ex: 98"></div>
+                                <div class="form-group"><label for="reg-freq-cardiaca">Frequência Cardíaca (bpm)</label><input type="number" id="reg-freq-cardiaca" placeholder="Ex: 72"></div>
+                                <div class="form-group"><label for="reg-temperatura">Temperatura (°C)</label><input type="number" id="reg-temperatura" placeholder="Ex: 36.5"></div>
+                                <div class="form-group"><label for="reg-peso">Peso (kg)</label><input type="number" id="reg-peso" step="0.1" placeholder="Ex: 70.5"></div>
+                            </div>
+                        </section>
+
+                    </div>
+                    <p id="novo-registro-feedback" class="feedback-message hidden" role="alert"></p>
+                    <div class="modal-footer-actions">
+                        <button type="button" id="cancel-novo-registro-btn" class="btn-secondary-painel">Cancelar</button>
+                        <button type="submit" id="salvar-novo-registro-btn" class="btn-primary-painel"><i class="fa-solid fa-save"></i> Salvar Registro</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="add-med-externa-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="add-med-externa-title">
+            <div class="modal-card" style="max-width: 450px;">
+                <div class="modal-header">
+                    <h2 id="add-med-externa-title" class="modal-title">
+                        <i class="fa-solid fa-pills" style="color: white;"></i>
+                        Adicionar Medicação Externa
+                    </h2>
+                    <button id="close-add-med-externa-modal" class="modal-close" aria-label="Fechar">&times;</button>
+                </div>
+                <form id="form-add-med-externa">
+                    <div style="padding: 24px; padding-bottom: 0;">
+                        <p class="master-checkin-subtitle" style="margin-bottom: 24px;">Qual medicação (que não foi prescrita no app) você tomou?</p>
+                        <div class="form-group">
+                            <label for="med-externa-nome">Nome da Medicação</label>
+                            <input type="text" id="med-externa-nome" placeholder="Ex: Neosaldina" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer-actions" style="background-color: var(--cor-fundo);">
+                        <button type="button" id="cancel-add-med-externa-btn" class="btn-secondary-painel">Cancelar</button>
+                        <button type="button" id="salvar-add-med-externa-btn" class="btn-primary-painel">
+                            <i class="fa-solid fa-plus"></i> Adicionar à Lista
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="add-refeicao-externa-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="add-refeicao-externa-title">
+            <div class="modal-card" style="max-width: 450px;">
+                <div class="modal-header">
+                    <h2 id="add-refeicao-externa-title" class="modal-title">
+                        <i class="fa-solid fa-utensils" style="color: white;"></i>
+                        Adicionar Refeição
+                    </h2>
+                    <button id="close-add-refeicao-externa-modal" class="modal-close" aria-label="Fechar">&times;</button>
+                </div>
+                <form id="form-add-refeicao-externa">
+                    <div style="padding: 24px; padding-bottom: 0;">
+                        <p class="master-checkin-subtitle" style="margin-bottom: 24px;">Qual refeição (fora das principais) você gostaria de registrar?</p>
+                        <div class="form-group">
+                            <label for="refeicao-externa-nome">Nome da Refeição</label>
+                            <input type="text" id="refeicao-externa-nome" placeholder="Ex: Ceia, Pizza, Sobremesa" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="refeicao-externa-detalhes">O que você comeu? (Opcional)</label>
+                            <textarea id="refeicao-externa-detalhes" rows="2" placeholder="Ex: 2 fatias de pizza, 1 taça de açaí..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer-actions" style="background-color: var(--cor-fundo);">
+                        <button type="button" id="cancel-add-refeicao-btn" class="btn-secondary-painel">Cancelar</button>
+                        <button type="submit" id="salvar-add-refeicao-btn" class="btn-primary-painel">
+                            <i class="fa-solid fa-plus"></i> Adicionar à Lista
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div id="upload-exame-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="upload-exame-title">
+            <div class="modal-card" style="max-width: 500px;">
+                
+                <div class="modal-header">
+                    <h2 id="upload-exame-title" class="modal-title">
+                        <i class="fa-solid fa-file-medical"></i>
+                        Adicionar Exame Externo
+                    </h2>
+                    <button id="close-upload-exame-modal" class="modal-close" aria-label="Fechar">&times;</button>
+                </div>
+
+                <form id="form-upload-exame">
+                    <div class="consulta-tab-content" style="max-height: 70vh;">
+                        
+                        <p class="master-checkin-subtitle" style="margin-bottom: 24px;">Suba um PDF ou imagem de um resultado de exame que você recebeu fora do Orion.Health.</p>
+                        
+                        <div class="form-group">
+                            <label for="upload-exame-nome">Nome do Exame (para identificação)</label>
+                            <input type="text" id="upload-exame-nome" placeholder="Ex: Hemograma Completo" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="upload-exame-laboratorio">Laboratório (Opcional)</label>
+                            <input type="text" id="upload-exame-laboratorio" placeholder="Ex: Lab Exemplo">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="upload-exame-data">Data da Coleta/Exame</label>
+                            <input type="date" id="upload-exame-data" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Qual é o status deste exame?</label>
+                            <div class="radio-button-group">
+                                <input type="radio" id="exame-status-realizado" name="upload-exame-status" value="Realizado" checked>
+                                <label for="exame-status-realizado" class="radio-button-label">
+                                    <i class="fa-solid fa-check"></i> Realizado (Já tenho o resultado)
+                                </label>
+                                
+                                <input type="radio" id="exame-status-agendado" name="upload-exame-status" value="Agendado">
+                                <label for="exame-status-agendado" class="radio-button-label">
+                                    <i class="fa-solid fa-calendar-check"></i> Agendado (Vou fazer)
+                                </label>
+
+                                <input type="radio" id="exame-status-pendente" name="upload-exame-status" value="Pendente Upload">
+                                <label for="exame-status-pendente" class="radio-button-label">
+                                    <i class="fa-solid fa-clock"></i> Pendente (Pedido antigo)
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="upload-exame-ficheiro">Arquivo do Exame (PDF ou Imagem)</label>
+                            <input type="file" id="upload-exame-ficheiro" accept="image/*,application/pdf">
+                            <small style="font-size: 0.8rem; color: var(--texto-suave); margin-top: 5px;">Tamanho máximo: 40MB. (Opcional se o status for "Agendado")</small>
+                        </div>
+
+                    </div> 
+                    
+                    <div class="modal-footer-actions">
+                        <button type="button" id="cancel-upload-exame-btn" class="btn-secondary-painel">Cancelar</button>
+                        <button type="submit" id="salvar-upload-exame-btn" class="btn-primary-painel">
+                            <i class="fa-solid fa-save"></i> Salvar Exame
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="agendar-exame-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="agendar-exame-title">
+    <div class="modal-card modal-consulta-largo">
+        
+        <div class="modal-header">
+            <h2 id="agendar-exame-title" class="modal-title">
+                <i class="fa-solid fa-calendar-plus"></i>
+                Agendar Exame
+            </h2>
+            <button id="close-agendar-exame-modal" class="modal-close" aria-label="Fechar">&times;</button>
+        </div>
+
+        <div class="consulta-tab-content" style="max-height: 70vh;">
+            
+            <div class="search-container-modal">
+                <i class="fa-solid fa-search search-icon"></i>
+                <input type="search" id="lab-search-input" 
+                       placeholder="Buscar por nome do laboratório ou exame..." 
+                       aria-label="Buscar laboratório">
+            </div>
+            <p class="master-checkin-subtitle" style="margin-bottom: 24px;">
+                Selecione um laboratório parceiro (Mock) e um horário para agendar sua coleta.
+            </p>
+
+            <div id="lista-laboratorios-mock" class="laboratorio-lista-container">
+                <p class="placeholder">Carregando laboratórios...</p>
+            </div>
+
+        </div> 
+        
+        <div class="modal-footer-actions">
+            <button type="button" id="cancel-agendar-exame-btn" class="btn-secondary-painel">Cancelar</button>
+            <button type="submit" id="salvar-agendamento-exame-btn" class="btn-primary-painel" disabled>
+                <i class="fa-solid fa-check"></i> Confirmar Agendamento
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div id="pagamento-pix-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="pagamento-pix-title">
+  
+  <div class="modal-card" style="max-width: 500px;">
+    
+    <div class="modal-header" style="background-color: var(--cor-primaria); border-bottom: 1px solid var(--cor-secundaria); border-radius: 12px 12px 0 0; padding: 16px 24px;">
+      <h2 id="pagamento-pix-title" class="modal-title" style="color: #ffffff;">
+        <i class="fa-brands fa-pix" style="color: #ffffff; font-size: 1.5rem;"></i>
+        Pagamento via PIX
+      </h2>
+      <button id="close-pagamento-pix-modal" class="modal-close" aria-label="Fechar" style="color: #ffffff; opacity: 0.7;">&times;</button>
+    </div>
+
+    <div id="pagamento-pix-content">
+      
+      <div id="pix-step-1-qrcode">
+        <div class="consulta-tab-content" style="background-color: var(--cor-fundo);">
+          
+          <p class="master-checkin-subtitle" style="text-align: center; margin-top: 0; margin-bottom: 16px; font-weight: 500;">
+            Escaneie o QR Code para pagar:
+          </p>
+
+          <div class="pix-qrcode-container">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=OrionHealthPIXSimulation" alt="Simulação de QR Code PIX">
+          </div>
+          
+          <p class="pix-instructions">
+            <strong>1.</strong> Abra o app do seu banco.<br>
+            <strong>2.</strong> Escolha a opção "Pagar com PIX" (QR Code).<br>
+            <strong>3.</strong> Escaneie o código acima e confirme.
+          </p>
+
+          <p class="pix-price-display" id="pix-resumo-preco">R$ 0,00</p>
+
+          <hr class="form-divider" style="margin: 20px 0;">
+
+          <div id="pix-resumo-container">
+            <div class="anamnese-view-group">
+              <label>Laboratório</label>
+              <p id="pix-resumo-lab">Carregando...</p>
+            </div>
+            <div class="anamnese-view-group">
+              <label>Horário Selecionado</label>
+              <p id="pix-resumo-horario">Carregando...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" id="cancel-pagamento-pix-btn" class="btn-secondary-painel">Cancelar</button>
+          <button type="button" id="simular-pagamento-btn" class="btn-primary-painel">
+            <i class="fa-solid fa-check"></i> Simular Confirmação
+          </button>
+        </div>
+      </div>
+      
+      <div id="pix-step-2-sucesso" class="hidden">
+        <div class="consulta-tab-content" style="background-color: var(--cor-fundo);">
+          <div class="pix-sucesso-container">
+            <i class="fa-solid fa-check-circle"></i>
+            <h3>Pagamento Confirmado!</h3>
+            <p>Seu agendamento foi realizado com sucesso. Estamos a redirecionar...</p>
+          </div>
+        </div>
+      </div>
+
+    </div> </div>
+</div>
+
+<div id="upload-encaminhamento-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="upload-enc-title">
+    <div class="modal-card" style="max-width: 450px;">
+        <div class="modal-header" style="background-color: var(--cor-primaria); border-bottom: 1px solid var(--cor-secundaria); border-radius: 12px 12px 0 0; padding: 16px 24px;">
+            <h2 id="upload-enc-title" class="modal-title" style="color: #ffffff;">
+                <i class="fa-solid fa-share-from-square" style="color: #ffffff;"></i>
+                Adicionar Encaminhamento Externo
+            </h2>
+            <button id="close-upload-enc-modal" class="modal-close" aria-label="Fechar" style="color: #ffffff; opacity: 0.7;">&times;</button>
+        </div>
+
+        <form id="form-upload-encaminhamento">
+            <div class="consulta-tab-content" style="background-color: var(--cor-fundo); padding: 24px;">
+                
+                <p class="master-checkin-subtitle" style="margin-top: 0; margin-bottom: 24px;">
+                    Registe um encaminhamento que recebeu fora da plataforma.
+                </p>
+
+                <div class="form-group">
+                    <label for="upload-enc-especialidade">Especialidade Recomendada *</label>
+                    <input type="text" id="upload-enc-especialidade" placeholder="Ex: Cardiologia, Psicologia" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="upload-enc-motivo">Motivo do Encaminhamento (Opcional)</label>
+                    <textarea id="upload-enc-motivo" rows="2" placeholder="Ex: Avaliação de dor torácica"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="upload-enc-medico">Médico Solicitante (Opcional)</label>
+                    <input type="text" id="upload-enc-medico" placeholder="Ex: Dr. João Silva">
+                </div>
+
+                <div class="form-group">
+                    <label for="upload-enc-data">Data da Indicação *</label>
+                    <input type="date" id="upload-enc-data" value="" required>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Status do Encaminhamento</label>
+                    <div class="radio-button-group">
+                        <input type="radio" id="enc-status-pendente" name="upload-enc-status" value="Pendente" checked>
+                        <label for="enc-status-pendente" class="radio-button-label">
+                            <i class="fa-solid fa-clock"></i> Pendente (Ainda não agendei)
+                        </label>
+                        
+                        <input type="radio" id="enc-status-agendado" name="upload-enc-status" value="Agendado">
+                        <label for="enc-status-agendado" class="radio-button-label">
+                            <i class="fa-solid fa-calendar-check"></i> Agendado (Já marquei)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px; margin-bottom: 0;">
+                    <label for="upload-enc-ficheiro">Anexo do Encaminhamento (PDF ou Imagem)</label>
+                    <input type="file" id="upload-enc-ficheiro" accept="image/*,application/pdf">
+                    <small style="font-size: 0.8rem; color: var(--texto-suave); margin-top: 4px;">Tamanho máximo: 40MB. (Opcional)</small>
+                </div>
+                <p id="upload-enc-feedback" class="feedback-message hidden" role="alert"></p>
+
+            </div>
+
+            <div class="modal-footer-actions">
+                <button type="button" id="cancel-upload-enc-btn" class="btn-secondary-painel">Cancelar</button>
+                <button type="submit" id="salvar-upload-enc-btn" class="btn-primary-painel">
+                    <i class="fa-solid fa-save"></i> Salvar Encaminhamento
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="pdf-atestado-template" class="pdf-template">
+    <header class="pdf-header">
+        <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="pdf-logo">
+        <div class="pdf-doctor-info">
+            <strong id="pdf-atestado-doctor-name">Nome Doutor</strong>
+            <span id="pdf-atestado-doctor-specialty">Especialidade</span>
+            <span id="pdf-atestado-doctor-crm">CRM/UF XXXXX</span>
+        </div>
+    </header>
+    <main class="pdf-main">
+        <h2>Atestado Médico</h2>
+        <div class="pdf-patient-info">
+            <div><strong>Paciente:</strong> <span id="pdf-atestado-patient-name">Nome Paciente</span></div>
+            <div><strong>Data de Emissão:</strong> <span id="pdf-atestado-emission-date">DD/MM/AAAA</span></div>
+        </div>
+        <div class="pdf-prescription">
+            <h3>Declaração</h3>
+            <p id="pdf-atestado-texto" style="font-size: 14px; line-height: 1.6; text-align: justify; padding-top: 10px;">
+                Atesto para os devidos fins que o(a) paciente
+                <strong id="pdf-atestado-patient-name-body"></strong>, portador(a) do
+                documento [Nº Documento], necessita de <strong id="pdf-atestado-dias"></strong> dia(s) de afastamento de suas
+                atividades (laborais/escolares), a partir de <strong id="pdf-atestado-data-inicio"></strong>, por motivos de saúde.
+            </p>
+            <p style="font-size: 12px; margin-top: 25px;">
+                <strong>Motivo:</strong> <span id="pdf-atestado-motivo"></span><br>
+                <strong>CID:</strong> <span id="pdf-atestado-cid"></span><br>
+                <strong>Observações:</strong> <span id="pdf-atestado-observacoes"></span>
+            </p>
+        </div>
+        <!--AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII-->
+    <footer class="pdf-footer">
+        <div class="pdf-signature">
+            <span id="pdf-atestado-signature-name">Nome Doutor</span>
+            <span>Assinatura Digital (Simulado)</span>
+        </div>
+        <div class="pdf-contact">
+            <span>www.orion.health</span>
+        </div>
+    </footer>
+</div>
+<div id="pdf-exame-template" class="pdf-template">
+    
+    <header class="pdf-header">
+        <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="pdf-logo">
+        <div class="pdf-doctor-info">
+            <strong id="pdf-ex-doctor-name" style="font-size:12px;">Nome do Doutor</strong><br>
+            <span id="pdf-ex-doctor-spec">Especialidade</span><br>
+            <span id="pdf-ex-doctor-crm">CRM/UF XXXXX</span>
+        </div>
+    </header>
+
+    <main class="pdf-main">
+        <h2>Solicitação de Exames</h2>
+        
+        <div class="pdf-patient-info">
+            <div style="margin-bottom:4px;"><strong>Paciente:</strong> <span id="pdf-ex-patient-name">Nome do Paciente</span></div>
+            <div><strong>Data da Solicitação:</strong> <span id="pdf-ex-date">DD/MM/AAAA</span></div>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <h3 style="font-size: 16px; color: #41b8d5; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; font-weight: bold;">Exames Solicitados</h3>
+            
+            <ul id="pdf-ex-list" style="padding-left: 20px; margin-top: 15px; font-size: 13px; line-height: 1.6;">
+                <li>Carregando...</li>
+            </ul>
+
+            <div style="margin-top: 30px; background-color: #f8fafc; padding: 15px; border-radius: 4px; font-size: 12px;">
+                <p style="margin:0 0 5px 0;"><strong>Indicação Clínica:</strong></p>
+                <p id="pdf-ex-motivo" style="margin:0;">Motivo do exame...</p>
+                
+                <p id="pdf-ex-jejum" style="margin: 15px 0 0 0; font-weight: bold; color: #c53030; display: none;">
+                    ⚠️ Jejum Obrigatório (8 a 12 horas)
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="pdf-footer">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <span id="pdf-ex-signature" style="font-weight: bold; color: #333;">Nome do Doutor</span>
+            <span>Assinatura Digital (Simulado)</span>
+        </div>
+        <div>www.orion.health</div>
+    </footer>
+</div>
+
+
+<div id="upload-atestado-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="upload-atestado-title">
+    <div class="modal-card" style="max-width: 450px;">
+        
+        <div class="modal-header" style="background-color: var(--cor-primaria); border-bottom: 1px solid var(--cor-secundaria); border-radius: 12px 12px 0 0; padding: 16px 24px;">
+            <h2 id="upload-atestado-title" class="modal-title" style="color: #ffffff;">
+                <i class="fa-solid fa-file-invoice" style="color: #ffffff;"></i>
+                Adicionar Atestado Externo
+            </h2>
+            <button id="close-upload-atestado-modal" class="modal-close" aria-label="Fechar" style="color: #ffffff; opacity: 0.7;">&times;</button>
+        </div>
+
+        <form id="form-upload-atestado">
+            <div class="consulta-tab-content" style="background-color: var(--cor-fundo); padding: 24px;">
+
+                <p class="master-checkin-subtitle" style="margin-top:0; margin-bottom: 24px;">
+                    Suba um PDF ou imagem de um atestado que você recebeu fora do Orion.Health.
+                </p>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="upload-atestado-titulo">Título do Atestado (para identificação)</label>
+                    <input type="text" id="upload-atestado-titulo" placeholder="Ex: Atestado de 3 dias" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="upload-atestado-medico">Médico que Emiriu (Opcional)</label>
+                    <input type="text" id="upload-atestado-medico" placeholder="Ex: Dr. Carlos Mendes">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="upload-atestado-motivo">Motivo (Opcional)</label>
+                    <textarea id="upload-atestado-motivo" rows="2" placeholder="Ex: Consulta de rotina, Gripe..."></textarea>
+                </div>
+
+                <div class="form-grid two-columns" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="upload-atestado-data-inicio">Data de Início</label>
+                        <input type="date" id="upload-atestado-data-inicio" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="upload-atestado-duracao">Duração</label>
+                        <input type="text" id="upload-atestado-duracao" placeholder="Ex: 3 dias">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Qual é o status deste atestado?</label>
+                    <div class="radio-button-group">
+                        <input type="radio" id="atestado-status-valido" name="upload-atestado-status" value="Válido" checked>
+                        <label for="atestado-status-valido" class="radio-button-label">
+                            <i class="fa-solid fa-check-circle"></i> Válido (Atual)
+                        </label>
+                        
+                        <input type="radio" id="atestado-status-expirado" name="upload-atestado-status" value="Expirado">
+                        <label for="atestado-status-expirado" class="radio-button-label">
+                            <i class="fa-solid fa-times-circle"></i> Expirado (Antigo)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="upload-atestado-ficheiro">Arquivo do Atestado (PDF ou Imagem)</label>
+                    <input type="file" id="upload-atestado-ficheiro" accept="image/*,application/pdf">
+                    <small style="font-size: 0.8rem; color: var(--texto-suave); margin-top: 5px;">Obrigatório se o status for "Válido".</small>
+                </div>
+
+            </div> <div class="modal-footer-actions">
+                <button type="button" id="cancel-upload-atestado-btn" class="btn-secondary-painel">Cancelar</button>
+                <button type="submit" id="salvar-upload-atestado-btn" class="btn-primary-painel">
+                    <i class="fa-solid fa-save"></i> Salvar Atestado
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="progresso-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="progresso-modal-title">
+    <div class="modal-card" style="max-width: 500px;">
+        
+        <div class="modal-header" style="background-color: var(--cor-primaria); border-bottom: 1px solid var(--cor-secundaria); border-radius: 12px 12px 0 0; padding: 16px 24px;">
+            <h2 id="progresso-modal-title" class="modal-title" style="color: #ffffff;">
+                <i class="fa-solid fa-chart-line" style="color: #ffffff;"></i>
+                Progresso do Acompanhamento
+            </h2>
+            <button id="close-progresso-modal" class="modal-close" aria-label="Fechar" style="color: #ffffff; opacity: 0.7;">&times;</button>
+        </div>
+
+        <div class="consulta-tab-content" style="background-color: var(--cor-fundo); padding: 24px;">
+            
+            <h3 id="progresso-modal-titulo-acomp" style="text-align: center; margin-top: 0; margin-bottom: 24px; font-size: 1.25rem; font-weight: 600; color: var(--texto-principal); line-height: 1.4;">
+                Carregando...
+            </h3>
+            
+            <div class="anamnese-progress-bar-container" style="height: 16px; margin-bottom: 12px; background-color: var(--borda-suave);">
+                <div id="progresso-modal-bar-fill" class="anamnese-progress-bar-fill" style="width: 0%; height: 16px; background-color: var(--cor-primaria); transition: width 0.5s ease;"></div>
+            </div>
+            
+            <p id="progresso-modal-texto" style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--cor-primaria); margin-bottom: 16px;">
+                0%
+            </p>
+        </div>
+
+        <div class="modal-footer-actions">
+            <button type="button" id="fechar-progresso-modal-btn" class="btn-primary-painel">Fechar</button>
+        </div>
+    </div>
+</div>
+<div id="upload-vacina-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="upload-vacina-title">
+    <div class="modal-card" style="max-width: 450px;">
+        
+        <div class="modal-header" style="background-color: var(--cor-primaria); border-bottom: 1px solid var(--cor-secundaria); border-radius: 12px 12px 0 0; padding: 16px 24px;">
+            <h2 id="upload-vacina-title" class="modal-title" style="color: #ffffff;">
+                <i class="fa-solid fa-syringe" style="color: #ffffff;"></i>
+                Adicionar Vacina
+            </h2>
+            <button id="close-upload-vacina-modal" class="modal-close" aria-label="Fechar" style="color: #ffffff; opacity: 0.7;">&times;</button>
+        </div>
+        
+        <form id="form-upload-vacina">
+            <div class="consulta-tab-content" style="background-color: var(--cor-fundo); padding: 24px; max-height: 70vh;">
+                
+                <p class="master-checkin-subtitle" style="margin-top:0; margin-bottom: 24px;">
+                    Suba um PDF ou imagem do seu comprovativo de vacina.
+                </p>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="upload-vacina-nome">Nome da Vacina (para identificação)</label>
+                    <input type="text" id="upload-vacina-nome" placeholder="Ex: COVID-19 (3ª Dose), Febre Amarela" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Status</label>
+                    <div class="radio-button-group">
+                        <input type="radio" id="vacina-status-valida" name="upload-vacina-status" value="Válida" checked>
+                        <label for="vacina-status-valida" class="radio-button-label">
+                            <i class="fa-solid fa-check-circle"></i> Válida
+                        </label>
+                        <input type="radio" id="vacina-status-expirada" name="upload-vacina-status" value="Expirada">
+                        <label for="vacina-status-expirada" class="radio-button-label">
+                            <i class="fa-solid fa-times-circle"></i> Expirada / Antiga
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="upload-vacina-ficheiro">Arquivo (PDF ou Imagem)</label>
+                    <input type="file" id="upload-vacina-ficheiro" accept="image/*,application/pdf">
+                    <small style="font-size: 0.8rem; color: var(--texto-suave); margin-top: 5px;">Tamanho máximo: 40MB. (Opcional se "Expirada")</small>
+                </div>
+
+            </div> <p id="upload-vacina-feedback" class="feedback-message hidden" role="alert" style="margin: 0 24px;"></p>
+            <div class="modal-footer-actions">
+                <button type="button" id="cancel-upload-vacina-btn" class="btn-secondary-painel">Cancelar</button>
+                <button type="submit" id="salvar-upload-vacina-btn" class="btn-primary-painel">
+                    <i class="fa-solid fa-save"></i> Salvar Vacina
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="pdf-encaminhamento-template" class="pdf-template">
+    
+    <header class="pdf-header">
+        <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="pdf-logo">
+        <div class="pdf-doctor-info">
+            <strong id="pdf-enc-doctor-name" style="font-size: 12px;">Nome do Doutor</strong><br>
+            <span id="pdf-enc-doctor-spec">Especialidade</span><br>
+            <span id="pdf-enc-doctor-crm">CRM/UF XXXXX</span>
+        </div>
+    </header>
+
+    <main class="pdf-main">
+        <h2>Encaminhamento Clínico</h2>
+        
+        <div class="pdf-patient-info">
+            <div style="margin-bottom:4px;"><strong>Paciente:</strong> <span id="pdf-enc-patient-name">Nome do Paciente</span></div>
+            <div><strong>Data da Emissão:</strong> <span id="pdf-enc-date">DD/MM/AAAA</span></div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <div style="margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                <p style="font-size: 14px; color: #718096; margin-bottom: 5px; text-transform: uppercase; font-weight: bold;">Ao Especialista em:</p>
+                <p id="pdf-enc-specialty" style="font-size: 18px; font-weight: bold; color: #41b8d5; margin: 0;">Cardiologia</p>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 13px; font-weight: bold; color: #2d3748; margin-bottom: 5px;">Motivo do Encaminhamento:</p>
+                <p id="pdf-enc-reason" style="font-size: 13px; line-height: 1.6; background-color: #f8fafc; padding: 10px; border-radius: 4px; margin: 0;">
+                    ...
+                </p>
+            </div>
+
+            <div id="pdf-enc-obs-container" style="margin-bottom: 20px;">
+                <p style="font-size: 13px; font-weight: bold; color: #2d3748; margin-bottom: 5px;">Observações / Recomendações:</p>
+                <p id="pdf-enc-obs" style="font-size: 13px; line-height: 1.6; margin: 0;">
+                    ...
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="pdf-footer">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <span id="pdf-enc-signature" style="font-weight: bold; color: #333;">Nome do Doutor</span>
+            <span>Assinatura Digital (Simulado)</span>
+        </div>
+        <div>www.orion.health</div>
+    </footer>
+</div>
+
+
+
+
+        
+       
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="perfil-de-saude.js" type="module"></script>
+
+</body>
+</html>

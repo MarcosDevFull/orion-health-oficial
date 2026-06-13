@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Orion.Health</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <div id="app">
+    <header id="header-main" class="header header-curve">
+        <div class="header-top">
+            <img src="img/Logo.Orion versao branco .png" alt="Logótipo da Orion.Health" class="logo-main"> 
+        </div>
+    <div class="header-top-professional">
+        
+        <a href="home.html" class="back-button" aria-label="Voltar para a página principal">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+    </div>
+    
+    <div class="header-content" >
+        <p>É cuidado com empatia, é tecnologia com propósito, é o futuro da saúde.</p>
+    </div>
+</header>
+
+
+<header id="header-main" ></header>
+            <header id="header-patient-login" class="header header-curve hidden">
+
+                <div class="header-top-professional"> 
+                    <a href="#" id="show-user-type-selection" class="back-button" aria-label="Voltar para a página inicial">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="header-content">
+                    <h1>Acesso Paciente</h1>
+                    <p>Junte-se a milhões de pacientes que já estão aproveitando o futuro da saúde agora.</p>
+                </div>
+            </header>
+
+        <main class="container">
+            
+            <!-- PONTO DE DECISÃO INICIAL -->
+            <div id="user-type-selection">
+    <h2>Escolha seu Perfil</h2>
+
+    <div class="profile-selection-container">
+
+        <div class="profile-card">
+            <div class="profile-icon">
+                <img src="https://api.iconify.design/mdi:heart-outline.svg?color=white" alt="Ícone Paciente" aria-hidden="true">
+            </div>
+            <h3 class="profile-title">Sou Paciente</h3>
+            <p class="profile-description">
+                Crei um perfil de saúde, Agende consultas, gerencie seus tratamentos, compartilhe seus dados de saúde com quem quiser e de graça
+            <ul class="profile-features">
+                <li>
+                    <img src="https://api.iconify.design/mdi:calendar-check-outline.svg?color=%2341b8d5" alt="" aria-hidden="true">
+                    <span>Agendamento fácil</span>
+                </li>
+                <li>
+                    <img src="https://api.iconify.design/mdi:lock-outline.svg?color=%2341b8d5" alt="" aria-hidden="true">
+                    <span>Dados protegidos (LGPD)</span>
+                </li>
+                <li>
+                    <img src="https://api.iconify.design/mdi:history.svg?color=%2341b8d5" alt="" aria-hidden="true">
+                    <span>Histórico completo</span>
+                </li>
+            </ul>
+
+            <button  type="button" id="show-patient-login" class="btn btn-profile-select primary">
+                Acessar como Paciente
+            </button>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-icon">
+                <img src="https://api.iconify.design/mdi:stethoscope.svg?color=white" alt="Ícone Profissional" aria-hidden="true">
+            </div>
+            <h3 class="profile-title">Sou Profissional</h3>
+            <p class="profile-description">
+                Gerencie sua agenda, atenda pacientes, tenha acesso aos dados em tempo real de seus pacientes e ofereça  serviços de forma eficiente.
+            </p>
+                    <ul class="profile-features">
+    <li>
+        <img src="https://api.iconify.design/mdi:calendar-check-outline.svg?color=%2341b8d5" alt="" aria-hidden="true">
+        <span>Agenda inteligente</span>
+    </li>
+    <li>
+        <img src="https://api.iconify.design/mdi:account-group-outline.svg?color=%2341b8d5" alt="" aria-hidden="true">
+        <span>Gestão de pacientes</span>
+    </li>
+    <li>
+        <img src="https://api.iconify.design/mdi:chart-pie-outline.svg?color=%2341b8d5" alt="" aria-hidden="true">
+        <span>Relatórios detalhados</span>
+    </li>
+</ul>
+
+            <a href="professional-login.html" class="btn btn-profile-select secondary">
+                Acessar como Profissional
+            </a>
+        </div>
+
+    </div> </div>
+
+            <!-- SECÇÃO DE LOGIN DO PACIENTE (escondida por defeito) -->
+            <div id="patient-login-section" class="hidden">
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">INSIRA O SEU E-MAIL</label>
+                        <div class="input-wrapper">
+                            <img src="https://api.iconify.design/mdi:email-outline.svg?color=%23888888" alt="" class="input-icon" aria-hidden="true">
+                            <input type="email" id="login-email" placeholder="E-mail ex: (marcos@email.com)" required autocomplete="email">
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="login-password">INSIRA A SUA SENHA</label>
+                        <div class="input-wrapper">
+                             <img src="https://api.iconify.design/mdi:lock-outline.svg?color=%23888888" alt="" class="input-icon" aria-hidden="true">
+                            <input type="password" id="login-password" placeholder="Senha" required autocomplete="current-password">
+                        </div>
+                    </div>
+    
+                    <button type="submit" id="login-button" class="btn btn-primary">Entrar</button>
+                    <a href="#" id="forgot-password" class="form-link">Esqueceu a sua senha?</a>
+                    
+                    <div class="separator">
+                        <span>Ou entre com a sua conta Google</span>
+                    </div>
+    
+                    <button id="google-login-button" type="button" class="btn btn-google" aria-label="Continuar com o Google">
+                        <img src="https://api.iconify.design/logos:google-icon.svg" alt="" class="google-icon" aria-hidden="true">
+                        Continuar com o Google
+                    </button>
+                    
+                    <p class="form-switch">Novo por aqui? <a href="#" id="show-signup">Criar conta gratuita</a></p>
+                </form>
+                
+                <form id="signup-form" class="hidden">
+                     <div class="form-group">
+                        <label for="signup-name">O SEU NOME COMPLETO</label>
+                        <div class="input-wrapper">
+                             <img src="https://api.iconify.design/mdi:account-outline.svg?color=%23888888" alt="" class="input-icon" aria-hidden="true">
+                             <input type="text" id="signup-name" placeholder="Nome Completo" required autocomplete="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">O SEU MELHOR E-MAIL</label>
+                        <div class="input-wrapper">
+                             <img src="https://api.iconify.design/mdi:email-outline.svg?color=%23888888" alt="" class="input-icon" aria-hidden="true">
+                            <input type="email" id="signup-email" placeholder="E-mail" required autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">CRIE UMA SENHA</label>
+                        <div class="input-wrapper">
+                            <img src="https://api.iconify.design/mdi:lock-outline.svg?color=%23888888" alt="" class="input-icon" aria-hidden="true">
+                            <input type="password" id="signup-password" placeholder="Senha (mínimo 6 caracteres)" required autocomplete="new-password">
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label for="signup-password-confirm">CONFIRME A SUA SENHA</label>
+                        <div class="input-wrapper">
+                            <img src="https://api.iconify.design/mdi:lock-check-outline.svg?color=%23888888" alt="" class="input-icon" aria-hidden="true">
+                            <input type="password" id="signup-password-confirm" placeholder="Confirme a Senha" required autocomplete="new-password">
+                        </div>
+                    </div>
+                    <button type="submit" id="signup-button" class="btn btn-primary">Criar a minha conta</button>
+                    <p class="form-switch">Já tem uma conta? <a href="#" id="show-login">Entrar agora</a></p>
+                </form>
+                <p id="error-message" role="alert" aria-live="assertive"></p>
+            </div>
+        </main>
+        
+        <footer>
+            <p>
+                Ao entrar, você concorda com os nossos <a href="Arquivos-auxiliares/TERMOS DE USO .pdf" target="_blank">Termos de Uso</a> e <a href="Arquivos-auxiliares/POLÍTICA DE PRiVACIDADE .pdf" target="_blank">Política de Privacidade</a>.
+            </p>
+        </footer>
+    </div>
+
+    <div id="loading-overlay" class="hidden" role="status" aria-label="Carregando">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="main.js" type="module"></script>
+</body>
+</html>
+

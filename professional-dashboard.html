@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion.Health - Painel Profissional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="professional-dashboard.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <div id="loading-overlay" role="status" aria-label="A carregar painel">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="dashboard-wrapper" class="hidden">
+        <header id="global-header" class="header">
+            <div class="header-left">
+                <button id="hamburger-menu" class="hamburger-menu" aria-label="Abrir menu de navegação">
+                    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                </button>
+                <img src="img/Logo.Orion versao branco .png" alt="Logotipo Orion.Health" class="header-logo">
+            </div>
+            <nav class="header-nav">
+
+                <!--Notificações-->
+                <div class="notification-container" style="position: relative;">
+                    <button id="btn-notificacoes" class="icon-button" aria-label="Notificações">
+                        <i class="fa-solid fa-bell" aria-hidden="true"></i>
+                        <span id="notification-badge" class="notification-count hidden">0</span>
+                    </button>
+
+                    <div id="notification-dropdown" class="dropdown-menu hidden" style="width: 320px; right: -10px; left: auto;">
+                        <div class="dropdown-header">
+                            <span>Notificações</span>
+                            <button id="btn-marcar-lidas" style="background:none; border:none; color:var(--cor-primaria); font-size:0.8rem; cursor:pointer;">
+                                Limpar todas
+                            </button>
+                        </div>
+                        <div id="notification-list" class="notification-list" style="max-height: 300px; overflow-y: auto;">
+                            <div class="empty-state-mini" style="padding: 20px; text-align: center; color: #888;">
+                                <small>Nenhuma notificação nova.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="profile-menu">
+                    <button id="profile-menu-button" class="profile-menu-button" aria-haspopup="true" aria-expanded="false" aria-label="Abrir menu do perfil">
+                        <div class="photo-wrapper">
+                            <img id="prof-photo" src="https://placehold.co/40x40/FFFFFF/3197b1?text= " alt="Sua foto de perfil">
+                            <span id="status-indicator" class="status-indicator status-offline" aria-label="Status offline"></span>
+                        </div>
+                        <div class="prof-details">
+                            <span id="prof-name">Carregando...</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow" aria-hidden="true"></i>
+                    </button>
+                    <div id="profile-dropdown-menu" class="dropdown-menu hidden" role="menu" aria-orientation="vertical" aria-labelledby="profile-menu-button">
+                        <div class="dropdown-header" role="presentation">
+                            <span id="prof-name-dropdown">Carregando...</span>
+                            <div id="verified-badge-dropdown" class="verified-badge hidden"><i class="fa-solid fa-check-circle" aria-hidden="true"></i><span>Verificado</span></div>
+                        </div>
+                        <button id="toggle-online-status" class="dropdown-item" role="menuitem" tabindex="-1">
+                            <i class="fa-solid fa-circle fa-fw status-icon-dropdown" aria-hidden="true"></i>
+                            <span>Status: Offline</span>
+                        </button>
+                        <button id="edit-public-profile-dropdown" class="dropdown-item" role="menuitem" tabindex="-1">
+                            <i class="fa-solid fa-id-card fa-fw" aria-hidden="true"></i>
+                            <span>Editar Perfil Público</span>
+                        </button>
+                        <a href="profile.html" class="dropdown-item" role="menuitem" tabindex="-1">
+                            <i class="fa-solid fa-cog fa-fw" aria-hidden="true"></i>
+                            <span>Configurações da Conta</span>
+                        </a>
+                        <button id="logout-button-dropdown" class="dropdown-item dropdown-item-logout" role="menuitem" tabindex="-1">
+                            <i class="fa-solid fa-right-from-bracket fa-fw" aria-hidden="true"></i>
+                            <span>Sair</span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="main-container-content">
+            <aside id="sidebar-menu">
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-link active"><i class="fa-solid fa-table-columns fa-fw" aria-hidden="true"></i><span>Dashboard</span></a>
+                    <a href="agenda_calendario.html" class="nav-link"><i class="fa-solid fa-calendar-days fa-fw" aria-hidden="true"></i><span>Minha Agenda</span></a>
+                    <a href="meus-pacientes.html" class="nav-link"><i class="fa-solid fa-users fa-fw" aria-hidden="true"></i><span>Meus Pacientes</span></a>
+                    <a href="relatorio-profissional.html" class="nav-link"><i class="fa-solid fa-chart-pie fa-fw" aria-hidden="true"></i><span>Relatórios</span></a>
+                </nav>
+                <div class="sidebar-footer">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fa-solid fa-cog fa-fw" aria-hidden="true"></i>
+                        <span>Configurações</span>
+                    </a>
+                </div>
+            </aside>
+
+            <main id="main-content">
+                <div class="welcome-message">
+                    <h1 id="nome-profissional">Bem-vindo(a) de volta, <span id="prof-welcome-name">...</span>!</h1>
+                    <p>Aqui está um resumo da sua atividade na plataforma.</p>
+                </div>
+
+                <div class="card card-actions dashboard-grid">
+                    <div class="card-content">
+                        <i class="fa-solid fa-rocket card-icon" aria-hidden="true"></i> 
+                        <h2>Ações Rápidas</h2>
+                        <p>Acesse rapidamente às suas tarefas mais comuns.</p>
+                    </div>
+                    <div class="actions-buttons">
+                        <button id="btn-adicionar-disponibilidade" class="btn-card btn-primary-card">Adicionar Disponibilidade</button>
+                        <a href="agenda_calendario.html" id="btn-gerenciar-agenda" class="btn-card btn-secondary-card">Gerenciar Agenda</a>
+                    </div>
+                </div>
+
+                <section class="metric-section">
+                    <div class="metric-grid">
+                        <div class="card metric-card">
+                            <i class="fa-solid fa-users card-icon" aria-hidden="true"></i>
+                            <span class="metric-value" id="count-total-pacientes">--</span>
+                            <h2>Total de Pacientes</h2>
+                            <p class="metric-subtext" id="prof-register-date">Desde o seu registo</p>
+                            <button id="btn-ver-historico" class="btn-card">Ver Histórico</button>
+                        </div>
+
+                        <div class="card metric-card">
+                            <i class="fa-solid fa-heart-pulse card-icon" aria-hidden="true"></i>
+                            <span class="metric-value" id="count-em-acompanhamento">--</span>
+                            <h2>Em Acompanhamento</h2>
+                            <p class="metric-subtext">Ativos em monitorização</p>
+                            <button id="btn-ver-acompanhamento" class="btn-card">Ver Pacientes</button>
+                        </div>
+
+                        <div class="card metric-card">
+                            <i class="fa-solid fa-calendar-xmark card-icon" aria-hidden="true"></i>
+                            <span class="metric-value" id="count-canceladas">--</span>
+                            <h2>Consultas Canceladas</h2>
+                            <p class="metric-subtext">Nos últimos 30 dias</p>
+                            <button id="btn-analisar-motivos" class="btn-card">Analisar Motivos</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <i class="fa-solid fa-calendar-day card-icon" aria-hidden="true"></i>
+                            <h2>Consultas de Hoje</h2>
+                            <p>Acompanhe os seus atendimentos agendados.</p>
+                            
+                            <ul class="info-list" id="today-appointments-list">
+                                <p class="placeholder" style="font-size: 0.9rem; color: #888; padding: 10px 0;">A carregar...</p>
+                            </ul>
+
+                        </div>
+                        <button id="btn-ver-agenda" class="btn-card btn-secondary-card">Ver Detalhes da Agenda</button>
+                    </div>
+
+
+                    <div class="card"><div class="card-content"><i class="fa-solid fa-star card-icon" aria-hidden="true"></i><h2>Suas Avaliações</h2><p>Veja o que os seus pacientes estão a dizer.</p><div class="rating-summary"><span class="rating-score">4.8/5.0</span><div class="stars" aria-label="Avaliação de 4.8 de 5 estrelas"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i></div></div><p class="quote">"Atencioso e profissional."</p></div><button id="btn-ver-avaliacoes" class="btn-card btn-secondary-card">Ver Todas as Avaliações</button></div>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-title-badge"><i class="fa-solid fa-user-check card-icon" aria-hidden="true"></i><h2>Status do Perfil</h2><span id="verified-badge-card" class="verified-badge-card hidden">Verificado</span></div>
+                            <p>Garanta visibilidade total para os seus pacientes.</p>
+                            <label class="progress-label">Perfil Completo: <span id="profile-progress-text">70%</span></label>
+                            <div class="progress-bar-container"><div id="profile-progress-fill" class="progress-bar-fill" style="width: 70%;" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div></div>
+                        </div>
+                        <button id="btn-completar-perfil" class="btn-card btn-secondary-card">Completar Perfil Público</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="backdrop" class="backdrop hidden"></div>
+
+    <div id="follow-up-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="follow-up-title"><div class="modal-content"><div class="modal-header"><h2 id="follow-up-title"><i class="fa-solid fa-heart-pulse"></i> Pacientes em Acompanhamento</h2><button id="close-follow-up-modal-button" class="close-button" aria-label="Fechar">&times;</button></div><div class="modal-body-list" role="list"><a href="#" class="list-item" role="listitem">Ana P.</a><a href="#" class="list-item" role="listitem">Carlos V.</a><a href="#" class="list-item" role="listitem">Beatriz G.</a></div></div></div>
+    <div id="history-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="history-title"><div class="modal-content"><div class="modal-header"><h2 id="history-title"><i class="fa-solid fa-users"></i> Histórico de Pacientes</h2><button id="close-history-modal-button" class="close-button" aria-label="Fechar">&times;</button></div><div class="modal-body-list" role="list"><div class="list-item-static">Marcos Rocha <span class="list-item-detail">Entrada: 10/01/2024</span></div><div class="list-item-static">Juliana Paes <span class="list-item-detail">Entrada: 15/02/2024</span></div><div class="list-item-static">Ricardo Neves <span class="list-item-detail">Entrada: 21/03/2024</span></div></div></div></div>
+    <div id="cancellations-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="cancellations-title"><div class="modal-content"><div class="modal-header"><h2 id="cancellations-title"><i class="fa-solid fa-calendar-xmark"></i> Consultas Canceladas</h2><button id="close-cancellations-modal-button" class="close-button" aria-label="Fechar">&times;</button></div><div class="modal-body-list" role="list"><div class="list-item-static"><strong>Paciente:</strong> Lucas Martins <span class="list-item-detail">Motivo: Pessoal</span></div><div class="list-item-static"><strong>Paciente:</strong> Fernanda Lima <span class="list-item-detail">Motivo: Remarcou</span></div></div></div></div>
+    <div id="today-appointments-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="today-appointments-title">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="today-appointments-title">
+                <i class="fa-solid fa-calendar-day"></i> Consultas de Hoje
+            </h2>
+            <button id="close-today-appointments-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+        </div>
+        
+        <div class="modal-body-list" role="list" id="today-appointments-list-container">
+            <p class="placeholder" style="text-align: center; color: #888; padding: 20px;">A carregar...</p>
+        </div>
+    </div>
+</div>
+    <div id="reviews-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-content" style="background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; display: flex; flex-direction: column;">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <h2 style="margin: 0; font-size: 1.2rem; color: #333;">
+                <i class="fa-solid fa-star"></i> Todas as Avaliações
+            </h2>
+            <button id="close-reviews-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+        </div>
+        
+        <div id="lista-avaliacoes-completa" class="modal-body-list" role="list" style="overflow-y: auto; flex-grow: 1;">
+            <p style="text-align: center; color: #888; padding: 20px;">A carregar...</p>
+        </div>
+        
+        <div class="modal-footer" style="margin-top: 15px; text-align: right;">
+            <button class="btn-secondary" onclick="document.getElementById('reviews-modal').classList.add('hidden')">Fechar</button>
+        </div>
+    </div>
+</div>
+    <div id="availability-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="availability-modal-title"><div class="modal-content"><div class="modal-header"><h2 id="availability-modal-title"><i class="fa-solid fa-plus"></i> Adicionar Disponibilidade</h2><button id="close-availability-modal-button" class="close-button" aria-label="Fechar">&times;</button></div><p class="modal-subtitle">Crie um novo horário disponível para agendamento</p><form id="availability-form" novalidate><div class="form-group"><label for="event-date">Data *</label><div class="input-with-icon"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i><input type="date" id="event-date" required></div></div><div class="time-group"><div class="form-group"><label for="start-time">Horário Início *</label><div class="input-with-icon"><i class="fa-regular fa-clock" aria-hidden="true"></i><input type="time" id="start-time" required step="1800"></div></div><div class="form-group"><label for="end-time">Horário Fim *</label><div class="input-with-icon"><i class="fa-regular fa-clock" aria-hidden="true"></i><input type="time" id="end-time" required step="1800"></div></div></div><div class="form-group"><label for="consulta-valor">Valor da Consulta (R$) *</label><div class="input-with-currency"><span>R$</span><input type="number" id="consulta-valor" placeholder="0.00" step="0.01" min="0" required></div></div><div class="form-group toggle-group"><div><label for="toggle-online" class="toggle-label">Consulta Online</label><small>Esta consulta será realizada por videochamada</small></div><label class="switch"><input type="checkbox" id="toggle-online"><span class="slider round"></span></label></div><p id="availability-error" class="error-message hidden" role="alert"></p><div class="modal-actions"><button type="button" id="cancel-availability-button" class="btn-secondary">Cancelar</button><button type="submit" class="btn-primary">Adicionar</button></div></form></div></div>
+    <div id="public-profile-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="public-profile-title"><div class="modal-content"><div class="modal-header"><h2 id="public-profile-title"><i class="fa-solid fa-user-pen"></i> Editar Perfil Público</h2><button id="close-public-profile-modal-button" class="close-button" aria-label="Fechar">&times;</button></div><form id="public-profile-form" novalidate><hr class="form-divider" data-title="Identificação e Registro"><div class="form-group"><label for="public-profile-name">Nome Completo</label><input type="text" id="public-profile-name" readonly disabled></div><div class="form-group"><label for="public-profile-category">Categoria/Especialidade</label><input type="text" id="public-profile-category"></div><div class="form-group"><label for="public-profile-register">Número/Tipo de Registro</label><input type="text" id="public-profile-register"></div><div class="form-group"><label for="public-profile-experience">Anos de Experiência</label><input type="number" id="public-profile-experience" placeholder="Ex: 15" min="0"></div><hr class="form-divider" data-title="Sobre Mim"><div class="form-group"><label for="public-profile-bio">Descrição / Foco de Atuação</label><textarea id="public-profile-bio" rows="4" placeholder="Sou dermatologista há 15 anos..."></textarea></div><hr class="form-divider" data-title="Formação Acadêmica"><div class="form-group"><label for="public-profile-education">Liste suas formações (uma por linha)</label><textarea id="public-profile-education" rows="3" placeholder="Ex: Medicina - USP"></textarea></div><hr class="form-divider" data-title="Serviços e Atendimento"><div class="form-group"><label>Modalidades de Atendimento</label><div class="checkbox-group"><label><input type="checkbox" name="atendimento" value="Presencial"> Presencial</label><label><input type="checkbox" name="atendimento" value="Online"> Online</label><label><input type="checkbox" name="atendimento" value="Domiciliar"> Domiciliar</label></div></div><div class="form-group"><label for="public-profile-services">Serviços Específicos (um por linha)</label><textarea id="public-profile-services" rows="3" placeholder="Ex: Consulta geral, Teleconsulta"></textarea></div><div class="form-group"><label for="public-profile-duration">Duração Média da Consulta (em minutos)</label><input type="number" id="public-profile-duration" placeholder="Ex: 45" min="10"></div><hr class="form-divider" data-title="Endereço do Consultório"><div class="form-grid-address"><div class="form-group cep-field"><label for="public-profile-cep">CEP</label><input type="text" id="public-profile-cep" placeholder="00000-000"></div><div class="form-group street-field"><label for="public-profile-street">Rua</label><input type="text" id="public-profile-street" readonly></div><div class="form-group number-field"><label for="public-profile-number">Número</label><input type="text" id="public-profile-number"></div><div class="form-group city-field"><label for="public-profile-city">Cidade</label><input type="text" id="public-profile-city" readonly></div><div class="form-group state-field"><label for="public-profile-state">Estado</label><input type="text" id="public-profile-state" readonly></div></div><hr class="form-divider" data-title="Fotos do Consultório"><div class="form-group"><label for="public-profile-photos">Fotos (até 5)</label><input type="file" id="public-profile-photos" multiple accept="image/*"><div id="photo-preview-container"></div></div><hr class="form-divider" data-title="Convênios"><div class="form-group"><label for="public-profile-plans">Convênios Aceitos (um por linha)</label><textarea id="public-profile-plans" rows="3" placeholder="Ex: Unimed, Bradesco Saúde"></textarea></div><p id="public-profile-error" class="error-message hidden" role="alert"></p><div class="modal-actions"><button type="submit" class="btn-primary">Salvar Perfil</button></div></form></div></div>
+
+    <div id="avaliacoes-modal" class="modal-backdrop hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; display: none; align-items: center; justify-content: center;">
+    <div class="modal-content" style="background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; display: flex; flex-direction: column;">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <h2 style="margin: 0; font-size: 1.2rem; color: #333;">Minhas Avaliações</h2>
+            <button onclick="document.getElementById('avaliacoes-modal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+        
+        <div id="lista-avaliacoes-completa" style="overflow-y: auto; flex-grow: 1; padding-right: 5px;">
+            <p style="text-align: center; color: #888; padding: 20px;">A carregar avaliações...</p>
+        </div>
+        
+        <div class="modal-footer" style="margin-top: 15px; text-align: right;">
+            <button onclick="document.getElementById('avaliacoes-modal').style.display='none'" class="btn-secondary">Fechar</button>
+        </div>
+    </div>
+</div>
+
+
+
+    <script src="professional-dashboard.js" type="module"></script>
+</body>
+</html>

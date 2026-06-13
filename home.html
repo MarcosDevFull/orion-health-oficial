@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion.Health - Cuidado com empatia, tecnologia com propósito.</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="home.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    
+<header class="home-header">
+        <div class="container navbar">
+            
+            <div class="logo-wrapper" style="display: flex; align-items: center; gap: 15px;">
+                <a href="paciente-perfil.html" id="btn-voltar-painel" style="display: none; color: #41b8d5; font-size: 1.2rem;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                
+                <a href="home.html" class="nav-logo">
+                    <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health" class="logo-img" style="height: 40px;">
+                </a>
+            </div>
+
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#hero" class="nav-link">Início</a></li>
+                <li><a href="#funcionalidades" class="nav-link">Como Funciona</a></li>
+                <li><a href="#profissionais" class="nav-link">Para Profissionais</a></li>
+                <li><a href="#pacientes" class="nav-link">Para Pacientes</a></li>
+                <li><a href="#contato" class="nav-link">Contato</a></li>
+
+                <li class="mobile-auth-item" id="mobile-login-btn">
+                    <a href="index.html" class="btn-mobile-entrar">Entrar</a>
+                </li>
+                <li class="mobile-auth-item" id="mobile-register-btn">
+                    <a href="index.html" class="btn-mobile-criar">Criar conta</a>
+                </li>
+            </ul>
+
+            <div class="nav-actions desktop-only">
+                
+                <div id="guest-actions">
+                    <a href="index.html" class="nav-link-login" style="color: #41b8d5; font-weight: 600; text-decoration: none; margin-right: 15px;">Entrar</a>
+                    <a href="index.html" class="btn btn-primary" style="background-color: #41b8d5; color: white; padding: 8px 20px; border-radius: 6px; text-decoration: none; font-weight: 600;">Criar conta</a>
+                </div>
+
+                <div id="user-logged-area" style="display: none; align-items: center; gap: 10px;">
+                    <span id="user-greeting" style="font-weight: 600; color: #41b8d5;">Olá, Visitante</span>
+                    <a href="#" id="btn-logout" style="color: #e53e3e; font-size: 1.2rem;" title="Sair">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+            
+    
+    <!--Seção Hero-->
+
+    <main class="main-content">
+            <section id="inicio" class="hero-section">
+            <div class="container">
+                <div class="hero-text">
+                    <h1>
+                        <span id="typing-line-1"></span>
+                        <br>
+                        <span id="typing-line-2" class="text-blue"></span>
+                        <span class="blinking-cursor">|</span>
+                    </h1>
+                    <p>Conectamos pacientes, profissionais e laboratórios em um ecossistema digital que centraliza seu histórico de saúde e facilita cada etapa do cuidado.</p>
+                </div>
+
+                <div class="search-card">
+                    <h3>Encontre seu profissional da saúde </h3>
+                    <form id="hero-search-form" class="search-form">
+                        <div class="input-group">
+                            <i class="fa-solid fa-stethoscope"></i>
+                            <input type="text" id="especialidade" name="especialidade" placeholder="Especialidade">
+                        </div>
+                        <div class="input-group">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <input type="text" id="localizacao" name="localizacao" placeholder="Localização">
+                        </div>
+                        <div class="input-group">
+                            <i class="fa-solid fa-grip-vertical"></i>
+                            <select id="tipo-atendimento" name="tipo-atendimento" aria-label="Tipo de atendimento">
+                                <option value="" disabled selected>Tipo de atendimento</option>
+                                <option value="presencial">Presencial</option>
+                                <option value="online">Online (Teleconsulta)</option>
+                                <option value="domiciliar">Domiciliar</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-buscar">
+                            <i class="fa-solid fa-search"></i>
+                            Buscar
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="trust-signals">
+                    <span><i class="fa-solid fa-circle-check"></i> Dados seguros e criptografados</span>
+                    <span><i class="fa-solid fa-circle-check"></i> Profissionais validados</span>
+                    <span><i class="fa-solid fa-circle-check"></i> Resultados instantâneos</span>
+                </div>
+            </div>
+        </section>
+
+        <!--Seção como funciona-->
+
+        </section> <section id="como-funciona" class="how-it-works-section">
+            <div class="container">
+                <h2 class="section-title">Como Funciona</h2>
+                <p class="section-subtitle">Três passos simples para transformar a forma como você cuida da sua saúde</p>
+                
+                <div class="how-it-works-grid">
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <span class="step-number">1</span>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <h3>Busque</h3>
+                        <p>Encontre profissionais e laboratórios por especialidade, localização ou convênio</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <span class="step-number">2</span>
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <h3>Agende</h3>
+                        <p>Veja disponibilidade em tempo real e marque sua consulta ou exame com poucos cliques</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-icon-wrapper">
+                            <span class="step-number">3</span>
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+                        <h3>Acesse</h3>
+                        <p>Receba resultados, receitas e todo seu histórico de saúde em um só lugar, seguro e sempre disponível</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Secao porque escolher a orion health (sem link)-->
+
+        <section id="por-que-orion" class="why-orion-section">
+            <div class="container">
+                <h2 class="section-title">Por Que Escolher o Orion.Health?</h2>
+                <p class="section-subtitle">Uma plataforma completa desenvolvida para simplificar e humanizar o cuidado com a saúde</p>
+                
+                <div class="why-grid">
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <h3>Histórico Centralizado</h3>
+                        <p>Todos os seus exames, receitas e consultas em um único lugar, sempre acessível</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </div>
+                        <h3>Compartilhamento Seguro</h3>
+                        <p>Envie resultados e documentos via link seguro para qualquer profissional</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <h3>Disponibilidade Real</h3>
+                        <p>Veja horários disponíveis de profissionais em tempo real</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3>Dados Protegidos</h3>
+                        <p>Criptografia de ponta e conformidade total com LGPD e normas de saúde</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <h3>Lembretes Inteligentes</h3>
+                        <p>Nunca esqueça seus medicamentos ou consultas com notificações personalizadas</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <h3>Profissionais Validados</h3>
+                        <p>Todos os profissionais e laboratórios são verificados e validados</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Secao dados de pesquisa -->
+
+        <section id="pesquisa-resultados" class="research-results-section">
+            <div class="container">
+                <h2 class="section-title">Validado por Quem Importa: Você</h2>
+                <p class="section-subtitle">Pesquisa realizada com 39 usuários reais sobre suas necessidades em saúde digital</p>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="counter" data-target="100">0%</h3> 
+                        <p>dos usuários armazenariam receitas e exames no app</p>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h3 class="counter" data-target="85">0%</h3>
+                        <p>querem preencher anamnese uma vez e reutilizar</p>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <h3 class="counter" data-target="92">0%</h3>
+                        <p>interessados em receber lembretes de medicamentos</p>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <h3 class="counter" data-target="9.3" data-is-decimal="true">0.0/10</h3>
+                        <p>média de interesse na plataforma</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--PARA PROFISSIONAIS -->
+
+        <section id="para-profissionais" class="pro-section">
+            <div class="container">
+                <div class="pro-grid">
+                    
+                    <div class="pro-content">
+                        <h2 class="section-title-pro">Para Profissionais <span class="text-blue">de Saúde</span></h2>
+                        <p class="section-subtitle-pro">Simplifique sua rotina, otimize seu tempo e ofereça um atendimento ainda mais humanizado com ferramentas pensadas para você.</p>
+                        
+                        <ul class="pro-features-list">
+                            <li>
+                                <i class="fa-solid fa-calendar-alt"></i>
+                                <span>Gerencie sua agenda com disponibilidade em tempo real</span>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-users"></i>
+                                <span>Acesse histórico completo dos pacientes em segundos</span>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>Visualize estatísticas e insights sobre seu atendimento</span>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Validação profissional e presença na rede Orion</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="pro-actions">
+                            <a href="professional-login.html#signup" class="btn btn-primary">Cadastre-se Gratuitamente</a>
+                        </div>
+                    </div>
+                    
+                    <div class="pro-image-wrapper">
+                        <div class="mockup-ui">
+                            <div class="mockup-card-mini">
+                                <span class="mockup-icon-mini"></span>
+                                <div class="mockup-text-mini"></div>
+                            </div>
+                            <div class="mockup-card-main">
+                                <div class="mockup-header-main">
+                                    <span>Agenda Hoje</span>
+                                    <i class="fa-solid fa-calendar-alt"></i>
+                                </div>
+                                <div class="mockup-list-item">
+                                    <span class="mockup-icon-circle"></span>
+                                    <div class="mockup-text-line"></div>
+                                </div>
+                                <div class="mockup-list-item">
+                                    <span class="mockup-icon-circle"></span>
+                                    <div class="mockup-text-line"></div>
+                                </div>
+                                <div class="mockup-list-item">
+                                    <span class="mockup-icon-circle"></span>
+                                    <div class="mockup-text-line"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECAO PARA PACIENTES -->
+
+        <section id="para-pacientes" class="patient-section">
+            <div class="container">
+                <div class="patient-grid">
+                    
+                    <div class="patient-mockup-wrapper">
+                        <div class="mockup-ui-patient">
+                            <div class="mockup-card-main-patient">
+                                <div class="mockup-header-patient">
+                                    <span>Resultado de Exame</span>
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </div>
+                                <div class="mockup-body-patient">
+                                    <div class="mockup-status-line">
+                                        <span>Status</span>
+                                        <span class="status-badge-pronto">Pronto</span>
+                                    </div>
+                                    <div class="mockup-line-long"></div>
+                                    <div class="mockup-line-short"></div>
+                                </div>
+                            </div>
+                            <div class="mockup-bottom-cards">
+                                <div class="mockup-card-small">
+                                    <i class="fa-solid fa-file-lines"></i>
+                                    <span>Resultados</span>
+                                </div>
+                                <div class="mockup-card-small">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span>Lembretes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-content">
+                        <h2 class="section-title-pro">Para <span class="text-blue">Pacientes</span></h2>
+                        <p class="section-subtitle-pro">Tenha todo o seu histórico médico na palma da mão. Acesse resultados, gerencie suas consultas e cuide da sua saúde de forma prática e segura.</p>
+                        
+                        <ul class="pro-features-list">
+                            <li>
+                                <i class="fa-solid fa-file-invoice"></i>
+                                <span>Acesse seus resultados de exames e documentos médicos a qualquer momento</span>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-bell"></i>
+                                <span>Receba lembretes de medicações e agendamentos de consultas</span>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-heart-pulse"></i>
+                                <span>Mantenha seu histórico médico completo em um só lugar</span>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>Seus dados protegidos com total conformidade com LGPD</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="pro-actions">
+                            <a href="index.html#signup" class="btn btn-primary">Crie seu perfil de saúde Gratuito</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!--FOOTER-->
+
+        </main>
+        
+        <footer id="contato" class="site-footer"></footer>
+        <div class="container">
+            <div class="footer-grid">
+                
+                <div class="footer-column" id="footer-brand">
+                    <a href="home.html" class="footer-logo">Orion.Health</a>
+                    <p>Ecossistema digital de saúde centrado no paciente. Desenvolvido com empatia pela PluraSoft.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="#inicio">Início</a></li>
+                        <li><a href="#como-funciona">Como Funciona</a></li>
+                        <li><a href="#para-profissionais">Para Profissionais</a></li>
+                        <li><a href="#para-pacientes">Para Pacientes</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="Arquivos-auxiliares/TERMOS DE USO .pdf">Termos de Uso</a></li>
+                        <li><a href="Arquivos-auxiliares/POLÍTICA DE PRiVACIDADE .pdf">Política de Privacidade</a></li>
+                        <li><a href="Arquivos-auxiliares/POLÍTICA DE PRiVACIDADE .pdf">LGPD</a></li>
+                        <li><a href="Arquivos-auxiliares/TERMOS DE USO .pdf">Código de Conduta</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Contato</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <i class="fa-solid fa-envelope"></i>
+                            <a href="mailto:contato@orion.health">contato@orion.health</a>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+55 (11) 9999-9999</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>Poá - São Paulo, Brasil</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-copyright">
+                <p>© 2025 Orion.Health - PluraSoft. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+        
+        </main>
+
+    <script src="home.js" type="module"></script>
+</body>
+</html>

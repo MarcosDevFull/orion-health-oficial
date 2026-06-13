@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Busca - Orion.Health</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="agendamento.css"> 
+    <link rel="stylesheet" href="busca.css"> <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    
+    <header class="home-header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="home.html" class="nav-logo">
+                    <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="logo-img">
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="home.html#inicio" class="nav-link">Início</a></li>
+                    <li><a href="home.html#como-funciona" class="nav-link">Como Funciona</a></li>
+                    <li><a href="home.html#para-profissionais" class="nav-link">Para Profissionais</a></li>
+                    <li><a href="home.html#para-pacientes" class="nav-link">Para Pacientes</a></li>
+                    <li class="nav-actions-mobile">
+                        <a href="index.html" class="nav-link-login">Entrar</a>
+                        <a href="index.html" class="btn btn-primary">Criar Conta</a>
+                    </li>
+                </ul>
+                <div class="nav-actions">
+                    <a href="index.html" class="nav-link-login">Entrar</a>
+                    <a href="index.html" class="btn btn-primary">Criar Conta</a>
+                    <button class="nav-toggle" aria-label="Abrir menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="new-search-section">
+        
+        <div class="container page-title-container">
+            <a href="home.html" class="back-button-page" aria-label="Voltar para Home">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div class="title-content">
+                <h3 class="search-section-title" style="margin-bottom: 0; text-align: left;">Refine sua busca</h3>
+            </div>
+        </div>
+
+        <div class="container" style="padding-top: 24px;">
+            <form class="header-search-form" id="header-search-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-stethoscope"></i>
+                    <input type="text" id="header-search-input" placeholder="Especialidade..." required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <input type="text" id="header-search-loc" placeholder="Localização">
+                </div>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-grip-vertical"></i>
+                    <select id="header-search-tipo" aria-label="Tipo de atendimento">
+                        <option value="">Tipo (Todos)</option>
+                        <option value="online">Online</option>
+                        <option value="presencial">Presencial</option>
+                        <option value="domiciliar">Domiciliar</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-header-search">Buscar</button>
+            </form>
+        </div>
+    </section>
+    
+    <main class="main-content">
+        <div class="container">
+            
+            <section class="filter-summary">
+                <h1 id="filter-summary-title">Buscando por...</h1>
+                <div class="filter-tags" id="filter-tags-container">
+                </div>
+            </section>
+    
+            <section class="results-section">
+                <h2 id="results-count">Encontrando profissionais...</h2>
+                
+                <div class="results-grid" id="lista-resultados">
+                    <div class="loading-placeholder">
+                        <div class="spinner"></div>
+                        <p>A carregar resultados...</p>
+                    </div>
+                    </div>
+                
+                <div class="pagination-container" id="pagination-container">
+                    </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <footer id="contato" class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                 <div class="footer-column" id="footer-brand">
+                    <a href="home.html" class="footer-logo">Orion.Health</a>
+                    <p>Ecossistema digital de saúde centrado no paciente. Desenvolvido com empatia pela PluraSoft.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="home.html#inicio">Início</a></li>
+                        <li><a href="home.html#como-funciona">Como Funciona</a></li>
+                        <li><a href="home.html#para-profissionais">Para Profissionais</a></li>
+                        <li><a href="home.html#para-pacientes">Para Pacientes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="Arquivos-auxiliares/TERMOS DE USO .pdf">Termos de Uso</a></li>
+                        <li><a href="Arquivos-auxiliares/POLÍTICA DE PRiVACIDADE .pdf">Política de Privacidade</a></li>
+                        <li><a href="#">LGPD</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contato</h4>
+                    <ul class="contact-list">
+                        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:contato@orion.health">contato@orion.health</a></li>
+                        <li><i class="fa-solid fa-phone"></i> <span>+55 (11) 9999-9999</span></li>
+                        <li><i class="fa-solid fa-location-dot"></i> <span>Poá - São Paulo, Brasil</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2025 Orion.Health - PluraSoft. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="home.js" type="module"></script>
+    <script src="busca.js" type="module"></script>
+</body>
+</html>

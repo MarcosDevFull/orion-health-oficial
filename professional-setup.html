@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion.Health - Configuração Inicial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="professional-setup.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <div id="app">
+        <header class="header">
+            <h1>Configuração da Conta Profissional</h1>
+            <button id="logout-button-setup" class="logout-button">Sair</button>
+        </header>
+
+        <main class="container">
+            <div class="status-indicator-mobile status-pendente">Status: Pendente</div>
+            <p class="intro-text">Falta pouco para ativar a sua conta! Por favor, preencha as informações abaixo e envie os seus documentos para análise.</p>
+            
+            <form id="setup-form">
+                <h3>1. Dados de Serviço</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="categoria">Sua Categoria Profissional</label>
+                        <select id="categoria" required>
+                            <option value="">Selecione...</option>
+                            <option value="medico">Médico(a)</option>
+                            <option value="psicologo">Psicólogo(a)</option>
+                            <option value="nutricionista">Nutricionista</option>
+                            <option value="fisioterapeuta">Fisioterapeuta</option>
+                            <option value="enfermeiro">Enfermeiro(a)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="especialidade">Sua Principal Especialidade</label>
+                        <input type="text" id="especialidade" placeholder="Ex: Cardiologia, Terapia Cognitiva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="preco-online">Preço da Consulta Online (R$)</label>
+                        <input type="number" id="preco-online" placeholder="Ex: 150.00" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="preco-presencial">Preço da Consulta Presencial (R$)</label>
+                        <input type="number" id="preco-presencial" placeholder="Ex: 200.00" step="0.01" min="0">
+                    </div>
+                </div>
+
+                <h3 class="section-title">2. Envio de Documentos</h3>
+                <div class="form-group">
+                    <label for="doc-registro">Foto do seu Registo Profissional (CRM, CRP, etc.)</label>
+                    <input type="file" id="doc-registro" accept="image/jpeg, image/png, application/pdf" required>
+                    <small>Envie uma foto clara e legível do seu documento profissional.</small>
+                </div>
+                <div class="form-group">
+                    <label for="doc-identidade">Foto do seu Documento de Identidade (RG ou CNH)</label>
+                    <input type="file" id="doc-identidade" accept="image/jpeg, image/png, application/pdf" required>
+                    <small>Frente e verso, se necessário.</small>
+                </div>
+
+                <p id="form-success-message" class="success-message hidden"></p>
+                <p id="form-error-message" class="error-message hidden"></p>
+
+                <button type="submit" id="submit-button" class="btn-submit">Enviar para Análise</button>
+            </form>
+        </main>
+    </div>
+
+    <div id="loading-overlay" class="hidden" role="status" aria-label="A enviar dados">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="professional-setup.js" type="module"></script>
+</body>
+</html>
+

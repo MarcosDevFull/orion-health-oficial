@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion.Health - Minha Conta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+    <div id="loading-overlay" role="status" aria-label="A carregar perfil">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="profile-content" class="hidden">
+        
+        <header class="header">
+            <a href="#" id="back-button" class="back-button" aria-label="Voltar para a página anterior">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <h1>Minha Conta</h1>
+            <button id="logout-button" class="logout-button-header">Sair</button>
+        </header>
+
+        <main class="container">
+            <section id="user-card" class="user-card">
+                <img id="user-photo" src="https://placehold.co/80x80/E2E8F0/4A5568?text=Foto" alt="Foto do Perfil">
+                <div class="user-info">
+                    <h2 id="user-name">Carregando...</h2>
+                    <p id="user-email">carregando.email@...</p>
+                </div>
+            </section>
+
+            <div class="settings-sections">
+                <section class="card hidden" id="professional-service-card" aria-labelledby="heading-dados-servico">
+                    <div class="card-header">
+                        <h3 id="heading-dados-servico">Dados de Serviço</h3>
+                    </div>
+                    <p>Edite as suas informações profissionais, como especialidade e preços, que serão visíveis para os pacientes.</p>
+                    <div class="card-actions">
+                        <button id="edit-service-button" class="btn-primary">Editar Dados de Serviço</button>
+                    </div>
+                </section>
+
+                <section class="card" aria-labelledby="heading-dados-pessoais">
+                    <div class="card-header">
+                        <h3 id="heading-dados-pessoais">Dados Pessoais</h3>
+                    </div>
+                    <p>Aqui você poderá visualizar e atualizar os seus dados pessoais, foto de perfil e configurar como deseja receber as nossas notificações.</p>
+                    <div class="card-actions">
+                        <button id="edit-profile-button" class="btn-primary">Editar Dados Pessoais</button>
+                    </div>
+                </section>
+                
+                <section class="card" aria-labelledby="heading-controlo-acesso">
+                    <h3 id="heading-controlo-acesso">Controlo de Acesso e Senha</h3>
+                    <p>Mantenha a sua conta segura alterando a sua senha regularmente.</p>
+                    <div class="card-actions">
+                        <button id="show-password-policy-button" class="btn-secondary">Ver Política de Senha</button>
+                        <button id="change-password-button" class="btn-primary">Alterar Senha</button>
+                    </div>
+                </section>
+
+                <section class="card" aria-labelledby="heading-ajuda-suporte">
+                    <h3 id="heading-ajuda-suporte">Ajuda e Suporte</h3>
+                    <p>Precisa de ajuda? Encontre respostas, fale conosco ou nos diga o que achou da aplicação.</p>
+                    <div class="card-actions-grid">
+                        <button id="contact-button" class="btn-secondary">Fale Conosco</button>
+                        <button id="faq-button" class="btn-secondary">Perguntas Frequentes</button>
+                        <button id="about-button" class="btn-secondary">Sobre</button>
+                        <button id="rating-button" class="btn-primary">Avalie o App</button>
+                    </div>
+                </section>
+                
+                <section class="card" aria-labelledby="heading-lgpd">
+                    <h3 id="heading-lgpd">Conformidade e LGPD</h3>
+                    <p>Entenda como tratamos seus dados e quais são os seus direitos.</p>
+                    <div class="card-actions-grid">
+                        <button id="privacy-policy-button" class="btn-secondary">Política de Privacidade</button>
+                        <button id="terms-of-use-button" class="btn-secondary">Termos de Uso</button>
+                        <button id="lgpd-rights-button" class="btn-secondary">Seus Direitos (LGPD)</button>
+                    </div>
+                </section>
+
+                <section class="card card-danger" aria-labelledby="heading-excluir-conta">
+                    <h3 id="heading-excluir-conta">Excluir Conta</h3>
+                    <p>Esta é uma ação irreversível. Ao excluir sua conta, todos os seus dados serão permanentemente removidos.</p>
+                    <button id="show-delete-modal-button" class="btn-danger">Excluir minha conta</button>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAIS -->
+
+    <div id="edit-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="edit-modal-title">Editar Dados Pessoais</h2>
+                <button id="close-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <form id="edit-profile-form">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF <span id="cpf-status" class="cpf-status"></span></label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+                </div>
+                <div class="form-group">
+                    <label for="whatsapp">WhatsApp</label>
+                    <input type="tel" id="whatsapp" placeholder="(11) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">Data de Nascimento</label>
+                    <input type="date" id="birthdate">
+                </div>
+                <div class="form-group">
+                    <label>Possui convênio médico?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="has-convenio" value="sim"> Sim</label>
+                        <label><input type="radio" name="has-convenio" value="nao" checked> Não</label>
+                    </div>
+                </div>
+                <div id="convenio-details-section" class="form-group hidden">
+                    <label for="convenio-list">Qual o seu convênio?</label>
+                    <select id="convenio-list">
+                        <option value="">Selecione...</option>
+                        <option value="Amil">Amil</option>
+                        <option value="Bradesco Saúde">Bradesco Saúde</option>
+                        <option value="Golden Cross">Golden Cross</option>
+                        <option value="Hapvida">Hapvida</option>
+                        <option value="NotreDame Intermédica">NotreDame Intermédica</option>
+                        <option value="Porto Seguro Saúde">Porto Seguro Saúde</option>
+                        <option value="Prevent Senior">Prevent Senior</option>
+                        <option value="SulAmérica Saúde">SulAmérica Saúde</option>
+                        <option value="Unimed">Unimed</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+                <hr class="form-divider">
+                <div class="form-group">
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" placeholder="00000-000">
+                </div>
+                <div class="form-group">
+                    <label for="rua">Rua</label>
+                    <input type="text" id="rua" placeholder="Rua, Avenida..." readonly>
+                </div>
+                <div class="form-group">
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" placeholder="Ex: 123">
+                </div>
+                <div class="form-group">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" id="complemento" placeholder="Ex: Casa 2, Apto 3B">
+                </div>
+                <div class="form-group">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" placeholder="Cidade" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <input type="text" id="estado" placeholder="Estado" readonly>
+                </div>
+                <hr class="form-divider">
+                <div class="form-group">
+                    <label>Receber notificações por:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="notificacao_forma" value="app"> Pelo App</label>
+                        <label><input type="checkbox" name="notificacao_forma" value="email"> E-mail</label>
+                        <label><input type="checkbox" name="notificacao_forma" value="whatsapp"> WhatsApp</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Frequência das notificações:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="notificacao_frequencia" value="evento"> Por Evento</label>
+                        <label><input type="radio" name="notificacao_frequencia" value="diario"> Diário</label>
+                        <label><input type="radio" name="notificacao_frequencia" value="programado"> Programado</label>
+                    </div>
+                </div>
+                <div id="notification-schedule-section" class="schedule-section hidden">
+                    <label class="schedule-title">Agendar horários:</label>
+                    <div class="schedule-day">
+                        <label><input type="checkbox" data-day="segunda"> Segunda</label>
+                        <input type="time" id="time-segunda" disabled>
+                    </div>
+                    <div class="schedule-day">
+                        <label><input type="checkbox" data-day="terca"> Terça</label>
+                        <input type="time" id="time-terca" disabled>
+                    </div>
+                    <div class="schedule-day">
+                        <label><input type="checkbox" data-day="quarta"> Quarta</label>
+                        <input type="time" id="time-quarta" disabled>
+                    </div>
+                    <div class="schedule-day">
+                        <label><input type="checkbox" data-day="quinta"> Quinta</label>
+                        <input type="time" id="time-quinta" disabled>
+                    </div>
+                    <div class="schedule-day">
+                        <label><input type="checkbox" data-day="sexta"> Sexta</label>
+                        <input type="time" id="time-sexta" disabled>
+                    </div>
+                </div>
+                <hr class="form-divider">
+                <div class="form-group">
+                    <label>Cor de Fundo do Perfil</label>
+                    <div class="color-palette" id="bg-color-palette">
+                        <span class="color-swatch" data-color="#ffffff" title="Padrão (Branco)"></span> 
+                        <span class="color-swatch" data-color="#41b8d5" title="Azul Orion"></span>
+                        <span class="color-swatch" data-color="#a0d9e5" title="Azul Claro"></span>
+                        <span class="color-swatch" data-color="#e11d48" title="Rosa Escuro"></span>
+                        <span class="color-swatch" data-color="#f8b4b4" title="Rosa Claro"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Cor do Texto do Perfil</label>
+                    <div class="color-palette" id="text-color-palette">
+                        <span class="color-swatch text-swatch" data-color="#ffffff" title="Texto Claro">T</span>
+                        <span class="color-swatch text-swatch" data-color="#1a202c" title="Texto Escuro">T</span>
+                    </div>
+                </div>
+                <hr class="form-divider">
+                <div class="form-group">
+                    <label for="photo-upload">Nova Foto de Perfil</label>
+                    <input type="file" id="photo-upload" accept="image/*">
+                </div>
+                <p id="modal-success-message" class="success-message hidden"></p>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-save">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="service-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="service-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="service-modal-title">Editar Dados de Serviço</h2>
+                <button id="close-service-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <form id="edit-service-form">
+                <div class="form-group">
+                    <label for="categoria">Sua Categoria Profissional</label>
+                    <select id="categoria" required>
+                        <option value="">Selecione...</option>
+                        <option value="medico">Médico(a)</option>
+                        <option value="psicologo">Psicólogo(a)</option>
+                        <option value="nutricionista">Nutricionista</option>
+                        <option value="fisioterapeuta">Fisioterapeuta</option>
+                        <option value="enfermeiro">Enfermeiro(a)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="especialidade">Sua Principal Especialidade</label>
+                    <input type="text" id="especialidade" placeholder="Ex: Cardiologia, Terapia Cognitiva" required>
+                </div>
+                 <div class="form-group">
+                    <label for="registro-profissional">Número do Registo Profissional</label>
+                    <input type="text" id="registro-profissional" placeholder="Ex: CRM 123456/SP" required>
+                </div>
+                <hr class="form-divider">
+                <div class="form-group">
+                    <label for="preco-online">Preço da Consulta Online (R$)</label>
+                    <input type="number" id="preco-online" placeholder="Ex: 150.00" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="preco-presencial">Preço da Consulta Presencial (R$)</label>
+                    <input type="number" id="preco-presencial" placeholder="Ex: 200.00" step="0.01" min="0">
+                </div>
+                <div class="input-group">
+                    <label for="preco-domiciliar">Preço Consulta Domiciliar (R$)</label>
+                    <input type="number" id="preco-domiciliar" value="270.00" min="0" step="0.01">
+                </div>
+                
+                <p id="service-success-message" class="success-message hidden"></p>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn-save">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="policy-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="policy-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="policy-modal-title">Política de Senha</h2>
+                <button id="close-policy-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="policy-content">
+                <p>Para garantir a segurança da sua conta, sua senha deve seguir as seguintes regras:</p>
+                <ul>
+                    <li>Deve ter no mínimo <strong>8 caracteres</strong>.</li>
+                    <li>Recomendamos o uso de uma combinação de letras maiúsculas, minúsculas, números e símbolos (ex: !@#$%).</li>
+                    <li>Não utilize informações pessoais fáceis de adivinhar.</li>
+                    <li>Altere sua senha regularmente.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="password-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="password-modal-title">
+       <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="password-modal-title">Alterar Senha</h2>
+                <button id="close-password-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="current-password">Senha Atual</label>
+                    <input type="password" id="current-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Nova Senha</label>
+                    <input type="password" id="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-new-password">Confirmar Nova Senha</label>
+                    <input type="password" id="confirm-new-password" required>
+                </div>
+                <p id="password-error-message" class="error-message hidden" role="alert"></p>
+                <p id="password-success-message" class="success-message hidden" role="alert"></p>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-save">Salvar Nova Senha</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="contact-modal-title">Fale Conosco</h2>
+                <button id="close-contact-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="contact-content">
+                <p>Entre em contato conosco através dos seguintes canais:</p>
+                <ul>
+                    <li><strong>E-mail:</strong> <a href="mailto:suporte@orion.health">suporte@orion.health</a></li>
+                    <li><strong>WhatsApp:</strong> <a href="https://wa.me/5511999998888" target="_blank">(11) 99999-8888</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="faq-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="faq-modal-title">
+       <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="faq-modal-title">Perguntas Frequentes</h2>
+                <button id="close-faq-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="faq-content">
+                <details>
+                    <summary>Como altero minha senha?</summary>
+                    <p>Na secção "Controle de Acesso e Senha", clique no botão "Alterar Senha" e siga as instruções.</p>
+                </details>
+                <details>
+                    <summary>Meus dados estão seguros?</summary>
+                    <p>Sim. O Orion.Health segue as diretrizes da LGPD e utiliza a infraestrutura segura do Google para proteger todos os seus dados.</p>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="about-modal-title">Sobre o Orion.Health</h2>
+                <button id="close-about-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="about-content">
+                <ul>
+                    <li><strong>Nome da Aplicação:</strong> Orion.Health</li>
+                    <li><strong>Versão:</strong> 1.0.0 (MVP)</li>
+                    <li><strong>Fabricante:</strong> PluraSoft</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="rating-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="rating-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="rating-modal-title">Avalie nossa Aplicação</h2>
+                <button id="close-rating-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="rating-content">
+                <p>Sua opinião é muito importante para nós!</p>
+                <div class="star-rating" id="star-rating" aria-label="Sistema de avaliação por estrelas">
+                    <span data-value="1" role="button" aria-label="Avaliar com 1 estrela">&#9733;</span>
+                    <span data-value="2" role="button" aria-label="Avaliar com 2 estrelas">&#9733;</span>
+                    <span data-value="3" role="button" aria-label="Avaliar com 3 estrelas">&#9733;</span>
+                    <span data-value="4" role="button" aria-label="Avaliar com 4 estrelas">&#9733;</span>
+                    <span data-value="5" role="button" aria-label="Avaliar com 5 estrelas">&#9733;</span>
+                </div>
+                <p id="rating-success-message" class="success-message hidden" role="alert"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacy-policy-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="privacy-modal-title">Política de Privacidade</h2>
+                <button id="close-privacy-policy-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="policy-content">
+                <p><strong>Última atualização:</strong> 5 de Outubro de 2025</p>
+                <p>O Orion.Health, desenvolvido pela PluraSoft, valoriza e respeita a sua privacidade. Esta política detalha como coletamos, usamos, armazenamos e protegemos as suas informações pessoais, em total conformidade com a Lei Geral de Proteção de Dados (LGPD) do Brasil.</p>
+                <h4>1. Que dados coletamos?</h4>
+                <p>Coletamos informações que você nos fornece diretamente, como dados de cadastro (nome, e-mail, CPF), informações de contato (WhatsApp) e dados de saúde que você insere na plataforma (histórico, exames, etc.).</p>
+                <h4>2. Como usamos os seus dados?</h4>
+                <p>Os seus dados são essenciais para lhe fornecer um serviço de cuidado contínuo e personalizado. Usamo-los para gerir a sua conta, permitir a comunicação com profissionais de saúde (com a sua permissão) e melhorar a nossa plataforma.</p>
+                <h4>3. Com quem compartilhamos os seus dados?</h4>
+                <p>A sua privacidade é a nossa prioridade. Dados de saúde identificáveis nunca são compartilhados sem a sua autorização explícita. Podemos usar dados agregados e anonimizados para fins de pesquisa, sempre respeitando a sua privacidade.</p>
+            </div>
+            <div class="modal-actions"><button id="agree-privacy-button" class="btn-primary">Li e Concordo</button></div>
+        </div>
+    </div>
+
+    <div id="terms-of-use-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="terms-modal-title">Termos de Uso</h2>
+                <button id="close-terms-of-use-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="policy-content">
+                <h4>1. Aceitação dos Termos</h4>
+                <p>Ao aceder e usar a plataforma Orion.Health, você concorda em cumprir estes Termos de Uso e todas as leis e regulamentos aplicáveis.</p>
+                <h4>2. Natureza do Serviço</h4>
+                <p>O Orion.Health é uma ferramenta de apoio à gestão da saúde. Ele não substitui o diagnóstico, aconselhamento ou tratamento médico profissional. Em caso de emergência, procure imediatamente um serviço médico.</p>
+                <h4>3. Responsabilidades do Utilizador</h4>
+                <p>Você é o único responsável pela veracidade e exatidão das informações que insere na plataforma, bem como pela confidencialidade da sua senha.</p>
+            </div>
+            <div class="modal-actions"><button id="agree-terms-button" class="btn-primary">Li e Concordo</button></div>
+        </div>
+    </div>
+
+    <div id="lgpd-rights-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="lgpd-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="lgpd-modal-title">Seus Direitos (LGPD)</h2>
+                <button id="close-lgpd-rights-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="policy-content">
+                <p>A Lei Geral de Proteção de Dados (LGPD) garante a você, titular dos dados, uma série de direitos. No Orion.Health, nós respeitamos e garantimos cada um deles:</p>
+                <ul>
+                    <li><strong>Direito de Acesso:</strong> Você pode solicitar, a qualquer momento, uma cópia de todos os seus dados que temos armazenados.</li>
+                    <li><strong>Direito de Correção:</strong> Você pode corrigir ou atualizar os seus dados pessoais diretamente na secção "Editar Perfil".</li>
+                    <li><strong>Direito de Eliminação:</strong> Você pode solicitar a exclusão completa e permanente dos seus dados da nossa plataforma através da opção "Excluir Conta".</li>
+                    <li><strong>Direito à Portabilidade:</strong> Você pode solicitar que os seus dados sejam exportados num formato legível para serem transferidos para outro serviço.</li>
+                </ul>
+                <p>Para exercer estes ou outros direitos, por favor, entre em contato conosco através dos nossos canais na secção "Fale Conosco".</p>
+            </div>
+            <div class="modal-actions"><button id="agree-lgpd-button" class="btn-primary">Li e Concordo</button></div>
+        </div>
+    </div>
+    
+    <div id="delete-account-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+        <div class="modal-content">
+            <div id="delete-step-1">
+                <div class="modal-header">
+                    <h2 id="delete-modal-title">Tem a certeza que quer sair?</h2>
+                    <button id="close-delete-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+                </div>
+                <div class="policy-content">
+                    <p>Estamos tristes por vê-lo partir. Manter a sua conta no Orion.Health permite-lhe ter o controlo total do seu histórico de saúde num único lugar seguro.</p>
+                    <ul>
+                        <li><i class="fa-solid fa-check-circle" style="color: var(--status-online);"></i> <strong>Continuidade do Cuidado:</strong> Não perca o seu histórico consolidado de consultas, exames e receitas.</li>
+                        <li><i class="fa-solid fa-check-circle" style="color: var(--status-online);"></i> <strong>Facilidade de Acesso:</strong> Mantenha o acesso rápido aos seus dados de saúde em qualquer lugar.</li>
+                        <li><i class="fa-solid fa-check-circle" style="color: var(--status-online);"></i> <strong>Comunicação Simplificada:</strong> Preserve o canal de comunicação direto com os seus profissionais.</li>
+                    </ul>
+                    <p>Excluir a sua conta é uma ação permanente. Se ainda assim desejar continuar, precisaremos de confirmar a sua identidade.</p>
+                </div>
+                <div class="modal-actions">
+                    <button id="cancel-delete-button" class="btn-secondary">Quero Ficar</button>
+                    <button id="continue-to-delete-button" class="btn-danger">Sim, quero excluir</button>
+                </div>
+            </div>
+            <div id="delete-step-2" class="hidden">
+                <div class="modal-header">
+                    <h2>Confirmação de Segurança</h2>
+                    <button id="close-delete-modal-button-2" class="close-button" aria-label="Fechar">&times;</button>
+                </div>
+                <form id="delete-account-form">
+                    <p>Para sua segurança, insira sua senha para confirmar a exclusão.</p>
+                    <div class="form-group">
+                        <label for="delete-password">Sua Senha</label>
+                        <input type="password" id="delete-password" required>
+                    </div>
+                    <p id="delete-error-message" class="error-message hidden" role="alert"></p>
+                    <div class="modal-actions">
+                        <button type="button" id="back-to-step-1-button" class="btn-secondary">Voltar</button>
+                        <button type="submit" class="btn-danger">Excluir Permanentemente</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="profile.js" type="module"></script>
+</body>
+</html>
+

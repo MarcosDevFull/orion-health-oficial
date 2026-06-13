@@ -1,0 +1,3695 @@
+/* ==========================================================
+   CSS DEDICADO PARA: perfil-de-saude.html
+   Baseado no teu design e nas tuas cores 
+   ========================================================== */
+
+/* --- 1. Variáveis e Reset Básico --- */
+:root {
+    --cor-primaria: #41b8d5;
+    --cor-secundaria: #3197b1;
+    --cor-fundo: #f8f9fa;
+    --cor-elemento: #ffffff;
+    --texto-principal: #1a202c;
+    --texto-secundario: #4a5568;
+    --texto-suave: #8a94a6;
+    --borda-suave: #e2e8f0;
+    --sombra-subtil: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --cor-status-ativa: #ebf4ff; /* Azul claro */
+    --texto-status-ativa: #4299e1; /* Azul */
+    --cor-status-arquivada: #e2e8f0; /* Cinza */
+    --texto-status-arquivada: var(--texto-suave);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--texto-principal);
+    padding-bottom: 80px; /* (Espaço para futuro footer mobile) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.hidden { display: none !important; }
+
+/* --- 2. Overlay de Carregamento (O que vês agora) --- */
+#loading-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--cor-elemento);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    transition: opacity 0.3s ease; /* Transição suave */
+}
+.spinner {
+    border: 5px solid var(--borda-suave);
+    border-top: 5px solid var(--cor-primaria);
+    border-radius: 50%;
+    width: 50px; height: 50px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- 3. Cabeçalho (Header) --- */
+.patient-header {
+    background-color: var(--cor-primaria); /* O TEU FUNDO AZUL! */
+    color: white; /* Texto branco */
+    padding: 16px;
+    border-bottom: 1px solid var(--cor-secundaria);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* <<< MUDANÇA AQUI */
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box; 
+    min-height: 80px; /* Altura mínima */
+}
+
+/* Botão de Voltar (Visível só no mobile) */
+.back-button {
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+/* Info Central: Foto, Nome, ID */
+.patient-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden; 
+    flex-grow: 1; /* Faz este bloco ocupar o espaço do meio */
+}
+.patient-photo {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.5); /* Borda branca na foto */
+}
+.patient-details {
+    display: none; /* Escondido no mobile, aparece no desktop */
+}
+.patient-details h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+    white-space: nowrap; 
+}
+.patient-details p {
+    color: white;
+    opacity: 0.8;
+    margin: 2px 0 0 0;
+    font-size: 0.85rem;
+    white-space: nowrap; 
+}
+/* Estilo para "Unimed SP | ID: ..." */
+#patient-meta-info span:not(:last-child)::after {
+    content: "|";
+    margin: 0 8px;
+    opacity: 0.5;
+}
+
+/* Botões de Ação (Direita) */
+.header-actions {
+    display: none; 
+    flex-shrink: 0;
+    gap: 12px;
+    margin-left: auto; /* <<< ADICIONA ESTA LINHA */
+}
+/* Botão "Registro Diário" (Botão Secundário Branco/Transparente) */
+.btn-header-action {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+.btn-header-action:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+/* Botão "Agendar Consulta" (Botão Primário Branco Sólido) */
+.btn-header-action.primary {
+    background: white;
+    color: var(--cor-secundaria); /* Texto azul */
+    border-color: white;
+}
+.btn-header-action.primary:hover {
+    background: #f0f9ff;
+}
+/* Botão de Notificação (Sino) */
+.btn-header-action-icon {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
+}
+
+/* Menu Hamburger (Aparece só no mobile) */
+.hamburger-menu {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-left: auto; /* <<< ESTA LINHA JÁ DEVE EXISTIR (confirma) */
+    display: flex; 
+}
+
+/* --- 4. Menu Mobile Lateral (para as abas) --- */
+.mobile-nav {
+    position: fixed; top: 0; left: 0; width: 280px;
+    height: 100%;
+    background-color: var(--cor-elemento);
+    z-index: 1100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex; flex-direction: column;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+.mobile-nav.open { transform: translateX(0); }
+.mobile-nav-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px; border-bottom: 1px solid var(--borda-suave);
+}
+.mobile-nav-header h3 { margin: 0; font-size: 1.2rem; }
+.close-button { background: none; border: none; font-size: 2rem; color: var(--texto-suave); cursor: pointer; }
+.mobile-nav-list { flex-grow: 1; overflow-y: auto; }
+.mobile-nav-link {
+    display: flex; align-items: center; gap: 16px; padding: 16px;
+    text-decoration: none; color: var(--texto-secundario); font-weight: 500;
+    border-left: 4px solid transparent;
+}
+.mobile-nav-link.active {
+    background-color: #f0f8ff; /* Azul muito claro */
+    color: var(--cor-primaria);
+    border-left-color: var(--cor-primaria);
+}
+
+.backdrop {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 990; /* <-- CORREÇÃO AQUI (tem de ser < 1000) */
+}
+
+/* --- 5. Barra de Abas (Desktop) --- */
+.tab-nav-container {
+    background-color: var(--cor-elemento);
+    border-bottom: 1px solid var(--borda-suave);
+    position: sticky;
+    top: 66px; /* Altura do Header */
+    z-index: 99;
+}
+.tab-nav {
+    display: none; /* Escondido no mobile */
+    max-width: 1200px; /* Limita a largura das abas */
+    margin: 0 auto;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+.tab-btn {
+    padding: 16px 20px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--texto-secundario);
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+.tab-btn.active {
+    color: var(--cor-primaria);
+    font-weight: 600;
+    border-bottom-color: var(--cor-primaria);
+}
+.tab-btn i { font-size: 1rem; }
+
+/* --- 6. Conteúdo Principal (Container e Painéis) --- */
+.container {
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.tab-content-container {
+    margin-top: 24px;
+}
+.tab-panel.hidden {
+    display: none;
+}
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+}
+.panel-header h2 {
+    font-size: 1.75rem;
+    margin: 0;
+    font-weight: 700;
+}
+.filter-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--texto-secundario);
+}
+.panel-toolbar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.panel-toolbar input[type="search"] {
+    flex-grow: 1; padding: 10px 14px; height: 40px;
+    border: 1px solid var(--borda-suave); border-radius: 8px;
+    font-size: 0.9rem;
+}
+.filter-group { display: flex; }
+.filter-btn-small {
+    padding: 8px 16px; border: 1px solid var(--borda-suave); height: 40px;
+    background-color: var(--cor-elemento); color: var(--texto-secundario);
+    cursor: pointer; font-size: 0.85rem;
+}
+.filter-btn-small:first-child { border-radius: 8px 0 0 8px; }
+.filter-btn-small:last-child { border-radius: 0 8px 8px 0; border-left: none; }
+.filter-btn-small.active {
+    background-color: var(--cor-secundaria);
+    color: white;
+    border-color: var(--cor-secundaria);
+}
+.card-list, .card-list-container {
+    display: grid;
+    gap: 16px;
+}
+.placeholder {
+    color: var(--texto-suave); font-style: italic; text-align: center;
+    padding: 40px 20px; background-color: var(--cor-elemento);
+    border: 1px dashed var(--borda-suave); border-radius: 12px;
+}
+
+/* --- 7. Estilos dos Cards (Ex: Receitas) --- */
+/* (Este é um estilo novo para esta página, como no teu design) */
+.recipe-card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--sombra-subtil);
+}
+.recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+.recipe-header h3 {
+    margin: 0; font-size: 1.2rem;
+    line-height: 1.4;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.recipe-header h3 i {
+    color: var(--cor-primaria);
+}
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+.status-ativa {
+    background-color: var(--cor-status-ativa);
+    color: var(--texto-status-ativa);
+}
+.status-arquivada {
+    background-color: var(--cor-status-arquivada);
+    color: var(--texto-status-arquivada);
+}
+.recipe-doctor {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    margin-top: 4px;
+    margin-bottom: 16px;
+}
+.recipe-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+.recipe-details span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--texto-secundario);
+}
+.recipe-details i {
+    color: var(--cor-primaria);
+    width: 16px;
+    text-align: center;
+}
+.recipe-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin-top: 16px;
+    border-top: 1px solid var(--borda-suave);
+    padding-top: 16px;
+}
+.card-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.pdf-link, .btn-pdf {
+    color: var(--cor-secundaria);
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    background: none; border: none; padding: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+}
+.pdf-link:hover, .btn-pdf:hover {
+    text-decoration: underline;
+}
+
+/* --- 8. Botões (Reutilizados do `prontuario-paciente.js`) --- */
+.btn-primary, .btn-secondary, .action-btn {
+    display: inline-flex; justify-content: center; align-items: center;
+    gap: 8px; border-radius: 8px; font-weight: 600; cursor: pointer;
+    text-decoration: none; transition: background-color 0.2s ease;
+    border: 1px solid transparent; padding: 10px 16px;
+    box-sizing: border-box;
+}
+.btn-primary { background-color: var(--cor-primaria); color: white; }
+.btn-primary:hover { background-color: var(--cor-secundaria); }
+.action-btn {
+    background: transparent; color: var(--texto-secundario);
+    border-color: var(--borda-suave);
+}
+.action-btn:hover { background-color: rgba(65, 184, 213, 0.1); }
+.mobile-only { display: flex; } /* Mostra .hamburger-menu */
+.desktop-only { display: none; } /* Esconde .header-actions */
+
+
+/* ========================================================== */
+/* INÍCIO DA TAREFA 3 (CSS - Media Query Desktop) */
+/* (Substitua a tua media query @media (min-width: 768px) por esta) */
+/* ========================================================== */
+
+/* --- 9. Responsividade (Desktop) --- */
+@media (min-width: 768px) {
+    .container { padding: 24px; }
+    .patient-header { 
+        padding: 16px 24px; /* Padding desktop */
+        justify-content: space-between; /* Garante espaço entre os 3 blocos */
+        min-height: 90px;
+    }
+    
+    /* Otimização do layout do Header para Desktop */
+    /* Otimização do layout do Header para Desktop */
+    .patient-header-info {
+        flex-grow: 1; /* Garante que ocupa o espaço */
+    }
+    .patient-details {
+        display: block; /* Mostra "Convênio | ID" */
+    }
+    
+   
+    
+    .hamburger-menu { 
+        display: none; /* Esconde o hamburger */
+    }
+    .header-actions { 
+        display: flex; /* Mostra os botões de ação */
+    }
+    .desktop-only { display: flex; } /* Regra genérica (mantida) */
+    .mobile-only { display: none; } /* Regra genérica (mantida) */
+    .tab-nav { display: flex; } /* Mostra abas desktop */
+    .mobile-nav { display: none; } /* Esconde menu lateral mobile */
+}
+/* ========================================================== */
+/* FIM DA TAREFA 3 */
+/* ========================================================== */
+
+/* ==========================================================
+   CSS DA TAREFA (Estilo do Botão "+ Adicionar Receita")
+   (Cole isto no final do seu perfil-de-saude.css)
+   ========================================================== */
+
+/* 1. O teu novo botão "outline" (branco com borda azul) */
+/* 1. O teu novo botão "outline" (AGORA preenchido) */
+.btn-primary-outline {
+ /* ... outros estilos ... */
+ background-color: var(--cor-secundaria); /* Fundo azul */
+ color: white; /* Texto branco */
+ border: 1px solid var(--cor-secundaria); /* Borda azul */
+ border-radius: 8px;
+}
+
+/* 2. Efeito :hover (AGORA vira "outline") */
+.btn-primary-outline:hover {
+ background-color: var(--cor-elemento); /* Fundo branco */
+ color: var(--cor-secundaria); /* Texto azul */
+ border-color: var(--cor-secundaria);
+ border-radius: 8px;
+}
+
+/* 3. Estilo para o botão de Upload de Ficheiro (para o mini-modal) */
+/* (Este é um truque para estilizar o <input type="file">) */
+input[type="file"] {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+}
+
+input[type="file"]::file-selector-button {
+    /* Estiliza o botão "Escolher ficheiro" */
+    background-color: var(--cor-fundo);
+    color: var(--texto-secundario);
+    border: 1px solid var(--borda-suave);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-right: 12px;
+    transition: all 0.2s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--borda-suave);
+    color: var(--texto-principal);
+}
+
+/* Define a cor do novo botão "Apagar"
+ (Reutiliza o estilo .btn-pdf mas muda a cor)
+*/
+.btn-apagar-receita {
+    color:var(--cor-secundaria); /* Cor vermelha */
+}
+
+/* Define a cor do hover */
+.btn-apagar-receita:hover {
+    color: #c53030; /* Vermelho mais escuro */
+    text-decoration: underline;
+}
+
+/* ==========================================================
+   CSS DA TAREFA (Estilo do Container do Botão "+")
+   (Cole isto no final do seu perfil-de-saude.css)
+   ========================================================== */
+
+/* 1. O container que dá o "bom espaço" */
+.add-button-container {
+    margin-top: 16px; /* Espaço acima (depois da barra de busca) */
+    margin-bottom: 24px; /* Espaço abaixo (antes dos cards) */
+    padding-bottom: 24px; /* Espaço extra */
+    border-bottom: 1px solid var(--borda-suave); /* Linha divisória */
+}
+
+/* 2. O botão "+ Adicionar Receita" */
+/* (Já tinhas a regra .btn-primary-outline, mas vamos ajustá-la) */
+.add-button-container .btn-primary-outline {
+    width: auto; /* Deixa de ocupar 100% da largura */
+    font-size: 0.95rem; /* Um pouco maior */
+    padding: 10px 20px; /* Um pouco maior */
+}
+
+/* ========================================================== */
+/* CSS DA ABA EXAMES (V2 - CONSISTENTE) (Início) */
+/* ========================================================== */
+
+/* 1. O Card de Exame (Exatamente como o .recipe-card) */
+.exame-card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--sombra-subtil);
+}
+
+/* 2. Cabeçalho (Ícone, Título, Badge) (Exatamente como o .recipe-header) */
+.exame-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+.exame-header h3 {
+    margin: 0; font-size: 1.2rem;
+    line-height: 1.4;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.exame-header h3 i {
+    color: var(--cor-primaria);
+}
+.exame-badge { /* (Badge já está como .badge no HTML, mas garantimos) */
+    padding: 4px 10px; border-radius: 12px;
+    font-weight: 600; font-size: 0.75rem; white-space: nowrap;
+}
+
+/* 3. Subtítulo (Laboratório/Solicitante) (Exatamente como o .recipe-doctor) */
+.exame-subtitulo {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    margin-top: 4px;
+    margin-bottom: 16px;
+}
+
+/* 4. Corpo (Grid de 3 colunas) (Exatamente como o .recipe-details) */
+.exame-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+.exame-details span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--texto-secundario);
+}
+.exame-details i {
+    color: var(--cor-primaria);
+    width: 16px;
+    text-align: center;
+}
+/* Cor especial para resultado */
+.exame-details .resultado-ok {
+    color: #0E9F6E; /* Verde */
+    font-weight: 600;
+}
+
+/* 5. Rodapé (Links) (Reutiliza o .recipe-footer e .btn-pdf) */
+.exame-footer {
+    display: flex;
+    justify-content: flex-end; /* Alinha links à direita */
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin-top: 16px;
+    border-top: 1px solid var(--borda-suave);
+    padding-top: 16px;
+}
+
+/* 6. Estilos dos Badges (Mantemos) */
+.status-realizado {
+    background-color: #DEF7EC; color: #0E9F6E;
+}
+.status-agendado {
+    background-color: var(--cor-status-ativa); color: var(--texto-status-ativa);
+}
+.status-pendente-upload {
+    background-color: #FEF3C7; color: #92400E;
+}
+
+/* ========================================================== */
+/* CSS DA ABA EXAMES (V2 - Fim) */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DA ABA ENCAMINHAMENTOS (Apenas Badges) */
+/* ========================================================== */
+
+/* O status "Agendado" já existe (.status-agendado) */
+
+/* Novo status "Pendente" (Amarelo) */
+.status-pendente {
+    background-color: #FEF3C7; /* Amarelo claro */
+    color: #92400E; /* Amarelo escuro */
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+
+
+/* ========================================================== */
+/* CSS CORRIGIDO (Botão Agendar com Especialista) */
+/* ========================================================== */
+
+/* * ESTADO PADRÃO:
+ * (Sólido, fundo azul, texto branco - como na Imagem 2) 
+ */
+.btn-card-primary-exame {
+    background-color: var(--cor-secundaria); /* Fundo azul */
+    color: white; /* Texto branco */
+    border: 1px solid var(--cor-secundaria);
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+/* * ESTADO :HOVER (ao passar o rato):
+ * (Outline, fundo branco, texto azul - como na Imagem 1)
+ */
+.btn-card-primary-exame:hover {
+    background-color: var(--cor-elemento); /* Fundo branco */
+    color: var(--cor-secundaria); /* Texto azul */
+    border-color: var(--cor-secundaria);
+}
+
+/* ========================================================== */
+/* FIM DA CORREÇÃO */
+/* ========================================================== */
+
+
+/* ========================================================== */
+/* CSS DA ABA ATESTADOS (Apenas Badges) */
+/* ========================================================== */
+
+/* "Válido" -> Verde (consistente com "Realizado") */
+.status-valido {
+    background-color: #DEF7EC; /* Verde claro */
+    color: #0E9F6E; /* Verde escuro */
+}
+
+/* "Expirado" -> Cinza (consistente com "Arquivada") */
+.status-expirado {
+    background-color: var(--cor-status-arquivada); /* Cinza claro */
+    color: var(--texto-status-arquivada); /* Cinza escuro */
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DA ABA ANAMNESE (Início) */
+/* ========================================================== */
+
+/* 1. Estilo do Estado Vazio (Baseado em 'anamnese preencher .png') */
+.anamnese-placeholder {
+    text-align: center;
+    padding: 60px 40px;
+    background-color: var(--cor-elemento);
+    border-radius: 12px;
+    border: 1px dashed var(--borda-suave);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.anamnese-placeholder i {
+    font-size: 3rem;
+    color: var(--cor-primaria);
+    opacity: 0.7;
+}
+
+.anamnese-placeholder h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--texto-principal);
+}
+
+.anamnese-placeholder p {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--texto-secundario);
+    max-width: 400px;
+}
+
+/* Reutiliza a classe de botão azul que já temos */
+.anamnese-placeholder .btn-card-primary-exame {
+    margin-top: 16px;
+    font-size: 1rem;
+    padding: 12px 24px;
+}
+
+/* 2. Estilo do Estado Preenchido (Baseado em 'anamnese depois de preenchida.png') */
+
+/* Usamos a base .recipe-card, mas ajustamos o padding */
+#anamnese-estado-preenchido {
+    padding: 0; /* Remove padding do card-base */
+}
+
+.anamnese-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 24px 16px 24px;
+}
+.anamnese-card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--texto-principal);
+}
+.anamnese-card-header p {
+    margin: 4px 0 0 0;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+.anamnese-card-header .badge {
+    flex-shrink: 0;
+    margin-left: 16px;
+    /* Reutiliza o .status-valido */
+}
+
+/* Grelha de resumo */
+.anamnese-card-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px 24px;
+    padding: 16px 24px 24px 24px;
+    border-top: 1px solid var(--borda-suave);
+}
+.anamnese-item-resumo label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--texto-suave);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+.anamnese-item-resumo p {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--texto-principal);
+    font-weight: 500;
+    /* Trunca o texto se for muito longo */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Rodapé com botões de ação */
+.anamnese-card-footer {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar linha no mobile */
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--borda-suave);
+    background-color: #fdfdfd;
+    border-radius: 0 0 12px 12px;
+}
+
+.anamnese-card-footer .footer-links-direita {
+    display: flex;
+    gap: 16px;
+    margin-left: auto; /* Joga os links para a direita */
+}
+
+/* Botão "Visualizar" (Sólido) - Reutiliza .btn-card-primary-exame */
+.anamnese-card-footer .btn-card-primary-exame {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+}
+/* Botão "Editar" (Outline) - Reutiliza .btn-card-secondary */
+.anamnese-card-footer .btn-card-secondary {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+}
+
+/* 3. Estilos do Modal de Anamnese (Formulário Longo) */
+
+/* Reutiliza .vis-section para os títulos das seções */
+#form-anamnese .vis-section {
+    background-color: var(--cor-elemento);
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--borda-suave);
+}
+#form-anamnese .vis-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    border-bottom: 1px solid var(--borda-suave);
+    padding-bottom: 8px;
+}
+#form-anamnese .vis-content-box {
+    padding: 0;
+    background: none;
+}
+
+/* Reutiliza o .form-group e inputs */
+#form-anamnese .form-group {
+    display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;
+}
+#form-anamnese .form-group:last-child { margin-bottom: 0; }
+
+#form-anamnese .form-group label {
+    font-weight: 500; font-size: 0.9rem; color: var(--texto-secundario);
+}
+
+#form-anamnese input[type="text"],
+#form-anamnese textarea {
+    width: 100%; padding: 12px; border: 1px solid var(--borda-suave);
+    border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;
+    box-sizing: border-box; background-color: var(--cor-fundo);
+    transition: all 0.2s ease;
+}
+
+#form-anamnese input[type="text"]:focus,
+#form-anamnese textarea:focus {
+    outline: none; border-color: var(--cor-primaria);
+    background-color: var(--cor-elemento);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* Grelha de 2 colunas para "Hábitos" */
+#form-anamnese .form-grid.two-columns {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 coluna no mobile */
+    gap: 0 20px; /* (gap vertical vem do .form-group) */
+}
+
+
+/* ========================================================== */
+/* CSS DA ABA ANAMNESE (Fim) */
+/* ========================================================== */
+
+.modal {
+  /*
+    O z-index tem de ser mais alto que o .mobile-nav (1100)
+    e o .backdrop (1050)
+  */
+  z-index: 1200 !important;
+}
+
+/* Isto garante que o fundo escuro (que também é o .modal)
+  fique por cima do header (z-index: 100) e do backdrop (1050)
+*/
+
+
+/* ========================================================== */
+/* CSS ESSENCIAL DO MODAL (Estava em falta) */
+/* ========================================================== */
+
+/* 1. A regra de base do Modal (quando está VÍSIVEL) */
+.modal {
+  display: flex; /* <-- MUITO IMPORTANTE: 'flex' para centralizar */
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro */
+  z-index: 1200; 
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto; 
+}
+
+/* 2. A regra que ESCONDE o modal */
+/* A sua função JS 'openModal' remove esta classe */
+.modal.hidden {
+  display: none !important; /* 'none' para esconder */
+}
+
+/* 2. O Card Branco (Conteúdo) */
+.modal-card {
+    background-color: var(--cor-elemento);
+    padding: 0; /* O padding será no header/footer/content */
+    border-radius: 12px;
+    max-width: 500px; /* Largura padrão */
+    width: 100%;
+    position: relative;
+    max-height: 90vh; /* Altura máxima */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+    /* Prepara para layout flexível (header/content/footer) */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo para modal largo (como o da Anamnese) */
+.modal-card.modal-consulta-largo {
+    max-width: 800px;
+}
+
+/* 3. O Cabeçalho do Modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--borda-suave);
+    /* Cor de fundo (do seu modal de anamnese) */
+    background-color: var(--cor-fundo);
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 4. O Botão "X" de Fechar */
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--texto-suave);
+    line-height: 1;
+    padding: 4px;
+    z-index: 10;
+}
+.modal-close:hover {
+    color: var(--texto-principal);
+}
+
+/* 5. O Conteúdo (Scroll) e Rodapé */
+/* (Estes estilos já estão no seu prontuario-paciente.css, */
+/* mas o modal-footer-actions é importante para o layout) */
+
+/* A área de scroll (como no modal de anamnese) */
+.consulta-tab-content {
+    overflow-y: auto;
+    padding: 24px;
+    background-color: var(--cor-fundo);
+}
+
+/* O rodapé (como no modal de anamnese) */
+.modal-footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 16px 24px;
+    border-top: 1px solid var(--borda-suave);
+    background-color: var(--cor-elemento);
+    border-radius: 0 0 12px 12px;
+}
+
+/* ========================================================== */
+/* FIM DO CSS ESSENCIAL DO MODAL */
+/* ========================================================== */
+
+
+/* ========================================================== */
+/* CSS CORRIGIDO (Botões Salvar/Cancelar Anamnese) */
+/* ========================================================== */
+
+/* Botões de Painel (Estilo reutilizado do prontuario-paciente.css) */
+
+.btn-secondary-painel, .btn-primary-painel {
+    width: auto; /* Para não ocupar 100% da largura no rodapé */
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box; 
+}
+
+/* Botão Secundário (Cancelar) */
+.btn-secondary-painel {
+    background-color: var(--cor-fundo);
+    border: 1px solid var(--borda-suave);
+    color: var(--texto-secundario);
+}
+.btn-secondary-painel:hover {
+    background-color: var(--borda-suave);
+}
+
+/* Botão Primário (Salvar) */
+.btn-primary-painel {
+    background-color: var(--cor-primaria);
+    border: 1px solid var(--cor-primaria);
+    color: white;
+}
+.btn-primary-painel:hover {
+    background-color: var(--cor-secundaria);
+}
+
+/* Estado Desativado (para o "Salvando...") */
+.btn-primary-painel:disabled {
+    background-color: #a0aec0;
+    border-color: #a0aec0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* ========================================================== */
+/* FIM DA CORREÇÃO */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DA ABA ANAMNESE (V2 - Progresso e Botão) */
+/* ========================================================== */
+
+/* 1. CORREÇÃO: Estilo do Botão "Editar" (Outline) */
+.btn-card-secondary {
+    background-color: var(--cor-elemento);
+    color: var(--cor-secundaria);
+    border: 1px solid var(--cor-secundaria);
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+.btn-card-secondary:hover {
+    background-color: var(--cor-secundaria);
+    color: white;
+}
+
+/* 2. NOVO: Estilos da Barra de Progresso */
+.anamnese-progresso-texto {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+.anamnese-progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: var(--borda-suave);
+    border-radius: 5px;
+    overflow: hidden; /* Garante que a barra interna não ultrapasse */
+}
+
+.anamnese-progress-bar-fill {
+    height: 100%;
+    width: 0%; /* O JS vai controlar isto */
+    background-color: var(--cor-primaria);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+/* ========================================================== */
+/* CSS DO MODAL DE VISUALIZAÇÃO DA ANAMNESE (V3 - CORRIGIDO) */
+/* ========================================================== */
+
+/* 1. Remove padding do card para o header e footer colarem */
+.modal-visualizar-anamnese.modal-card {
+    padding: 0;
+}
+
+/* 2. Estilo do Cabeçalho (Logo + Info Paciente) */
+.vis-header-paciente {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* Espaça Logo e Info */
+    gap: 16px;
+    background-color: var(--cor-elemento) !important;
+    padding: 20px 24px 16px 24px !important; /* Padding do header */
+    border-bottom: none; /* Remove a borda padrão do .modal-header */
+    border-radius: 12px 12px 0 0;
+}
+
+/* 3. O Logo (PEQUENO, como na Imagem-Alvo) */
+.vis-header-logo-img {
+    height: 28px; /* <<< ESTA É A CORREÇÃO PRINCIPAL */
+    width: auto;
+    display: block;
+    flex-shrink: 0;
+}
+
+/* 4. A Info do Paciente (à Direita) */
+.vis-header-info {
+    flex-grow: 1;
+    text-align: right;
+    color: var(--texto-secundario);
+    line-height: 1.4;
+}
+.vis-header-info strong {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+    display: block;
+}
+.vis-header-info span {
+    font-size: 0.85rem;
+}
+/* O "•" entre "Paciente" e "ID" */
+.vis-header-info span:not(:last-child)::after {
+    content: "•";
+    margin: 0 6px;
+}
+
+/* 5. A Linha Divisória (como na Imagem-Alvo) */
+.modal-header-divider {
+    border: none;
+    border-top: 1px solid var(--borda-suave);
+    margin: 0;
+}
+
+/* 6. Título Principal (Ex: "Minha Anamnese") */
+.modal-main-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+    margin: 24px 0 16px 0;
+}
+
+/* 7. Barra de Info (Abaixo do título) */
+.anamnese-info-bar {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 12px 24px;
+    background-color: var(--cor-fundo);
+    border-top: 1px solid var(--borda-suave);
+    border-bottom: 1px solid var(--borda-suave);
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+}
+
+/* 8. Estilo do Acordeão (Secções Colapsáveis) */
+.anamnese-accordion {
+    background-color: var(--cor-elemento) !important;
+    padding: 16px 24px 24px 24px !important; /* Aumenta padding em baixo */
+}
+
+.anamnese-accordion details {
+    border-bottom: 1px solid var(--borda-suave);
+    margin-bottom: 12px;
+}
+.anamnese-accordion details:last-child {
+    border-bottom: none;
+}
+
+.anamnese-accordion summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    padding: 12px 8px;
+    cursor: pointer;
+    list-style: none; /* Remove a seta padrão */
+}
+.anamnese-accordion summary::before {
+    content: '\f0da'; /* Ícone fa-caret-right */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    transition: transform 0.2s ease;
+}
+.anamnese-accordion details[open] summary::before {
+    transform: rotate(90deg);
+}
+.anamnese-accordion summary i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* 9. Conteúdo dentro do Acordeão */
+.anamnese-accordion .vis-content-box {
+    padding: 16px;
+    background-color: var(--cor-fundo);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.anamnese-view-group {
+    margin-bottom: 16px;
+}
+.anamnese-view-group:last-child {
+    margin-bottom: 0;
+}
+.anamnese-view-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--texto-suave);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+.anamnese-view-group p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--texto-principal);
+    line-height: 1.5;
+    white-space: pre-wrap; 
+    word-wrap: break-word;
+}
+
+/* 10. Rodapé do Modal */
+#form-visualizar-anamnese .modal-footer-actions {
+    justify-content: flex-end; /* Alinha o botão "Fechar" à direita */
+}
+
+/* ========================================================== */
+/* FIM DO CSS V3 */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS ESSENCIAL DO MODAL (Estava em falta) */
+/* ========================================================== */
+
+/* 1. O Overlay (fundo escuro) */
+.modal {
+    display: none; /* Começa escondido */
+    position: fixed; /* Fica fixo na tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro */
+    z-index: 1200; /* Fica acima de tudo */
+
+    /* Centraliza o card */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 16px;
+    box-sizing: border-box;
+    overflow-y: auto; /* Permite scroll no overlay */
+}
+
+/* Garante que a classe .hidden funciona */
+.modal.hidden {
+    display: none !important;
+}
+
+/* 2. O Card Branco (Conteúdo) */
+/* 2. O Card Branco (Conteúdo) */
+.modal-card {
+  background-color: var(--cor-elemento);
+  padding: 0; /* O padding será no header/footer/content */
+  border-radius: 12px;
+  max-width: 500px; /* Largura padrão */
+  width: 100%;
+  position: relative;
+  max-height: 90vh; /* Altura máxima */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  /* Prepara para layout flexível (header/content/footer) */
+  display: flex;
+  flex-direction: column;
+  
+  /* ========================================================== */
+  /* CORREÇÃO CIRÚRGICA (Passo 2) - ADICIONE ESTA LINHA */
+  /* ========================================================== */
+  z-index: 1010; /* Mais alto que o z-index: 1000 do .modal */
+  /* ========================================================== */
+}
+/* Estilo para modal largo (como o da Anamnese) */
+.modal-card.modal-consulta-largo {
+    max-width: 800px;
+}
+
+/* 3. O Cabeçalho do Modal (Base) */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--borda-suave);
+    border-radius: 12px 12px 0 0;
+}
+
+/* 4. O Botão "X" de Fechar (Base) */
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--texto-suave);
+    line-height: 1;
+    padding: 4px;
+    z-index: 10;
+}
+.modal-close:hover {
+    color: var(--texto-principal);
+}
+
+/* 5. O Rodapé do Modal (Base) */
+.modal-footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 16px 24px;
+    border-top: 1px solid var(--borda-suave);
+    background-color: var(--cor-elemento);
+    border-radius: 0 0 12px 12px;
+}
+
+/* ========================================================== */
+/* FIM DO CSS ESSENCIAL DO MODAL */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS CORRIGIDO (Feedback Banner) */
+/* ========================================================== */
+.feedback-message {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center; /* <<< MUDANÇA 1: Centrado */
+    display: none; 
+    border: 1px solid transparent;
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
+    margin-bottom: 16px;  /* <<< MUDANÇA 2: Espaço antes dos botões */
+}
+
+/* Regra para mostrar a mensagem quando o JS remover a classe .hidden */
+.feedback-message:not(.hidden) {
+    display: block;
+}
+
+/* Cor de SUCESSO (Verde) */
+.feedback-message.success {
+    background-color: #d1fae5; /* Verde claro */
+    color: #065f46; /* Verde escuro */
+    border-color: #a7f3d0;
+}
+
+/* Cor de ERRO (Vermelho) */
+.feedback-message.error {
+    background-color: #fee2e2; /* Vermelho claro */
+    color: #991b1b; /* Vermelho escuro */
+    border-color: #fecaca;
+}
+/* ========================================================== */
+/* FIM DA CORREÇÃO */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DA ABA REGISTROS DIÁRIOS (Copiado de paciente-perfil.css) */
+/* ========================================================== */
+
+/* 1. Estilo para a lista (ex: "02/11/2025 - 7 horas de sono") */
+.registros-individuais-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Espaço entre cada card de registro */
+}
+
+.registro-individual-item {
+    background-color: var(--cor-elemento); /* Fundo branco */
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.registro-item-data {
+    font-size: 1rem;
+    font-weight: 600; /* Negrito */
+    color: var(--texto-principal);
+    margin-bottom: 8px;
+}
+
+.registro-item-detalhes {
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+    line-height: 1.5;
+}
+.registro-item-detalhes strong {
+    color: var(--texto-principal);
+}
+
+.registros-individuais-lista .placeholder {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    text-align: center;
+    padding: 32px 16px;
+    background-color: var(--cor-fundo);
+    border-radius: 8px;
+    border: 1px dashed var(--borda-suave);
+}
+
+/* 2. Estilo para os títulos H4 dos gráficos */
+#historico-tab-biometricos h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-primaria); /* Cor azul Orion */
+    margin-top: 24px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--borda-suave);
+}
+
+#historico-tab-biometricos h4:first-child {
+    margin-top: 0; /* Remove a margem do primeiro título */
+}
+
+/* 3. Estilo para os títulos H4 das outras abas (Sono, Humor, etc.) */
+.sub-tab-panel h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DAS SUB-ABAS (Sono, Humor, etc.) (Estava em falta) */
+/* ========================================================== */
+
+.sub-tab-nav {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--borda-suave);
+    margin-top: 24px;
+    margin-bottom: 24px;
+    overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
+    white-space: nowrap;
+}
+
+.sub-tab-btn {
+    padding: 8px 16px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 0.95rem; /* Um pouco maior para a página */
+    font-weight: 500;
+    color: var(--texto-secundario);
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent; /* A "linha" em baixo */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre ícone e texto */
+    transition: all 0.2s ease;
+}
+
+.sub-tab-btn i {
+    font-size: 1rem; /* Tamanho do ícone */
+}
+
+/* O ESTADO ATIVO (Como na sua imagem 2) */
+.sub-tab-btn.active {
+    background-color: var(--cor-elemento); /* Fundo branco (para "saltar" da página) */
+    color: var(--cor-primaria); /* Texto azul */
+    font-weight: 600;
+    border-bottom-color: var(--cor-primaria); /* Linha azul em baixo */
+}
+
+.sub-tab-btn:hover:not(.active) {
+    color: var(--texto-principal);
+    background-color: var(--cor-fundo); /* Cinza claro no hover */
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DA ABA REGISTROS DIÁRIOS (Limpo) */
+/* ========================================================== */
+
+/* 1. Estilo para os títulos H4 dos gráficos */
+
+#historico-tab-biometricos h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-primaria); /* Cor azul Orion */
+    margin-top: 24px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--borda-suave);
+}
+
+#historico-tab-biometricos h4:first-child {
+    margin-top: 0; /* Remove a margem do primeiro título */
+}
+
+/* 2. Estilo para os títulos H4 das outras abas (Sono, Humor, etc.) */
+.sub-tab-panel h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+
+
+/* ========================================================== */
+/* CSS DA ABA VACINAS (V2 - Consistente com Receitas) */
+/* ========================================================== */
+
+/* Vamos apagar as regras .vacina-card, .vacina-header, .vacina-footer
+   porque vamos reutilizar as classes .recipe-card, .recipe-header, etc.
+*/
+
+/* Adicionamos apenas o novo status "Válida" 
+   (para ser consistente com o "Realizado" dos Exames) 
+*/
+.status-valida {
+    background-color: #DEF7EC; /* Verde claro */
+    color: #0E9F6E; /* Verde escuro */
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DOS MODAIS DE CHECK-IN (Copiado de paciente-perfil.css) */
+/* ========================================================== */
+
+/* 1. Estilo do Modal "Master" (Menu de botões) - (Não usado, mas bom ter) */
+.master-checkin-container {
+    padding: 8px 24px 24px 24px;
+}
+.master-checkin-subtitle {
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+/* 2. Estilo do Modal "Registro Diário" (Formulário Longo) */
+#form-novo-registro-diario .form-label-bold {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+    margin-bottom: 8px;
+}
+.meal-check-group {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+}
+.meal-check-group .meta-item {
+    padding: 12px 16px;
+    margin-bottom: 0;
+}
+.meal-check-group .meta-item:hover {
+    background-color: #f0f9ff;
+}
+.form-group.meal-details {
+    padding: 0 16px 16px 16px;
+    margin-bottom: 0;
+    border-top: 1px solid var(--borda-suave);
+    padding-top: 16px;
+    margin-top: -1px; /* Sobrepõe a linha */
+}
+.form-group.meal-details textarea {
+    min-height: 60px;
+}
+
+/* Botão de Adicionar (+ Medicação, + Refeição) */
+.btn-add-external-med {
+    background-color: transparent;
+    border: 1px dashed var(--borda-suave);
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+.btn-add-external-med:hover {
+    background-color: #f0f9ff;
+    border-color: var(--cor-primaria);
+    color: var(--cor-primaria);
+}
+
+/* Lista de itens adicionados (Medicação, Refeição) */
+.meal-item-externo,
+.item-med-externa {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--cor-elemento);
+    border: 1px solid #cceef6;
+    border-radius: 6px;
+    padding: 12px;
+}
+.meal-item-externo p,
+.item-med-externa span {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--texto-principal);
+    line-height: 1.4;
+    flex-grow: 1;
+}
+.meal-item-externo p strong,
+.item-med-externa span strong {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--cor-secundaria);
+    display: block;
+}
+.item-med-externa span em {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    font-style: italic;
+    margin-left: 4px;
+}
+.btn-delete-refeicao-externa,
+.btn-delete-med-externa {
+    background-color: transparent;
+    border: none;
+    color: var(--texto-suave);
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 10px;
+    transition: all 0.2s ease;
+}
+.btn-delete-refeicao-externa:hover,
+.btn-delete-med-externa:hover {
+    color: var(--cor-delete);
+    background-color: #fee2e2;
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DOS MODAIS DE CHECK-IN (O CSS QUE ESTAVA EM FALTA) */
+/* ========================================================== */
+
+/* 1. Estilo do Modal "Master" (Menu de botões) - (Não estamos a usar, mas não faz mal ter) */
+.master-checkin-container {
+    padding: 8px 24px 24px 24px;
+}
+.master-checkin-subtitle {
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+/* 2. Estilo do Modal "Registro Diário" (Formulário Longo) */
+
+/* Esta é a classe que faz o fundo cinzento nas secções "Sono", "Humor", etc. */
+#novo-registro-diario-modal .vis-section {
+    background-color: var(--cor-fundo); /* O cinza claro */
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 15px !important;
+    border: 1px solid var(--borda-suave);
+}
+#novo-registro-diario-modal .vis-section:last-child {
+    margin-bottom: 0 !important;
+}
+#novo-registro-diario-modal .vis-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-primaria); /* Título azul */
+    border-bottom: 1px solid var(--borda-suave);
+    padding-bottom: 8px;
+}
+#novo-registro-diario-modal .vis-content-box {
+    padding: 0;
+    background: none;
+}
+
+/* 3. Estilo dos campos de formulário (label, input, select, textarea) */
+#form-novo-registro-diario .form-group {
+    display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px;
+}
+#form-novo-registro-diario .form-group:last-child { margin-bottom: 0; }
+
+#form-novo-registro-diario label {
+    font-weight: 500; font-size: 0.9rem; color: var(--texto-secundario);
+}
+
+#form-novo-registro-diario input[type="text"],
+#form-novo-registro-diario input[type="number"],
+#form-novo-registro-diario textarea,
+#form-novo-registro-diario select {
+    width: 100%; padding: 12px; border: 1px solid var(--borda-suave);
+    border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;
+    box-sizing: border-box; background-color: var(--cor-elemento); /* Fundo branco */
+    transition: all 0.2s ease;
+}
+
+#form-novo-registro-diario input[type="text"]:focus,
+#form-novo-registro-diario input[type="number"]:focus,
+#form-novo-registro-diario textarea:focus,
+#form-novo-registro-diario select:focus {
+    outline: none; border-color: var(--cor-primaria);
+    background-color: var(--cor-elemento);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* 4. Estilo do Slider de Humor */
+.humor-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--borda-suave);
+    border-radius: 5px;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.humor-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--cor-primaria);
+    border: 4px solid var(--cor-elemento);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+.humor-labels {
+    display: flex; justify-content: space-between;
+    font-size: 0.8rem; color: var(--texto-suave); padding: 0 5px;
+}
+.humor-labels span { width: 20%; text-align: center; }
+.humor-labels span:first-child { text-align: left; }
+.humor-labels span:last-child { text-align: right; }
+
+/* 5. Estilo dos Checkboxes (meta-item) */
+.meta-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 8px;
+    border-radius: 6px; cursor: pointer; transition: background-color 0.2s ease;
+    font-size: 0.95rem; color: var(--texto-principal);
+}
+.meta-item:hover { background-color: #f0f9ff; }
+.meta-item input[type="checkbox"] {
+    width: 18px; height: 18px; flex-shrink: 0;
+    accent-color: var(--cor-primaria); cursor: pointer;
+}
+
+/* 6. Estilos dos Mini-Modais (Medicação e Refeição) */
+#form-novo-registro-diario .form-label-bold {
+    font-weight: 500; font-size: 0.95rem; color: var(--texto-secundario); margin-bottom: 8px;
+}
+.meal-check-group {
+    background-color: var(--cor-elemento); border: 1px solid var(--borda-suave);
+    border-radius: 8px; padding: 0; overflow: hidden;
+}
+.meal-check-group .meta-item {
+    padding: 12px 16px; margin-bottom: 0;
+}
+.meal-check-group .meta-item:hover {
+    background-color: #f0f9ff;
+}
+.form-group.meal-details {
+    padding: 0 16px 16px 16px; margin-bottom: 0;
+    border-top: 1px solid var(--borda-suave); padding-top: 16px; margin-top: -1px;
+}
+.form-group.meal-details textarea { min-height: 60px; }
+
+.btn-add-external-med {
+    background-color: transparent; border: 1px dashed var(--borda-suave);
+    color: var(--texto-secundario); font-size: 0.9rem; font-weight: 500;
+    padding: 10px 12px; border-radius: 6px; cursor: pointer;
+    width: 100%; margin-top: 10px; text-align: left;
+    display: flex; align-items: center; gap: 8px; transition: all 0.2s ease;
+}
+.btn-add-external-med:hover {
+    background-color: #f0f9ff; border-color: var(--cor-primaria); color: var(--cor-primaria);
+}
+
+.meal-item-externo,
+.item-med-externa {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px; background-color: var(--cor-elemento); border: 1px solid #cceef6;
+    border-radius: 6px; padding: 12px;
+}
+.meal-item-externo p,
+.item-med-externa span {
+    margin: 0; font-size: 0.9rem; color: var(--texto-principal);
+    line-height: 1.4; flex-grow: 1;
+}
+.meal-item-externo p strong,
+.item-med-externa span strong {
+    font-size: 1rem; font-weight: 600; color: var(--cor-secundaria); display: block;
+}
+.item-med-externa span em {
+    font-size: 0.8rem; color: var(--texto-suave); font-style: italic; margin-left: 4px;
+}
+.btn-delete-refeicao-externa,
+.btn-delete-med-externa {
+    background-color: transparent; border: none; color: var(--texto-suave);
+    font-size: 1.5rem; line-height: 1; padding: 0 4px;
+    border-radius: 50%; cursor: pointer; flex-shrink: 0;
+    margin-left: 10px; transition: all 0.2s ease;
+}
+.btn-delete-refeicao-externa:hover,
+.btn-delete-med-externa:hover {
+    color: var(--cor-delete); background-color: #fee2e2;
+}
+
+/* 7. Corrige o grid de 2 colunas que estava errado */
+#form-novo-registro-diario .form-grid.two-columns {
+    display: grid;
+    grid-template-columns: 1fr; /* Força 1 coluna em vez de 2 */
+    gap: 15px; /* Gap vertical (o gap horizontal não importa) */
+}
+
+/* ========================================================== */
+/* CSS CORRIGIDO (Estilos dos Mini-Modais de Check-in) */
+/* ========================================================== */
+
+/* 1. Estiliza o conteúdo (o padding) dentro dos mini-modais */
+#form-add-med-externa > div,
+#form-add-refeicao-externa > div {
+    padding: 24px;
+    padding-bottom: 0;
+}
+
+/* 2. Estiliza o subtítulo (Ex: "Qual medicação...") */
+.master-checkin-subtitle {
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+/* 3. Estiliza os grupos de formulário (label + input) */
+#add-med-externa-modal .form-group,
+#add-refeicao-externa-modal .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+#add-med-externa-modal label,
+#add-refeicao-externa-modal label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+}
+
+/* 4. Estiliza os inputs e textareas dos mini-modais */
+#add-med-externa-modal input[type="text"],
+#add-refeicao-externa-modal input[type="text"],
+#add-refeicao-externa-modal textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    background-color: var(--cor-fundo); /* Fundo cinza claro */
+    transition: all 0.2s ease;
+}
+
+#add-med-externa-modal input[type="text"]:focus,
+#add-refeicao-externa-modal input[type="text"]:focus,
+#add-refeicao-externa-modal textarea:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    background-color: var(--cor-elemento);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* ========================================================== */
+/* FIM DA CORREÇÃO */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS DOS MODAIS DE CHECK-IN (O CSS QUE ESTAVA EM FALTA) */
+/* ========================================================== */
+
+/* 1. Estilo das Secções (fundo cinza) */
+#novo-registro-diario-modal .vis-section {
+    background-color: var(--cor-fundo); /* O cinza claro */
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 15px !important;
+    border: 1px solid var(--borda-suave);
+}
+#novo-registro-diario-modal .vis-section:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* 2. Estilo dos Títulos (H3) - Corrigido como pedido! */
+#novo-registro-diario-modal .vis-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--texto-principal); /* Texto PRETO (como pedido) */
+    border-bottom: 1px solid var(--borda-suave);
+    padding-bottom: 8px;
+    display: flex; /* Para alinhar o ícone */
+    align-items: center;
+    gap: 10px; /* Espaço entre ícone e texto */
+}
+
+/* 3. Estilo do ÍCONE (dentro do H3) - Corrigido como pedido! */
+#novo-registro-diario-modal .vis-section h3 i {
+    color: var(--cor-primaria); /* Ícone AZUL (como pedido) */
+    font-size: 1.1rem; /* Tamanho do ícone */
+    width: 20px; /* Alinhamento */
+    text-align: center;
+}
+
+/* 4. Estilo dos campos de formulário (label, input, select, textarea) */
+#form-novo-registro-diario .form-group {
+    display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px;
+}
+#form-novo-registro-diario .form-group:last-child { margin-bottom: 0; }
+
+#form-novo-registro-diario label {
+    font-weight: 500; font-size: 0.9rem; color: var(--texto-secundario);
+}
+
+#form-novo-registro-diario input[type="text"],
+#form-novo-registro-diario input[type="number"],
+#form-novo-registro-diario textarea,
+#form-novo-registro-diario select {
+    width: 100%; padding: 12px; border: 1px solid var(--borda-suave);
+    border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;
+    box-sizing: border-box; background-color: var(--cor-elemento);
+    transition: all 0.2s ease;
+}
+
+#form-novo-registro-diario input[type="text"]:focus,
+#form-novo-registro-diario input[type="number"]:focus,
+#form-novo-registro-diario textarea:focus,
+#form-novo-registro-diario select:focus {
+    outline: none; border-color: var(--cor-primaria);
+    background-color: var(--cor-elemento);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* 5. Estilo do Slider de Humor */
+.humor-slider {
+    -webkit-appearance: none;
+    width: 100%; height: 8px;
+    background: var(--borda-suave); border-radius: 5px;
+    outline: none; margin-top: 10px; margin-bottom: 10px;
+}
+.humor-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--cor-primaria);
+    border: 4px solid var(--cor-elemento);
+    cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+.humor-labels {
+    display: flex; justify-content: space-between;
+    font-size: 0.8rem; color: var(--texto-suave); padding: 0 5px;
+}
+.humor-labels span { width: 20%; text-align: center; }
+.humor-labels span:first-child { text-align: left; }
+.humor-labels span:last-child { text-align: right; }
+
+/* 6. Estilo dos Checkboxes (meta-item) */
+.meta-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 8px;
+    border-radius: 6px; cursor: pointer; transition: background-color 0.2s ease;
+    font-size: 0.95rem; color: var(--texto-principal);
+}
+.meta-item:hover { background-color: #f0f9ff; }
+.meta-item input[type="checkbox"] {
+    width: 18px; height: 18px; flex-shrink: 0;
+    accent-color: var(--cor-primaria); cursor: pointer;
+}
+
+/* 7. Estilos dos Mini-Modais (Medicação e Refeição) */
+#form-novo-registro-diario .form-label-bold {
+    font-weight: 500; font-size: 0.95rem; color: var(--texto-secundario); margin-bottom: 8px;
+}
+.meal-check-group {
+    background-color: var(--cor-elemento); border: 1px solid var(--borda-suave);
+    border-radius: 8px; padding: 0; overflow: hidden;
+}
+.meal-check-group .meta-item {
+    padding: 12px 16px; margin-bottom: 0;
+}
+.meal-check-group .meta-item:hover {
+    background-color: #f0f9ff;
+}
+.form-group.meal-details {
+    padding: 0 16px 16px 16px; margin-bottom: 0;
+    border-top: 1px solid var(--borda-suave); padding-top: 16px; margin-top: -1px;
+}
+.form-group.meal-details textarea { min-height: 60px; }
+
+.btn-add-external-med {
+    background-color: transparent; border: 1px dashed var(--borda-suave);
+    color: var(--texto-secundario); font-size: 0.9rem; font-weight: 500;
+    padding: 10px 12px; border-radius: 6px; cursor: pointer;
+    width: 100%; margin-top: 10px; text-align: left;
+    display: flex; align-items: center; gap: 8px; transition: all 0.2s ease;
+}
+.btn-add-external-med:hover {
+    background-color: #f0f9ff; border-color: var(--cor-primaria); color: var(--cor-primaria);
+}
+
+.meal-item-externo,
+.item-med-externa {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px; background-color: var(--cor-elemento); border: 1px solid #cceef6;
+    border-radius: 6px; padding: 12px;
+}
+.meal-item-externo p,
+.item-med-externa span {
+    margin: 0; font-size: 0.9rem; color: var(--texto-principal);
+    line-height: 1.4; flex-grow: 1;
+}
+.meal-item-externo p strong,
+.item-med-externa span strong {
+    font-size: 1rem; font-weight: 600; color: var(--cor-secundaria); display: block;
+}
+.item-med-externa span em {
+    font-size: 0.8rem; color: var(--texto-suave); font-style: italic; margin-left: 4px;
+}
+.btn-delete-refeicao-externa,
+.btn-delete-med-externa {
+    background-color: transparent; border: none; color: var(--texto-suave);
+    font-size: 1.5rem; line-height: 1; padding: 0 4px;
+    border-radius: 50%; cursor: pointer; flex-shrink: 0;
+    margin-left: 10px; transition: all 0.2s ease;
+}
+.btn-delete-refeicao-externa:hover,
+.btn-delete-med-externa:hover {
+    color: var(--cor-delete); background-color: #fee2e2;
+}
+
+/* 8. Grid de 2 colunas */
+#form-novo-registro-diario .form-grid.two-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+
+/* ========================================================== */
+/* CSS DA SOLUÇÃO HÍBRIDA v2 (Layout Limpo - CORRIGIDO) */
+/* ========================================================== */
+
+.recipe-details-clean {
+  display: flex;
+  
+  /* --- A CORREÇÃO ESTÁ AQUI --- */
+  /* Removemos o 'space-between' que estava a empurrar a data */
+  justify-content: flex-start; /* Alinha os itens à esquerda */
+  /* --- FIM DA CORREÇÃO --- */
+
+  align-items: center;
+  flex-wrap: wrap; 
+  
+  /* Aumentamos o gap horizontal para 24px (como o "ponto rosa") */
+  gap: 10px 24px; 
+  
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+  margin-top: 10px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed var(--borda-suave); 
+  padding-top: 20px;
+}
+
+/* (O resto das regras .recipe-details-clean span, i, strong ficam iguais) */
+.recipe-details-clean span {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre o ícone e o texto */
+}
+
+.recipe-details-clean span i {
+  color: var(--cor-primaria);
+  font-size: 1rem;
+}
+
+.recipe-details-clean span strong {
+  color: var(--texto-principal);
+  font-weight: 500;
+}
+
+/* ========================================================== */
+/* CSS (Passo 2): Estilizar o Cabeçalho do Modal de Upload */
+/* ========================================================== */
+
+/* 1. Aplica o fundo azul (cor primária) ao cabeçalho */
+#upload-receita-modal .modal-header {
+  background-color: var(--cor-primaria);
+  border-bottom: 1px solid var(--cor-secundaria);
+  border-radius: 12px 12px 0 0; /* Arredonda só os cantos de cima */
+  padding: 16px 24px;
+}
+
+/* 2. Deixa o título (h2) e o ícone (i) brancos */
+#upload-receita-modal .modal-title,
+#upload-receita-modal .modal-title i {
+  color: #ffffff;
+}
+
+/* 3. Deixa o botão "X" de fechar branco e mais visível */
+#upload-receita-modal .modal-close {
+  color: #ffffff;
+  opacity: 0.7;
+}
+#upload-receita-modal .modal-close:hover {
+  opacity: 1;
+}
+
+/* 4. Remove o padding do card principal (o modal-card)
+      para que o cabeçalho azul cole nas bordas */
+#upload-receita-modal .modal-card {
+  padding: 0;
+}
+
+
+/* ========================================================== */
+/* CSS (Passo 3): Estilizar o Corpo do Modal de Upload */
+/* ========================================================== */
+
+/* 1. Aplica estilos ao .form-group (espaçamento) */
+#form-upload-receita .form-group {
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+  margin-bottom: 20px;
+}
+#form-upload-receita .form-group:last-child { 
+  margin-bottom: 0; 
+}
+
+/* 2. Estiliza as Labels (textos "Medicamento Principal", etc.) */
+#form-upload-receita .form-group label {
+  font-weight: 500; 
+  font-size: 0.9rem; 
+  color: var(--texto-secundario);
+}
+
+/* 3. Estiliza os Inputs (os campos de texto) */
+#form-upload-receita input[type="text"] {
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px; 
+  font-size: 1rem; 
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box; 
+  background-color: var(--cor-elemento); /* Fundo branco */
+  transition: all 0.2s ease;
+}
+
+/* 4. Estiliza o Efeito de Foco (borda azul) */
+#form-upload-receita input[type="text"]:focus {
+  outline: none; 
+  border-color: var(--cor-primaria);
+  background-color: var(--cor-elemento);
+  box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* 5. Estiliza o campo de upload de ficheiro (input[type="file"]) */
+#form-upload-receita input[type="file"] {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+}
+
+#form-upload-receita input[type="file"]::file-selector-button {
+  background-color: var(--cor-fundo);
+  color: var(--texto-secundario);
+  border: 1px solid var(--borda-suave);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: all 0.2s ease;
+}
+
+#form-upload-receita input[type="file"]::file-selector-button:hover {
+  background-color: var(--borda-suave);
+  color: var(--texto-principal);
+}
+
+/* ========================================================== */
+/* CSS (Passo 2 CORRIGIDO): Estilizar os Botões Rádio */
+/* ========================================================== */
+
+/* 1. O container que agrupa os botões */
+.radio-button-group {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 12px;
+}
+
+/* 2. Esconde a "bolinha" de rádio original */
+.radio-button-group input[type="radio"] {
+  display: none;
+}
+
+/* 3. Estiliza a 'label' para parecer um botão */
+.radio-button-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--borda-suave);
+  background-color: var(--cor-fundo); 
+  color: var(--texto-secundario);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+/* 4. Estilo de Hover (quando o rato passa por cima) */
+.radio-button-label:hover {
+  background-color: #e6f7ff; 
+  border-color: var(--cor-primaria);
+}
+
+/* --- A CORREÇÃO ESTÁ AQUI (Regras 5 e 6) --- */
+/* Adicionámos o ID #upload-receita-modal para tornar a regra mais forte */
+
+/* 5. ESTILO QUANDO SELECIONADO (CORRIGIDO) */
+#upload-receita-modal .radio-button-group input[type="radio"]:checked + .radio-button-label {
+  background-color: var(--cor-primaria); /* Fundo AZUL */
+  color: #ffffff !important; /* Texto BRANCO (com !important para garantir) */
+  border-color: var(--cor-primaria);
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(65, 184, 213, 0.3);
+}
+
+/* 6. Faz o ícone dentro do botão selecionado ficar branco (CORRIGIDO) */
+#upload-receita-modal .radio-button-group input[type="radio"]:checked + .radio-button-label i {
+  color: #ffffff !important; /* Icon BRANCO (com !important para garantir) */
+}
+/* --- FIM DA CORREÇÃO --- */  
+
+/* ========================================================== */
+/* CSS (Passo 2): Estilizar o Novo Modal de Lembretes */
+/* ========================================================== */
+
+
+/* Esta é a nova regra que corrige o espaçamento */
+#form-lembrete .form-grid.two-columns {
+  margin-bottom: 20px; /* Adiciona o mesmo espaçamento que o .form-group */
+}
+
+/* O resto do seu código do Passo 2
+  (ex: #form-lembrete select { ... } )
+  fica aqui em baixo
+*/
+/* 1. Estiliza o Cabeçalho (Azul, como o Adicionar Receita) */
+#lembrete-modal .modal-header {
+  background-color: var(--cor-primaria);
+  border-bottom: 1px solid var(--cor-secundaria);
+  border-radius: 12px 12px 0 0; 
+  padding: 16px 24px;
+}
+
+#lembrete-modal .modal-title,
+#lembrete-modal .modal-title i {
+  color: #ffffff;
+}
+
+#lembrete-modal .modal-close {
+  color: #ffffff;
+  opacity: 0.7;
+}
+#lembrete-modal .modal-close:hover {
+  opacity: 1;
+}
+
+/* 2. Garante que o card principal não tenha padding */
+#lembrete-modal .modal-card {
+  padding: 0;
+}
+
+/* 3. Estiliza o conteúdo do formulário (fundo cinza, inputs) */
+/* (Reutiliza os estilos que já definimos para os outros modais) */
+#lembrete-modal .consulta-tab-content {
+  background-color: var(--cor-fundo);
+}
+
+#lembrete-modal .vis-section {
+  background-color: var(--cor-elemento);
+  padding: 20px 25px;
+  border-radius: 12px;
+  margin-bottom: 0; /* Remove a margem de baixo no primeiro item */
+  border: 1px solid var(--borda-suave);
+}
+
+#lembrete-modal .vis-content-box {
+  padding: 0;
+  background: none;
+}
+
+/* 4. Estiliza os campos de formulário (label, input) */
+#form-lembrete .form-group {
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+  margin-bottom: 20px;
+}
+#form-lembrete .form-group:last-child { 
+  margin-bottom: 0; 
+}
+
+#form-lembrete label {
+  font-weight: 500; 
+  font-size: 0.9rem; 
+  color: var(--texto-secundario);
+}
+
+#form-lembrete input[type="text"],
+#form-lembrete input[type="number"],
+#form-lembrete input[type="date"] {
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px; 
+  font-size: 1rem; 
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box; 
+  background-color: var(--cor-elemento); /* Fundo branco */
+  transition: all 0.2s ease;
+}
+
+#form-lembrete input[type="text"]:focus,
+#form-lembrete input[type="number"]:focus,
+#form-lembrete input[type="date"]:focus {
+  outline: none; 
+  border-color: var(--cor-primaria);
+  background-color: var(--cor-elemento);
+  box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* 5. Estiliza o botão "+ Adicionar" (reutiliza o estilo) */
+#btn-add-medicacao-lembrete {
+  background-color: transparent; 
+  border: 1px dashed var(--borda-suave);
+  color: var(--texto-secundario); 
+  font-size: 0.9rem; 
+  font-weight: 500;
+  padding: 10px 12px; 
+  border-radius: 6px; 
+  cursor: pointer;
+  width: 100%; 
+  margin-top: 10px; 
+  text-align: left;
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  transition: all 0.2s ease;
+}
+
+#btn-add-medicacao-lembrete:hover {
+  background-color: #f0f9ff; 
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+}
+
+/* ========================================================== */
+/* CSS (Passo 2): Estilizar o Novo Formulário de Lembrete */
+/* ========================================================== */
+
+/* 1. Garante que o dropdown de Frequência use o estilo correto */
+#form-lembrete select {
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px; 
+  font-size: 1rem; 
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box; 
+  background-color: var(--cor-elemento); /* Fundo branco */
+  transition: all 0.2s ease;
+
+  
+  /* Remove a aparência nativa (seta feia) */
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238a94a6'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 1.25em;
+  padding-right: 40px; /* Espaço para a seta */
+  
+}
+
+#form-lembrete select:focus {
+  outline: none; 
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* 2. O container "grid" para os campos de hora (input type="time") */
+.lembrete-horarios-container {
+  display: grid;
+  /* Cria colunas responsivas:
+     - 1 coluna em telas pequenas
+     - 3 colunas em telas maiores (se couberem 150px cada)
+  */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px 12px; /* Espaçamento vertical e horizontal */
+  margin-top: 10px; /* Espaço abaixo do dropdown */
+}
+#form-lembrete input[type="time"] {
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px; 
+  font-size: 1rem; 
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box; 
+  background-color: var(--cor-elemento); /* Fundo branco */
+  transition: all 0.2s ease;
+  height: 48px; /* <<< Garante a mesma altura dos outros */
+}
+
+#form-lembrete input[type="time"]:focus {
+  outline: none; 
+  border-color: var(--cor-primaria);
+  background-color: var(--cor-elemento);
+  box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+
+/* ========================================================== */
+/* CSS (Passo 2): Estilizar o Novo Modal de Upload de Exame */
+/* ========================================================== */
+
+/* 1. Estiliza o Cabeçalho (Azul, como os outros) */
+#upload-exame-modal .modal-header {
+  background-color: var(--cor-primaria);
+  border-bottom: 1px solid var(--cor-secundaria);
+  border-radius: 12px 12px 0 0; 
+  padding: 16px 24px;
+}
+
+#upload-exame-modal .modal-title,
+#upload-exame-modal .modal-title i {
+  color: #ffffff;
+}
+
+#upload-exame-modal .modal-close {
+  color: #ffffff;
+  opacity: 0.7;
+}
+#upload-exame-modal .modal-close:hover {
+  opacity: 1;
+}
+
+/* 2. Garante que o card principal não tenha padding */
+#upload-exame-modal .modal-card {
+  padding: 0;
+}
+
+/* 3. Estiliza o conteúdo do formulário (fundo cinza, inputs) */
+/* (Reutiliza os estilos que já definimos para os outros modais) */
+#upload-exame-modal .consulta-tab-content {
+  background-color: var(--cor-fundo);
+}
+
+/* 4. Estiliza os campos de formulário (label, input) */
+#form-upload-exame .form-group {
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+  margin-bottom: 20px;
+}
+#form-upload-exame .form-group:last-child { 
+  margin-bottom: 0; 
+}
+
+#form-upload-exame label {
+  font-weight: 500; 
+  font-size: 0.9rem; 
+  color: var(--texto-secundario);
+}
+
+#form-upload-exame input[type="text"],
+#form-upload-exame input[type="date"],
+#form-upload-exame input[type="file"] {
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px; 
+  font-size: 1rem; 
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box; 
+  background-color: var(--cor-elemento); /* Fundo branco */
+  transition: all 0.2s ease;
+}
+
+#form-upload-exame input[type="text"]:focus,
+#form-upload-exame input[type="date"]:focus {
+  outline: none; 
+  border-color: var(--cor-primaria);
+  background-color: var(--cor-elemento);
+  box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* 5. Reutiliza o estilo dos botões de rádio (Ativa/Arquivada) */
+/* (Não precisamos de novo CSS, pois já usámos as classes .radio-button-group) */
+/* ========================================================== */
+/* CSS (Passo 2.1 - CORREÇÃO GERAL): Estilizar TODOS os Botões Rádio */
+/* (Esta regra agora é geral e aplica-se a Receitas, Exames, etc.) */
+/* ========================================================== */
+
+/* 1. O container que agrupa os botões */
+.radio-button-group {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 12px;
+}
+
+/* 2. Esconde a "bolinha" de rádio original */
+.radio-button-group input[type="radio"] {
+  display: none;
+}
+
+/* 3. Estiliza a 'label' para parecer um botão (Estado NÃO selecionado) */
+.radio-button-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--borda-suave);
+  background-color: var(--cor-fundo); /* Fundo cinza claro */
+  color: var(--texto-secundario);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+/* 4. Estilo de Hover (quando o rato passa por cima) */
+.radio-button-label:hover {
+  background-color: #e6f7ff; /* Azul bem clarinho */
+  border-color: var(--cor-primaria);
+}
+
+/* 5. ESTILO QUANDO SELECIONADO (A REGRA GERAL) */
+/* (Esta regra já não tem o ID do modal, por isso funciona em todo o lado) */
+.radio-button-group input[type="radio"]:checked + .radio-button-label {
+  background-color: var(--cor-primaria); /* Fundo AZUL */
+  color: #ffffff !important; /* Texto BRANCO (com !important por segurança) */
+  border-color: var(--cor-primaria);
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(65, 184, 213, 0.3);
+}
+
+/* 6. Faz o ícone dentro do botão selecionado ficar branco */
+.radio-button-group input[type="radio"]:checked + .radio-button-label i {
+  color: #ffffff !important; /* Icon BRANCO (com !important por segurança) */
+}
+/* ========================================================== */
+/* CSS (Passo 1.2 CORRIGIDO): Estilo dos Botões de Exame */
+/* (Agora todos agrupados à direita) */
+/* ========================================================== */
+
+/* ========================================================== */
+/* CSS (Passo 1.3 CORRIGIDO): Estilo dos Botões de Exame */
+/* (Agora todos agrupados à ESQUERDA) */
+/* ========================================================== */
+
+/* 1. Faz o rodapé agrupar todos os botões à ESQUERDA */
+.exame-footer .card-footer-actions {
+  /* --- A CORREÇÃO ESTÁ AQUI --- */
+  justify-content: flex-start; /* <<< MUDANÇA: Joga tudo para a esquerda */
+  /* --- FIM DA CORREÇÃO --- */
+  
+  align-items: center;
+  width: 100%;
+  gap: 16px; /* Espaço entre os botões */
+}
+
+/* 2. Estilo do Botão "Agendar Exame" (Não muda) */
+.btn-card-primary-exame {
+  background-color: var(--cor-secundaria);
+  color: white;
+  border: 1px solid var(--cor-secundaria);
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-card-primary-exame:hover {
+  background-color: var(--cor-elemento);
+  color: var(--cor-secundaria);
+  border-color: var(--cor-secundaria);
+}
+
+/* 3. Estilo do Botão "Apagar" (Não muda) */
+.exame-footer .btn-apagar-receita {
+  color: var(--cor-delete);
+}
+.exame-footer .btn-apagar-receita:hover {
+  color: #c53030;
+}
+
+
+
+
+/* ========================================================== */
+/* CSS (Passo 3 - V2): Estilizar o Modal "Agendar Exame" */
+/* (Inclui a Busca e os Botões Azuis Empilhados) */
+/* ========================================================== */
+
+/* 1. Estiliza o Cabeçalho (Não muda) */
+#agendar-exame-modal .modal-header {
+  background-color: var(--cor-primaria);
+  border-bottom: 1px solid var(--cor-secundaria);
+  border-radius: 12px 12px 0 0; 
+  padding: 16px 24px;
+}
+#agendar-exame-modal .modal-title,
+#agendar-exame-modal .modal-title i {
+  color: #ffffff;
+}
+#agendar-exame-modal .modal-close {
+  color: #ffffff;
+  opacity: 0.7;
+}
+#agendar-exame-modal .modal-close:hover {
+  opacity: 1;
+}
+#agendar-exame-modal .modal-card {
+  padding: 0;
+}
+
+/* 2. NOVO: Estilo da Barra de Busca (Passo 2) */
+.search-container-modal {
+  position: relative;
+  margin-bottom: 16px; /* Espaço antes do subtítulo */
+}
+.search-container-modal .search-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  color: var(--texto-suave);
+}
+#lab-search-input {
+  width: 100%;
+  padding: 14px 14px 14px 48px; /* Espaço para o ícone */
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  background-color: var(--cor-elemento);
+}
+#lab-search-input:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+
+/* 3. Estiliza a lista de laboratórios (Não muda) */
+.laboratorio-lista-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; 
+}
+.laboratorio-card {
+  background-color: var(--cor-elemento);
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: var(--sombra-subtil);
+}
+.laboratorio-card h4 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  color: var(--texto-principal);
+}
+.laboratorio-card p {
+  margin: 0 0 12px 0;
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+}
+.horarios-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; 
+  border-top: 1px dashed var(--borda-suave);
+  padding-top: 12px;
+}
+
+/* 4. NOVO: Estilo dos Botões de Horário (Azuis e Empilhados) */
+/* (Substitui a regra antiga .horario-btn) */
+.horario-btn-v2 {
+  background-color: var(--cor-primaria); /* Fundo azul */
+  color: white; /* Texto branco */
+  border: 1px solid var(--cor-secundaria);
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column; /* EMPILHA O TEXTO */
+  align-items: center; /* Centraliza */
+  gap: 2px; /* Espaço entre Data e Hora */
+  text-decoration: none;
+  transition: all 0.2s ease;
+  min-width: 110px; /* Largura mínima */
+}
+.horario-btn-v2 span {
+  display: block;
+  font-size: 0.8rem; /* Data menor */
+  font-weight: 400;
+  opacity: 0.9;
+}
+.horario-btn-v2 strong {
+  display: block;
+  font-size: 1rem; /* Hora maior */
+  font-weight: 700;
+}
+
+/* Efeito Hover (passar o rato) */
+.horario-btn-v2:hover {
+  background-color: var(--cor-elemento); /* Fundo branco */
+  color: var(--cor-secundaria); /* Texto azul */
+}
+
+/* Efeito SELECIONADO (Fica com outline) */
+.horario-btn-v2.selected {
+  background-color: var(--cor-elemento); /* Fundo branco */
+  color: var(--cor-secundaria); /* Texto azul */
+  border-color: var(--cor-secundaria);
+  /* Borda dupla para destacar seleção */
+  box-shadow: 0 0 0 3px var(--cor-primaria); 
+}
+
+
+/* ========================================================== */
+/* CSS (Etapa 2.1): Estilo do Novo Modal de Pagamento          */
+/* ========================================================== */
+
+/* 1. Estiliza o Cabeçalho (Azul, como os outros) */
+#pagamento-simulacao-modal .modal-header {
+  background-color: var(--cor-primaria);
+  border-bottom: 1px solid var(--cor-secundaria);
+  border-radius: 12px 12px 0 0;
+  padding: 16px 24px;
+}
+
+#pagamento-simulacao-modal .modal-title,
+#pagamento-simulacao-modal .modal-title i {
+  color: #ffffff;
+}
+
+#pagamento-simulacao-modal .modal-close {
+  color: #ffffff;
+  opacity: 0.7;
+}
+#pagamento-simulacao-modal .modal-close:hover {
+  opacity: 1;
+}
+
+/* 2. Garante que o card principal não tenha padding */
+#pagamento-simulacao-modal .modal-card {
+  padding: 0;
+}
+
+/* 3. Estiliza o conteúdo (fundo cinza) e o rodapé */
+#pagamento-simulacao-modal .consulta-tab-content {
+  background-color: var(--cor-fundo);
+}
+
+#pagamento-simulacao-modal .modal-footer-actions {
+  background-color: var(--cor-elemento);
+  border-radius: 0 0 12px 12px;
+}
+
+/* 4. Reutiliza o estilo da Anamnese para o "Resumo" */
+#pagamento-resumo-container .anamnese-view-group {
+  margin-bottom: 16px;
+}
+#pagamento-resumo-container .anamnese-view-group:last-child {
+  margin-bottom: 0;
+}
+#pagamento-resumo-container .anamnese-view-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+#pagamento-resumo-container .anamnese-view-group p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--texto-principal);
+  font-weight: 500;
+}
+
+
+/* ========================================================== */
+/* CSS (Etapa 2.3): Cor do Botão Confirmar QUANDO neseATIVO       */
+/* ========================================================== */
+
+/* Esta regra especial significa: "Quando o botão NÃO estiver 
+  desativado (:not(:disabled)), pinte-o de azul Orion"
+*/
+#salvar-agendamento-exame-btn:not(:disabled) {
+  background-color: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+  color: white;
+}
+
+#salvar-agendamento-exame-btn:not(:disabled):hover {
+  background-color: var(--cor-secundaria);
+  border-color: var(--cor-secundaria);
+}
+
+/* ========================================================== */
+/* CSS (Passo 4.2): Estilo do Novo Modal de Pagamento PIX     */
+/* ========================================================== */
+
+/* 1. Container do QR Code (para centralizar) */
+.pix-qrcode-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.pix-qrcode-container img {
+  width: 200px;
+  height: 200px;
+  border: 6px solid var(--cor-elemento);
+  border-radius: 8px;
+  box-shadow: var(--sombra-subtil);
+}
+
+/* 2. Instruções do PIX (Passo 1, 2, 3) */
+.pix-instructions {
+  font-size: 0.95rem;
+  color: var(--texto-secundario);
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
+  padding: 0 16px;
+}
+
+/* 3. Estilo da Mensagem de Sucesso (Etapa 2) */
+.pix-sucesso-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 250px; /* Garante altura mínima */
+}
+
+.pix-sucesso-container i {
+  font-size: 4rem;
+  color: #0E9F6E; /* Verde Sucesso */
+  margin-bottom: 20px;
+}
+
+.pix-sucesso-container h3 {
+  font-size: 1.5rem;
+  color: var(--texto-principal);
+  margin: 0 0 8px 0;
+}
+
+.pix-sucesso-container p {
+  font-size: 1rem;
+  color: var(--texto-secundario);
+  margin: 0;
+}
+
+/* ========================================================== */
+/* CSS (Passo 5.2): Alinhamento dos Botões no Card de Exame   */
+/* ========================================================== */
+
+/* 1. Transforma o rodapé num 'flex' para alinhar os filhos */
+.exame-footer {
+  display: flex;
+  justify-content: space-between; /* Joga um item para cada lado */
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+  margin-top: 16px;
+  border-top: 1px solid var(--borda-suave);
+  padding-top: 16px;
+}
+
+/* 2. O container dos botões da esquerda (Ver PDF, Apagar) */
+.card-footer-actions-esquerda {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Espaço entre "Ver PDF" e "Apagar" */
+}
+
+/* 3. O container dos botões da direita (Agendar) */
+.card-footer-actions-direita {
+  /* Não precisa de regras, pois o space-between já o joga para a direita */
+}
+
+
+/* ========================================================== */
+/* CSS (Passo 7.4.C): Correção Completa do Modal de Encaminhamento */
+/* ========================================================== */
+
+/* 1. Estilos gerais para o corpo do modal (garante margem entre os grupos) */
+#form-upload-encaminhamento .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* Espaço entre label e input */
+    margin-bottom: 16px; /* Margem padrão entre grupos de formulário */
+}
+#form-upload-encaminhamento .form-group:last-child {
+    margin-bottom: 0; /* Remove margem do último grupo antes do feedback */
+}
+
+/* 2. Estilos para os Botões de Rádio (Pendente/Agendado) */
+/* Garante que o grupo se comporta como uma linha de botões */
+#form-upload-encaminhamento .radio-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px; /* Espaço entre os botões de rádio */
+}
+
+/* 3. CORREÇÃO DEFINITIVA DO CAMPO DE UPLOAD */
+/* Esta regra corrige o problema de "colagem" e "quebra de linha" */
+#upload-encaminhamento-modal input[type="file"] {
+    display: block !important; /* Força o input a ocupar a sua própria linha */
+    width: 100%; 
+    box-sizing: border-box; 
+    margin-bottom: 0 !important; /* Remove margem que empurrava a nota de rodapé */
+}
+
+/* 4. Estilo da nota de rodapé (Tamanho máximo) */
+#upload-encaminhamento-modal .form-group small {
+    display: block !important; /* Força a nota de rodapé a ficar na linha de baixo */
+    margin-top: 4px !important; /* Pequena margem de separação do input */
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    padding: 0 4px; 
+}
+
+/* ========================================================== */
+/* CSS (Passo 7.4.D): Correção Final de Layout e Consistência */
+/* ========================================================== */
+
+/* 1. CORREÇÃO MESTRA: Garante o espaçamento vertical para TODOS os campos do modal */
+/* Esta regra assegura que cada grupo de formulário (incluindo o de UPLOAD) tem margem inferior, limpando o layout. */
+#form-upload-encaminhamento .form-group,
+#form-upload-encaminhamento .radio-button-group {
+    /* O espaçamento padrão de 20px (que está no design do Exames) */
+    margin-bottom: 20px !important; 
+    margin-top: 0 !important;
+}
+
+/* 2. Remove o espaçamento extra dos últimos blocos */
+/* Isso é crucial para que o feedback e o rodapé não fiquem longe demais. */
+#form-upload-encaminhamento .consulta-tab-content > .form-group:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* 3. Ajuste fino para campos de Título (Label) */
+/* Reduz o espaçamento entre o título do campo e o input, que estava muito grande. */
+#form-upload-encaminhamento label {
+    margin-bottom: 6px !important; 
+    margin-top: 0 !important;
+}
+
+/* 4. Layout do INPUT FILE e Nota de Rodapé (Repetição da Correção de Prioridade) */
+#upload-encaminhamento-modal input[type="file"] {
+    display: block !important; 
+    width: 100%; 
+    margin-bottom: 0 !important; 
+}
+
+#upload-encaminhamento-modal .form-group small {
+    display: block !important; 
+    margin-top: 4px !important; 
+    padding: 0;
+}
+
+/* 5. Corrige a margem do bloco de Status que estava a ser forçada */
+/* Remove qualquer margin-top desnecessária que pode estar a ser aplicada pelo JS ou classes de utilidade */
+#form-upload-encaminhamento .form-group[style*="margin-top: 20px"] {
+     margin-top: 20px !important; /* Mantém a separação apenas para o grupo de Status/Upload */
+}
+
+/* ========================================================== */
+/* CSS (Passo 7.4.F): Correção Mestra de Consistência e Layout */
+/* ========================================================== */
+
+/* 1. CORREÇÃO MESTRA 1: Força Border-Radius e Estilo para INPUTS E TEXTAREAS */
+/* Target: Inputs no modal de Encaminhamento e Exames (Qualquer um que use o padrão) */
+#form-upload-encaminhamento input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
+#form-upload-encaminhamento textarea,
+#form-upload-exame input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]),
+#form-upload-exame textarea 
+{
+    /* Garante que o input simples seja arredondado e com padding (como na Imagem 2) */
+    padding: 12px !important;
+    border-radius: 8px !important; 
+    border: 1px solid var(--borda-suave) !important;
+    background-color: var(--cor-elemento) !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. CORREÇÃO MESTRA 2: Garante Espaçamento Consistente de 20px */
+/* Target: Todos os grupos de formulário nos modais de upload. */
+#form-upload-encaminhamento .form-group,
+#form-upload-exame .form-group
+{
+    margin-bottom: 20px !important; 
+    margin-top: 0 !important;
+}
+
+/* 3. Ajuste fino para campo de Data da Indicação (para o layout não quebrar) */
+/* (Este é o campo que estava a precisar da margem de 20px) */
+#form-upload-encaminhamento .form-group:nth-child(4) {
+    margin-bottom: 20px !important; 
+}
+
+/* [COLE ESTE NOVO BLOCO DE CÓDIGO NO FINAL DO SEU CSS] */
+
+/* ========================================================== */
+/* CSS (Passo 2): Estilo do Novo Modal de Atestado */
+/* ========================================================== */
+
+/* 1. Garante que o layout de 2 colunas para Data/Duração funcione */
+/* (Esta regra já pode existir, mas garante que se aplica ao novo form) */
+#form-upload-atestado .form-grid.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* 2. Garante que os campos de formulário dentro do modal de atestado
+      usem o fundo cinza claro (como no modal de exame) */
+#form-upload-atestado input[type="text"],
+#form-upload-atestado input[type="date"],
+#form-upload-atestado textarea {
+    background-color: var(--cor-fundo) !important; /* Fundo cinza claro */
+}
+
+/* 3. Garante as cores corretas para os ícones dos botões de Rádio */
+/* (O seu CSS já cuida da seleção, isto cuida do estado padrão) */
+#form-upload-atestado .radio-button-label .fa-check-circle {
+    color: var(--status-online); /* Verde */
+}
+
+#form-upload-atestado .radio-button-label .fa-times-circle {
+    color: var(--cor-delete); /* Vermelho */
+}
+
+/* 4. Garante que o ícone fique branco quando o rádio for selecionado */
+/* (Esta regra provavelmente já existe, mas é bom garantir) */
+#form-upload-atestado input[type="radio"]:checked + .radio-button-label i {
+    color: #ffffff !important;
+}
+
+
+/* [COLE ESTE NOVO BLOCO DE CÓDIGO NO FINAL DO SEU CSS] */
+
+/* ========================================================== */
+/* CSS (Passo 2): Estilo do Novo Modal de Atestado */
+/* ========================================================== */
+
+/* 1. Estiliza os campos de formulário (label, input, textarea) */
+#form-upload-atestado .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* Espaço entre label e input */
+    margin-bottom: 20px; /* Espaço entre os campos (O RESPIRO) */
+}
+#form-upload-atestado .form-group:last-child {
+    margin-bottom: 0;
+}
+#form-upload-atestado .form-group label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+}
+#form-upload-atestado input[type="text"],
+#form-upload-atestado input[type="date"],
+#form-upload-atestado textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    background-color: var(--cor-fundo) !important; /* Fundo cinza claro */
+    transition: all 0.2s ease;
+}
+#form-upload-atestado input[type="text"]:focus,
+#form-upload-atestado input[type="date"]:focus,
+#form-upload-atestado textarea:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    background-color: var(--cor-elemento) !important; /* Fundo branco */
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* 2. Estiliza o layout de 2 colunas (Data e Duração) */
+#form-upload-atestado .form-grid.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* 3. Estiliza os BOTÕES DE RÁDIO (Status) */
+#form-upload-atestado .radio-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+#form-upload-atestado .radio-button-group input[type="radio"] {
+    display: none; /* Esconde a bolinha de rádio feia */
+}
+#form-upload-atestado .radio-button-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--borda-suave);
+    background-color: var(--cor-fundo); /* Fundo cinza claro */
+    color: var(--texto-secundario);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+#form-upload-atestado .radio-button-label:hover {
+    background-color: #e6f7ff; /* Azul bem clarinho */
+    border-color: var(--cor-primaria);
+}
+
+/* 4. Estilo do Rádio SELECIONADO */
+#form-upload-atestado input[type="radio"]:checked + .radio-button-label {
+    background-color: var(--cor-primaria); /* Fundo AZUL */
+    color: #ffffff !important; /* Texto BRANCO */
+    border-color: var(--cor-primaria);
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(65, 184, 213, 0.3);
+}
+
+/* 5. Estilo dos Ícones dos Rádios */
+#form-upload-atestado .radio-button-label .fa-check-circle {
+    color: var(--status-online); /* Verde */
+}
+#form-upload-atestado .radio-button-label .fa-times-circle {
+    color: var(--cor-delete); /* Vermelho */
+}
+#form-upload-atestado input[type="radio"]:checked + .radio-button-label i {
+    color: #ffffff !important; /* Ícone fica branco */
+}
+
+/* [COLE ESTE NOVO BLOCO DE CÓDIGO NO FINAL DO SEU CSS] */
+
+/* ========================================================== */
+/* CSS PARA FORMATAR OS TEMPLATES DE PDF (Atestado, etc.) */
+/* ========================================================== */
+
+/* 1. Define o estilo base do template (já deve existir, mas garantimos) */
+/* ESTILO DOS TEMPLATES PDF (CSS CORRIGIDO) */
+.pdf-template {
+  position: fixed;
+  left: -9999px; /* Fora da tela */
+  top: 0;
+  width: 210mm;
+  min-height: 297mm;
+  background-color: #ffffff;
+  padding: 15mm;
+  box-sizing: border-box;
+  font-family: 'Helvetica', sans-serif;
+  color: #333;
+  font-size: 12px;
+  line-height: 1.5;
+  
+  /* O SEGREDO PARA NÃO SAIR EM BRANCO: */
+  display: block; 
+  visibility: visible;
+  opacity: 1;
+  z-index: -1;
+}
+
+/* Cabeçalho do PDF */
+.pdf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #41b8d5; /* Cor Orion */
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.pdf-logo {
+  width: 150px;
+  height: auto;
+}
+
+.pdf-doctor-info {
+  text-align: right;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.pdf-main h2 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 20px 0;
+  color: #1a202c;
+}
+
+.pdf-patient-info {
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+
+.pdf-footer {
+  position: absolute;
+  bottom: 15mm;
+  left: 15mm;
+  right: 15mm;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  color: #718096;
+  font-size: 10px;
+}
+/* [COLE ESTE NOVO BLOCO DE CÓDIGO NO FINAL DO SEU CSS] */
+
+/* ========================================================== */
+/* CSS (Passo 2): Estilo do Modal de Progresso */
+/* ========================================================== */
+
+/* Garante que o botão "Fechar" no rodapé ocupe 100%
+   da largura se for o único botão, e centralize */
+#progresso-modal .modal-footer-actions {
+    justify-content: center;
+}
+
+#progresso-modal .modal-footer-actions .btn-primary-painel {
+    width: 100%;
+    max-width: 200px; /* Limita a largura do botão "Fechar" */
+}
+
+
+/* ========================================================== */
+/* CSS DO MODAL DE CHECK-IN DIÁRIO (Passo 2) */
+/* (Cole isto no final de perfil-de-saude.css) */
+/* ========================================================== */
+
+/* 1. Cabeçalho e Ícone */
+/* (O ícone da tua imagem é verde) */
+#checkin-modal .icon-checkin-header {
+  color: #10b981; /* Verde (pode ser var(--status-online) se preferir) */
+}
+
+/* (O cabeçalho já usa .modal-header e .modal-title, que já têm estilo) */
+
+
+/* 2. Barra de Progresso (Baseada na tua barra da Anamnese) */
+.progresso-container-checkin {
+  margin-bottom: 24px;
+}
+
+.progresso-container-checkin .progresso-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.progresso-container-checkin .progresso-info label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.progresso-container-checkin .progresso-info span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--cor-primaria);
+}
+/* (A barra em si reutiliza .anamnese-progress-bar-container) */
+
+
+/* 3. Lista de Metas */
+.lista-metas-checkin {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 4. Item da Meta (O Botão Clicável) */
+.meta-item-checkin {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--cor-elemento);
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--texto-principal);
+}
+
+/* Ícone do item */
+.meta-item-checkin i {
+  font-size: 1.25rem;
+  width: 20px;
+  text-align: center;
+  color: var(--cor-primaria); /* Ícone azul (não concluído) */
+  transition: all 0.2s ease;
+}
+
+/* Efeito Hover (passar o rato) */
+.meta-item-checkin:hover:not(.concluido) {
+  background-color: #f0f9ff; /* Azul bem clarinho */
+  border-color: var(--cor-primaria);
+}
+
+
+/* 5. O ESTADO "CONCLUÍDO" (A parte mais importante!) */
+.meta-item-checkin.concluido {
+  background-color: #f0fdf4; /* Fundo verde claro */
+  border-color: #bbf7d0; /* Borda verde */
+}
+
+/* Texto riscado */
+.meta-item-checkin.concluido span {
+  text-decoration: line-through;
+  color: var(--texto-secundario);
+  opacity: 0.8;
+}
+
+/* Ícone de check (verde) */
+.meta-item-checkin.concluido i {
+  color: #10b981; /* Verde (var(--status-online)) */
+  font-weight: 600; /* Deixa o check mais "forte" */
+}
+
+/* ========================================================== */
+/* CSS DO MODAL DE UPLOAD DE VACINA (Passo 2) */
+/* (Cole isto no final de perfil-de-saude.css) */
+/* ========================================================== */
+
+/* 1. Estiliza o Cabeçalho (Azul) */
+#upload-vacina-modal .modal-header {
+  background-color: var(--cor-primaria);
+  border-bottom: 1px solid var(--cor-secundaria);
+  border-radius: 12px 12px 0 0;
+  padding: 16px 24px;
+}
+
+#upload-vacina-modal .modal-title,
+#upload-vacina-modal .modal-title i {
+  color: #ffffff;
+}
+
+#upload-vacina-modal .modal-close {
+  color: #ffffff;
+  opacity: 0.7;
+}
+#upload-vacina-modal .modal-close:hover {
+  opacity: 1;
+}
+
+/* 2. Garante que o card principal não tenha padding */
+#upload-vacina-modal .modal-card {
+  padding: 0;
+}
+
+/* 3. Estiliza o conteúdo (fundo cinza) */
+#upload-vacina-modal .consulta-tab-content {
+  background-color: var(--cor-fundo);
+}
+
+/* 4. Estiliza os campos de formulário (label, input) */
+#form-upload-vacina .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+#form-upload-vacina .form-group:last-child {
+  margin-bottom: 0;
+}
+
+#form-upload-vacina label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+}
+
+/* Inputs de texto e data */
+#form-upload-vacina input[type="text"],
+#form-upload-vacina input[type="date"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  background-color: var(--cor-elemento) !important; /* Fundo branco */
+  transition: all 0.2s ease;
+}
+
+#form-upload-vacina input[type="text"]:focus,
+#form-upload-vacina input[type="date"]:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* 5. Estiliza os botões de Rádio (Válida/Expirada) */
+/* (Reutiliza as classes .radio-button-group que já existem) */
+#form-upload-vacina .radio-button-label .fa-check-circle {
+  color: var(--status-online); /* Verde */
+}
+#form-upload-vacina .radio-button-label .fa-times-circle {
+  color: var(--cor-delete); /* Vermelho */
+}
+#form-upload-vacina input[type="radio"]:checked + .radio-button-label i {
+  color: #ffffff !important; /* Ícone fica branco */
+}
+
+/* 6. Estiliza o input de ficheiro */
+#form-upload-vacina input[type="file"] {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--texto-secundario);
+}
+
+#form-upload-vacina input[type="file"]::file-selector-button {
+  background-color: var(--cor-fundo);
+  color: var(--texto-secundario);
+  border: 1px solid var(--borda-suave);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: all 0.2s ease;
+}
+
+#form-upload-vacina input[type="file"]::file-selector-button:hover {
+  background-color: var(--borda-suave);
+  color: var(--texto-principal);
+}
+
+/*--------------------------------------------------------------------------*/
+
+@media (min-width: 768px) {
+    #form-novo-registro-diario .form-grid.two-columns {
+         grid-template-columns: 1fr 1fr;
+         gap: 15px 20px;
+    }
+}
+
+
+/* (Se quisermos 2 colunas em desktop, adicionamos uma media query depois) */
+@media (min-width: 768px) {
+    #form-novo-registro-diario .form-grid.two-columns {
+         grid-template-columns: 1fr 1fr; /* 2 colunas em telas maiores */
+         gap: 15px 20px;
+    }
+}
+
+
+/* Ativa 2 colunas em telas maiores */
+@media (min-width: 768px) {
+    #form-anamnese .form-grid.two-columns {
+        grid-template-columns: 1fr 1fr; /* 2 colunas */
+    }
+}
+
+/* --- 9. Responsividade (Desktop) --- */
+@media (min-width: 768px) {
+    .container { padding: 24px; }
+    .patient-header { padding: 24px; flex-wrap: nowrap; }
+    .patient-details h1 { font-size: 1.5rem; }
+    .hamburger-menu { display: none; }
+    .desktop-only { display: flex; } /* Mostra .header-actions */
+    .mobile-only { display: none; } /* Esconde .hamburger-menu */
+    .tab-nav { display: flex; } /* Mostra abas desktop */
+    .mobile-nav { display: none; } /* Esconde menu lateral mobile */
+}
+
+/* ========================================================== */
+/* CORREÇÃO SEGURA DE LAYOUT (GRID & MOBILE) */
+/* ========================================================== */
+
+/* 1. Ajuste do Grid Desktop (Para esticar os cards da direita) */
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        display: grid !important;
+        /* Define colunas fixas: 2/3 para gráfico, 1/3 para cards */
+        grid-template-columns: 2fr 1fr !important; 
+        align-items: stretch !important; /* Força altura igual */
+        gap: 24px !important;
+    }
+
+    /* Coluna da Direita (Cards) */
+    .dashboard-grid > div:last-child {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important; /* Ocupa a altura total */
+        width: 100% !important;
+        justify-content: space-between !important; /* Espalha os cards */
+    }
+
+    /* Força os cards a terem altura e largura total */
+    .dashboard-grid > div:last-child .card,
+    .dashboard-grid > div:last-child .dashboard-card {
+        width: 100% !important;
+        flex-grow: 1 !important; /* Faz crescer para ocupar espaço */
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Garante que o conteúdo interno do card empurra o rodapé */
+    .dashboard-grid > div:last-child .card-content {
+        flex-grow: 1 !important;
+    }
+}
+
+/* 2. Ajuste Mobile (Para empilhar tudo verticalmente) */
+@media (max-width: 1023px) {
+    .dashboard-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    .dashboard-grid > div,
+    .dashboard-grid > div:last-child,
+    .dashboard-grid .card,
+    .dashboard-grid .dashboard-card {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        flex: none !important;
+    }
+}

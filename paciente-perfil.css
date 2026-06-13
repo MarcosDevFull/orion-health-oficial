@@ -1,0 +1,2348 @@
+/* paciente-perfil.css */
+
+/* ==========================================================
+   VARIÁVEIS E RESET BÁSICO
+   ========================================================== */
+:root {
+    --cor-primaria: #41b8d5;
+    --cor-secundaria: #3197b1;
+    --cor-fundo: #f8f9fa;
+    --cor-elemento: #ffffff;
+    --texto-principal: #1a202c;
+    --texto-secundario: #4a5568;
+    --texto-suave: #8a94a6;
+    --borda-suave: #e2e8f0;
+    --sombra-subtil: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --cor-delete: #e53e3e;
+    --status-online: #28a745;
+    --status-offline: #6c757d;
+    --header-height: 70px;
+    --sidebar-width: 240px; /* Largura da sidebar no desktop */
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--texto-principal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- DASHBOARD GRID (Topo) --- */
+.dashboard-grid {
+    display: grid;
+    /* Ajuste: A coluna da direita (1fr) terá no mínimo 350px, evitando ficar espremida */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+    gap: 24px;
+    margin-bottom: 32px;
+    align-items: stretch; /* Garante altura igual */
+}
+
+/* Se quiseres forçar o layout 2/3 + 1/3 em telas grandes: */
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 2fr 1fr; /* Esquerda maior, Direita menor */
+    }
+}
+
+/* Garante que os cards ocupam 100% da largura da sua coluna */
+.dashboard-grid .card, 
+.dashboard-grid .dashboard-card {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   HEADER (Mobile First)
+   ========================================================== */
+.profile-header {
+    background-color: var(--cor-primaria);
+    color: white;
+    height: var(--header-height);
+    padding: 0 16px; /* Padding menor no mobile */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hamburger-menu {
+    display: flex; /* Visível no mobile */
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.header-logo {
+    height: 45px;
+    display: none;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Gap menor no mobile */
+}
+
+.icon-button {
+    background: none; border: none; font-size: 1.4rem; /* Sino */
+    color: white; cursor: pointer; position: relative; padding: 0;
+}
+
+.profile-menu {
+    position: relative;
+}
+
+.profile-menu-button {
+    display: flex; align-items: center; gap: 8px;
+    background: none; border: none; cursor: pointer;
+    color: white; padding: 4px; border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.profile-menu-button:hover,
+.profile-menu-button:focus-visible {
+    background-color: rgba(255, 255, 255, 0.1);
+    outline: none;
+}
+
+.photo-wrapper {
+    position: relative;
+}
+
+#patient-photo-header {
+    width: 40px; height: 40px; border-radius: 50%;
+    object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.status-indicator {
+    position: absolute; bottom: 1px; right: 1px;
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--cor-primaria);
+}
+.status-online { background-color: var(--status-online); }
+.status-offline { background-color: var(--status-offline); }
+
+.profile-details-header {
+    display: none; /* Nome escondido no mobile */
+}
+
+.dropdown-arrow {
+    display: none; /* Seta escondida no mobile (pode mostrar se quiser) */
+}
+
+/* Dropdown Menu (Estilos iguais ao do profissional) */
+.dropdown-menu {
+    position: absolute; top: calc(100% + 12px); right: 0;
+    background-color: var(--cor-elemento); color: var(--texto-principal);
+    border-radius: 8px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1100; width: 260px; overflow: hidden;
+    animation: fadeInDropdown 0.2s ease-out;
+}
+@keyframes fadeInDropdown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.dropdown-header {
+    padding: 16px; border-bottom: 1px solid var(--borda-suave);
+    display: flex; flex-direction: column; gap: 4px;
+}
+.dropdown-header span { font-weight: 600; color: var(--texto-principal); }
+.dropdown-item {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    padding: 12px 16px; background: none; border: none; text-align: left;
+    color: var(--texto-secundario); text-decoration: none; cursor: pointer;
+    font-size: 0.9rem; font-family: 'Inter', sans-serif;
+}
+.dropdown-item:hover { background-color: var(--cor-fundo); color: var(--texto-principal); outline: none; }
+.dropdown-item i { width: 20px; text-align: center; color: var(--texto-suave); }
+.dropdown-item-logout { color: var(--cor-delete); }
+.dropdown-item-logout:hover { color: var(--cor-delete); background-color: #fff5f5; }
+
+/* ÍCONE DE STATUS CORRIGIDO (PONTO) */
+.status-icon-dropdown {
+    font-size: 0.7rem !important;  /* Ponto pequeno */
+    width: 20px !important;       /* Mantém espaço para alinhar texto */
+    text-align: center !important;/* Centraliza o ponto */
+    border-radius: 0;           /* Remove o border-radius errado */
+}
+
+.status-icon-dropdown.status-online { color: var(--status-online) !important; }
+.status-icon-dropdown.status-offline { color: var(--status-offline) !important; }
+/* Garante que o ícone de Sair mantenha sua cor */
+.dropdown-item-logout i { color: var(--cor-delete); }
+.dropdown-item-logout:hover i { color: var(--cor-delete); }
+/* ==========================================================
+   CORREÇÃO VISUAL DO PONTO DE STATUS (DROPDOWN)
+   (Substitua as regras .status-icon-dropdown anteriores por esta)
+   ========================================================== */
+
+/* Regra geral para ícones no dropdown (Mantém o alinhamento) */
+/* (Esta regra já deve existir no seu CSS) */
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+    color: var(--texto-suave);
+    flex-shrink: 0; /* Impede que o ícone encolha */
+}
+
+/* * Regra específica para o PONTO de status
+ * Transforma o <i> em um bloco circular (ponto)
+*/
+.status-icon-dropdown {
+    /* 1. Esconde o ícone (fa-circle) do Font Awesome */
+    font-size: 1px !important; 
+    
+    /* 2. Cria o ponto (círculo) manualmente */
+    display: inline-block;
+    width: 10px !important;     /* Tamanho do ponto */
+    height: 10px !important;    /* Tamanho do ponto */
+    border-radius: 50%;   /* Torna 100% circular */
+    
+    /* 3. Alinha o ponto dentro do espaço de 20px (para o texto "Status:" alinhar) */
+     /* Centraliza o ponto de 10px dentro da largura de 20px do <i> */
+    
+    /* 4. A cor virá das regras .status-online/offline abaixo */
+}
+
+/* Define as cores do PONTO (agora usando background-color) */
+.status-icon-dropdown.status-online { 
+    background-color: var(--status-online, #28a745) !important; 
+    color: transparent !important; /* Esconde qualquer cor de fonte residual */
+}
+.status-icon-dropdown.status-offline { 
+    background-color: var(--status-offline, #6c757d) !important; 
+    color: transparent !important;
+}
+
+/* (As regras de Sair e Configurações permanecem iguais) */
+/* ==========================================================
+   FIM DA CORREÇÃO
+   ========================================================== */
+
+/* ==========================================================
+   LAYOUT PRINCIPAL (Mobile First)
+   ========================================================== */
+.profile-layout-container {
+    display: flex;
+}
+
+/* ==========================================================
+   PASSO 1: SUBSTITUA A REGRA .profile-sidebar (mobile-first)
+   ========================================================== */
+.profile-sidebar {
+    width: var(--sidebar-width, 240px);
+    background-color: var(--cor-elemento);
+    border-right: 1px solid var(--borda-suave);
+    padding: 25px 15px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    /* --- CORREÇÕES MOBILE (Baseado no Perfil Profissional) --- */
+    position: fixed;
+    /* Define a altura ABAIXO do header */
+    height: calc(100vh - var(--header-height, 70px)); 
+    /* Define o topo ABAIXO do header */
+    top: var(--header-height, 70px); 
+    left: 0;
+    /* Z-index MENOR que o header (que tem 1000) */
+    z-index: 900; 
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-sidebar.open {
+    transform: translateX(0); /* Mostra a sidebar */
+}
+
+.profile-sidebar nav ul { list-style: none; padding: 0; margin: 0; }
+.profile-sidebar nav li a {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 10px; margin-bottom: 8px; text-decoration: none;
+    color: var(--texto-secundario); font-weight: 500; font-size: 0.95rem;
+    border-radius: 6px; transition: background-color 0.2s ease, color 0.2s ease;
+}
+.profile-sidebar nav li a:hover { background-color: var(--cor-fundo); color: var(--texto-principal); }
+.profile-sidebar nav li a.active { background-color: #e0f7ff; color: var(--cor-primaria); font-weight: 600; }
+.profile-sidebar nav li a i { width: 20px; text-align: center; font-size: 1rem; }
+
+
+/* ADICIONE ESTAS REGRAS */
+.profile-sidebar nav {
+    flex-grow: 1; /* Faz a <nav> crescer para ocupar o espaço */
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-sidebar nav ul {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Faz a <ul> ocupar 100% da altura da <nav> */
+    flex-grow: 1; /* Alternativa para height: 100% */
+}
+
+
+/* ADICIONE ESTA NOVA REGRA (para o <li> de Configurações) */
+.sidebar-footer-link {
+    margin-top: auto; /* <<< A MÁGICA ACONTECE AQUI */
+    padding-top: 15px; /* Espaço acima do link */
+    border-top: 1px solid var(--borda-suave); /* Linha separadora */
+}
+
+/* Opcional: Garante que o link "Configurações" não fique azul (ativo) */
+.sidebar-footer-link a.active {
+    background-color: transparent;
+    color: var(--texto-secundario);
+    font-weight: 500;
+}
+/* Backdrop (Fundo escuro para menu mobile) */
+/* ==========================================================
+   PASSO 2: SUBSTITUA A REGRA .backdrop
+   ========================================================== */
+.backdrop {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    /* Z-index MENOR que a sidebar (900) e o header (1000) */
+    z-index: 850; 
+}
+
+.backdrop.hidden {
+    display: none;
+}
+
+/* Conteúdo Principal (Mobile First: 100% largura) */
+.profile-main-content {
+    width: 100%;
+    flex-grow: 1;
+    padding: 24px; /* Padding mobile */
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.profile-page.hidden {
+    display: none;
+}
+
+/* Seções de Conteúdo (Estilos básicos do seu design) */
+.section-title { font-size: 1.3rem; font-weight: 600; color: var(--texto-principal); margin: 0 0 5px 0; display: flex; align-items: center; gap: 10px; }
+.section-title i { color: var(--cor-primaria); }
+.section-subtitle { font-size: 0.95rem; color: var(--texto-secundario); margin: 0 0 25px 0; }
+.welcome-section { margin-bottom: 30px; }
+.welcome-section h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 5px 0; }
+.welcome-section p { color: var(--texto-secundario); margin: 0; }
+.quick-actions-section { margin-bottom: 30px; }
+.quick-actions-buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* (Estilos dos botões e cards - Adicionados para completar) */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; border: 1px solid transparent; transition: all 0.2s ease; font-size: 0.95rem; line-height: 1.5; white-space: nowrap; }
+.btn-secondary { background-color: var(--cor-elemento); color: var(--texto-secundario); border-color: var(--borda-suave); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.btn-secondary:hover { background-color: var(--cor-fundo); border-color: #cbd5e0;}
+.btn-primary { background-color: var(--cor-primaria); color: white; border-color: var(--cor-primaria); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.btn-primary:hover { background-color: var(--cor-secundaria); border-color: var(--cor-secundaria); }
+.btn-link { background: none; border: none; color: var(--cor-primaria); font-weight: 500; padding: 0; cursor: pointer; text-decoration: none; font-size: 0.9rem; }
+.btn-link:hover { text-decoration: underline; }
+.full-width { width: 100%; }
+
+.summary-cards-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.summary-card { background-color: var(--cor-elemento); border-radius: 12px; padding: 20px; box-shadow: var(--sombra-subtil); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.summary-card i { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+.summary-card .icon-blue { color: #3b82f6; }
+.summary-card .icon-green { color: #10b981; }
+.summary-card .icon-purple { color: #8b5cf6; }
+.summary-card .value { font-size: 1.75rem; font-weight: 700; display: block; margin-bottom: 2px; }
+.summary-card .label { font-size: 0.9rem; font-weight: 500; color: var(--texto-secundario); display: block; }
+.summary-card .subtext { font-size: 0.8rem; color: var(--texto-suave); display: block; margin-top: 4px; margin-bottom: 12px;}
+
+.split-section { display: grid; grid-template-columns: 1fr; gap: 30px; margin-bottom: 30px; }
+.upcoming-appointments-section, .reminders-section, .health-indicators-section { background-color: var(--cor-elemento); border-radius: 12px; padding: 25px; box-shadow: var(--sombra-subtil); display: flex; flex-direction: column; }
+.placeholder { color: var(--texto-suave); font-style: italic; text-align: center; padding: 20px 0; }
+#upcoming-appointments-list, #reminders-list, #health-indicators-content { flex-grow: 1; margin-bottom: 20px; }
+
+/* Overlay de Carregamento */
+.loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; }
+.loading-overlay:not(.hidden) { display: flex; }
+.loading-overlay .spinner { border: 5px solid var(--borda-suave); border-top: 5px solid var(--cor-primaria); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+
+/* ==========================================================
+   ESTILOS PARA O CONTEÚDO DO DASHBOARD (Colar no final de paciente-perfil.css)
+   ========================================================== */
+
+/* --- Ações Rápidas --- */
+/* (Os estilos .btn e .btn-secondary já devem estar a funcionar) */
+
+/* --- Cards de Resumo --- */
+/* (Os estilos .summary-card já devem estar a funcionar) */
+
+/* --- Seção Dividida (Consultas e Lembretes) --- */
+.split-section {
+    display: grid;
+    grid-template-columns: 1fr; /* Padrão mobile */
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.upcoming-appointments-section, 
+.reminders-section, 
+.health-indicators-section {
+    background-color: var(--cor-elemento);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--sombra-subtil);
+    display: flex;
+    flex-direction: column;
+}
+
+#upcoming-appointments-list, 
+#reminders-list, 
+#health-indicators-content {
+    flex-grow: 1; /* Ocupa o espaço disponível, empurrando o botão para baixo */
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre itens */
+}
+
+.full-width { 
+    width: 100%; 
+}
+
+/* Estilo Placeholder (Revisão) */
+.placeholder {
+    color: var(--texto-suave);
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+}
+
+/* --- Estilos Próximas Consultas --- */
+.appointment-item-paciente {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--borda-suave);
+}
+.appointment-item-paciente:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.appointment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.appointment-details strong {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+}
+.appointment-details span {
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+}
+.appointment-date {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    flex-shrink: 0; /* Impede que a data encolha */
+    margin-left: 10px;
+}
+.appointment-date.today {
+    color: var(--cor-primaria); /* Destaque para hoje */
+}
+
+/* --- Estilos Lembretes Diários --- */
+.reminder-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--cor-fundo); /* Fundo cinza claro */
+    padding: 12px;
+    border-radius: 8px;
+}
+.reminder-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.reminder-info i { /* Ícone (tipo de lembrete) */
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center;
+}
+.reminder-info div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.reminder-info strong {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+}
+.reminder-info span {
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+}
+.reminder-time {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+.reminder-time.today {
+    color: var(--icon-green, #10b981); /* Destaque verde */
+}
+
+/* --- Estilos Indicadores de Saúde --- */
+.indicator-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+}
+.indicator-item span:first-child { /* Label (Qualidade do Sono) */
+    width: 120px; /* Alinha os labels */
+    flex-shrink: 0;
+    color: var(--texto-secundario);
+}
+.indicator-bar {
+    flex-grow: 1;
+    height: 10px;
+    background-color: var(--borda-suave);
+    border-radius: 5px;
+    overflow: hidden;
+}
+.indicator-bar .bar-fill {
+    height: 100%;
+    background-color: var(--cor-primaria);
+    border-radius: 5px;
+}
+.indicator-value {
+    font-weight: 600;
+    color: var(--texto-principal);
+    width: 40px; /* Alinha os valores */
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* ==========================================================
+   ESTILO PARA A SECÇÃO "AÇÕES RÁPIDAS" (Estilo Card)
+   ========================================================== */
+
+.quick-actions-section {
+    background-color: var(--cor-elemento, #ffffff);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--sombra-subtil, 0 4px 12px rgba(0, 0, 0, 0.05));
+    margin-bottom: 30px; /* Espaço abaixo, igual aos outros blocos */
+}
+
+/* Garante que o H2 e o P dentro dela tenham o espaçamento correto */
+.quick-actions-section .section-title {
+    margin-top: 0; /* Remove margem extra no topo */
+}
+
+/* ==========================================================
+   ESTILO ATUALIZADO PARA OS CARDS DE RESUMO (Estilo Profissional)
+   (Substitua as regras .summary-cards-section, .summary-card, etc.)
+   ========================================================== */
+
+.summary-cards-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+/* Regra principal do Card (Fundo Azul) */
+
+
+.summary-card {
+    background-color: var(--cor-primaria);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 14px 0 rgba(65, 184, 213, 0.3);
+    
+    /* --- MUDANÇAS AQUI --- */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* <<< MUDA DE 'center' PARA 'flex-start' (Alinha horizontalmente à esquerda) */
+    text-align: left;        /* <<< MUDA DE 'center' PARA 'left' (Alinha o texto à esquerda) */
+    /* --- FIM DAS MUDANÇAS --- */
+
+    gap: 5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* (As regras :hover, i, .value, .label, .subtext, .btn-link permanecem iguais) */
+
+/* Garante que o botão .btn-link (que é inline) também se alinhe à esquerda */
+.summary-card .btn-link {
+    /* ... (estilos existentes do botão) ... */
+    align-self: flex-start; /* <<< ADICIONE ESTA LINHA */
+}
+
+.summary-card:hover {
+     transform: translateY(-5px); /* Efeito hover */
+     box-shadow: 0 8px 20px rgba(65, 184, 213, 0.4);
+}
+
+/* Ícones (Todos brancos) */
+.summary-card i {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+    color: #ffffff; /* <<< COR DO ÍCONE BRANCA */
+    opacity: 0.9;
+}
+
+/* Sobrescreve classes de cor específicas (se existirem) */
+.summary-card .icon-blue,
+.summary-card .icon-green,
+.summary-card .icon-purple {
+    color: #ffffff !important; /* Garante que fiquem brancos */
+}
+
+/* Textos (Todos brancos) */
+.summary-card .value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.summary-card .label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #ffffff;
+    display: block;
+}
+
+.summary-card .subtext {
+    font-size: 0.85rem;
+    color: #ffffff;
+    opacity: 0.8; /* Transparência para subtexto */
+    display: block;
+    margin-top: 2px;
+    margin-bottom: 15px;
+    flex-grow: 1; /* Empurra o botão para baixo (se o card esticar) */
+}
+
+/* Botão/Link "Ver Histórico" (Estilo Botão Claro) */
+.summary-card .btn-link {
+    background-color: rgba(255, 255, 255, 0.2); /* <<< Fundo branco transparente */
+    color: #ffffff; /* <<< Link branco */
+    font-weight: 600;
+    padding: 8px 16px; /* <<< Adiciona padding (para parecer botão) */
+    border-radius: 6px; /* <<< Adiciona borda arredondada */
+    text-decoration: none; /* <<< Remove sublinhado */
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.summary-card .btn-link:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Mais claro no hover */
+    text-decoration: none; /* Garante que não apareça sublinhado */
+}
+
+/* ==========================================================
+   ESTILO PARA O CARD "SEUS INDICADORES DE SAÚDE" (Estilo Azul)
+   ========================================================== */
+
+/* 1. Aplica o fundo azul e cor de texto branca ao card principal */
+.health-indicators-section {
+    background-color: var(--cor-primaria); /* Fundo Azul */
+    color: #ffffff; /* Texto Padrão Branco */
+    box-shadow: 0 4px 14px 0 rgba(65, 184, 213, 0.3); /* Sombra Azul */
+}
+
+/* 2. Garante que os títulos e subtítulos fiquem brancos */
+.health-indicators-section .section-title,
+.health-indicators-section .section-title i,
+.health-indicators-section .section-subtitle,
+.health-indicators-section .placeholder {
+    color: #ffffff;
+    opacity: 0.9; /* Leve transparência para subtítulos/placeholders */
+}
+
+.health-indicators-section .section-title {
+    opacity: 1.0; /* Título principal 100% opaco */
+}
+
+/* 3. Estiliza os itens indicadores (Barras) */
+.indicator-item {
+    /* (display: flex, align-items: center, etc. já devem existir) */
+    color: #ffffff; /* Cor dos labels (ex: "Qualidade do Sono") */
+}
+
+.indicator-item span:first-child {
+    color: #ffffff; /* Garante que o label (Qualidade do Sono) seja branco */
+    opacity: 0.9;
+}
+
+.indicator-item .indicator-value {
+    color: #ffffff; /* Garante que o valor (ex: "75%") seja branco */
+}
+
+/* 4. Estiliza a BARRA DE PROGRESSO */
+.indicator-bar {
+    /* Fundo da barra (a parte vazia) */
+    background-color: rgba(255, 255, 255, 0.3); /* Branco com 30% opacidade */
+}
+
+.indicator-bar .bar-fill {
+    /* Preenchimento da barra */
+    background-color: #ffffff; /* Branco Sólido */
+}
+
+/* 5. Estiliza o BOTÃO "Ver Relatório Completo" */
+.health-indicators-section .btn-secondary.full-width {
+    background-color: rgba(255, 255, 255, 0.2); /* Fundo branco transparente (igual aos outros cards) */
+    color: #ffffff; /* Texto branco */
+    border-color: rgba(255, 255, 255, 0.3); /* Borda branca transparente (opcional) */
+}
+
+.health-indicators-section .btn-secondary.full-width:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Mais claro no hover */
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+}
+
+/* ==========================================================
+   FIM DA ATUALIZAÇÃO DOS CARDS
+   ========================================================== */
+
+
+   /* ==========================================================
+   ESTILOS PARA O MODAL "NOVO REGISTRO DIÁRIO"
+   ========================================================== */
+
+/* Garante que o modal use as classes de layout do modal de consulta (que já temos) */
+#novo-registro-diario-modal .modal-card {
+    max-width: 800px; /* Garante que ele use o estilo 'modal-consulta-largo' */
+}
+
+/* Garante o scroll interno do conteúdo do formulário */
+#novo-registro-diario-modal .consulta-tab-content {
+    max-height: 65vh; /* Altura máxima antes do scroll (como definido no HTML) */
+    overflow-y: auto; /* Scroll vertical */
+    padding: 10px; /* Pequeno padding interno */
+    background-color: var(--cor-fundo, #f8f9fa); /* Fundo levemente cinza */
+    border-radius: 8px;
+    border: 1px solid var(--borda-suave, #e2e8f0);
+}
+
+/* Estilo para as seções (Sono, Humor, Dor, etc.) */
+/* (Já usamos a classe .vis-section do modal anterior, o que é ótimo) */
+#novo-registro-diario-modal .vis-section {
+    background-color: var(--cor-elemento, #ffffff);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px !important; /* Sobrescreve margem se necessário */
+    border: 1px solid var(--borda-suave, #e2e8f0);
+}
+#novo-registro-diario-modal .vis-section h3 {
+    margin-top: 0; /* Remove margem do topo do título da seção */
+}
+
+/* Estilo para a caixa de conteúdo dentro da seção */
+/* (Já usamos a classe .vis-content-box do modal anterior) */
+#novo-registro-diario-modal .vis-content-box {
+    background-color: #fff; /* Remove o fundo cinza de .vis-content-box */
+    padding: 0; /* Remove padding extra, pois .vis-section já tem */
+}
+
+/* --- Estilos dos Formulários Dentro do Modal --- */
+#form-novo-registro-diario .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 15px; /* Espaçamento entre campos */
+}
+#form-novo-registro-diario .form-group:last-child {
+    margin-bottom: 0;
+}
+
+#form-novo-registro-diario label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--texto-secundario, #4a5568);
+}
+
+/* Estilo base para inputs, textareas e selects */
+#form-novo-registro-diario input[type="text"],
+#form-novo-registro-diario input[type="number"],
+#form-novo-registro-diario textarea,
+#form-novo-registro-diario select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--borda-suave, #e2e8f0);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    background-color: var(--cor-fundo, #f8f9fa); /* Fundo leve */
+}
+#form-novo-registro-diario input[type="text"]:focus,
+#form-novo-registro-diario input[type="number"]:focus,
+#form-novo-registro-diario textarea:focus,
+#form-novo-registro-diario select:focus {
+    outline: none;
+    border-color: var(--cor-primaria, #41b8d5);
+    background-color: var(--cor-elemento, #ffffff);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* Cor azul no dropdown de Horas de Sono (como pedido) */
+#registro-horas-sono option:hover, 
+#registro-horas-sono option:checked {
+    background-color: var(--cor-primaria, #41b8d5);
+    color: white;
+}
+/* (Estilização de <select> é limitada, mas tentamos) */
+/* Para navegadores Webkit (Chrome/Safari) */
+#registro-horas-sono:focus option:checked {
+    background: var(--cor-primaria, #41b8d5);
+    color: white;
+}
+
+
+/* --- Estilo do Slider de Humor (e Alimentação) --- */
+.humor-slider {
+    -webkit-appearance: none; /* Remove aparência padrão */
+    width: 100%;
+    height: 8px;
+    background: var(--borda-suave, #e2e8f0); /* trilho cinza */
+    border-radius: 5px;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Estilo do "polegar" (bolinha) do slider */
+.humor-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--cor-primaria, #41b8d5); /* Bolinha azul */
+    border: 4px solid var(--cor-elemento, #ffffff); /* Borda branca */
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+.humor-slider::-moz-range-thumb { /* Para Firefox */
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--cor-primaria, #41b8d5);
+    border: 4px solid var(--cor-elemento, #ffffff);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+/* Labels abaixo do slider */
+.humor-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--texto-suave, #8a94a6);
+    padding: 0 5px;
+}
+
+/* --- Estilo dos Checkboxes (Dor, Medicação) --- */
+/* (Reutiliza a classe .meta-item que já temos no prontuario-paciente.css
+   Se não funcionar, adicione este estilo:) */
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.95rem;
+    color: var(--texto-principal);
+}
+.meta-item:hover {
+    background-color: #f0f9ff;
+}
+.meta-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--cor-primaria);
+}
+
+/* --- Feedback e Footer --- */
+/* (Reutiliza .modal-footer-actions, .btn-secondary-painel, .btn-primary-painel) */
+#novo-registro-feedback {
+    width: 100%;
+    flex-grow: 1;
+    text-align: left;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 0 10px;
+}
+#novo-registro-diario-modal .modal-footer-actions {
+    align-items: center; /* Alinha o feedback com os botões */
+}
+
+/* ==========================================================
+   ESTILOS ESSENCIAIS DE MODAL (FLUTUANTE)
+   (Cole isto no final de paciente-perfil.css)
+   ========================================================== */
+
+/* Define o fundo escuro (overlay) e a posição flutuante */
+.modal {
+    display: none; /* Começa escondido */
+    position: fixed; /* Fica fixo na tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Overlay escuro */
+    z-index: 1000; /* Fica acima de outros conteúdos */
+
+    /* Para centralizar o modal-content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    padding: 16px; /* Espaçamento para o conteúdo em telas pequenas */
+    box-sizing: border-box;
+    overflow-y: auto; /* Permite scroll no overlay se o modal for maior que a tela */
+}
+
+/* O conteúdo branco (card) dentro do modal */
+/* (Esta regra .modal-content já deve existir, mas verifique) */
+.modal-content {
+    background-color: #fff;
+    padding: 40px 30px 20px 30px; /* Padding com espaço no topo para o "X" */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative; 
+    width: 90%; 
+    max-width: 800px; 
+}
+
+/* Estilo para modal largo (que já estamos a usar) */
+.modal-content.large {
+    max-width: 1000px; 
+}
+
+/* Botão de fechar "X" */
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem; 
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* Garante que a classe .hidden funcione */
+.hidden {
+    display: none !important;
+}
+
+/* Garante que o backdrop (se usado pelo menu mobile) fique atrás */
+#backdrop {
+    z-index: 850; 
+}
+
+/* ==========================================================
+   FIM DOS ESTILOS ESSENCIAIS DE MODAL
+   ========================================================== */
+
+
+   /* ==========================================================
+   ESTILOS COMPLETOS PARA O MODAL "NOVO REGISTRO DIÁRIO"
+   (Inclui base, layout, 'X', rodapé, botões e campos)
+   ========================================================== */
+
+/* --- 1. Base do Modal (Flutuação) --- */
+/* (Esta regra .modal já deve existir e estar correta) */
+.modal {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 1000; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow-y: auto; 
+}
+.modal.hidden { display: none !important; }
+
+
+/* --- 2. Card Branco (Conteúdo do Modal) --- */
+/* (Isto vem do seu prontuario-paciente.css) */
+.modal-card {
+    background-color: white;
+    padding: 24px;
+    border-radius: 12px;
+    max-width: 500px; /* Padrão */
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Estilo para modal largo (que estamos a usar) */
+.modal-card.modal-consulta-largo {
+    max-width: 800px;
+}
+
+/* --- 3. Cabeçalho do Modal e Botão "X" --- */
+/* (Isto vem do seu prontuario-paciente.css) */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    margin-bottom: 24px; /* Ajustado */
+    padding-right: 30px; /* Espaço para o "X" */
+}
+.modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--texto-suave);
+    line-height: 1;
+    padding: 4px;
+    z-index: 10;
+}
+.modal-close:hover {
+    color: var(--texto-principal);
+}
+
+
+/* --- 4. Conteúdo (Scroll, Seções, Inputs) --- */
+/* (Estilos que enviei antes) */
+
+#novo-registro-diario-modal .consulta-tab-content {
+    max-height: 65vh;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: var(--cor-fundo, #f8f9fa);
+    border-radius: 8px;
+    border: 1px solid var(--borda-suave, #e2e8f0);
+}
+#novo-registro-diario-modal .vis-section {
+    background-color: var(--cor-elemento, #ffffff);
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 15px !important;
+    border: 1px solid var(--borda-suave, #e2e8f0);
+}
+#novo-registro-diario-modal .vis-section:last-child {
+    margin-bottom: 0 !important;
+}
+#novo-registro-diario-modal .vis-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+#novo-registro-diario-modal .vis-section h3 i {
+    color: var(--cor-primaria); /* Ícones azuis */
+}
+#novo-registro-diario-modal .vis-content-box {
+    background-color: #fff;
+    padding: 0;
+}
+#form-novo-registro-diario .form-group {
+    display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px;
+}
+#form-novo-registro-diario .form-group:last-child { margin-bottom: 0; }
+#form-novo-registro-diario label {
+    font-weight: 500; font-size: 0.9rem; color: var(--texto-secundario, #4a5568);
+}
+#form-novo-registro-diario input[type="text"],
+#form-novo-registro-diario input[type="number"],
+#form-novo-registro-diario textarea,
+#form-novo-registro-diario select {
+    width: 100%; padding: 12px; border: 1px solid var(--borda-suave, #e2e8f0);
+    border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;
+    box-sizing: border-box; background-color: var(--cor-fundo, #f8f9fa);
+    transition: all 0.2s ease;
+}
+#form-novo-registro-diario input[type="text"]:focus,
+#form-novo-registro-diario input[type="number"]:focus,
+#form-novo-registro-diario textarea:focus,
+#form-novo-registro-diario select:focus {
+    outline: none; border-color: var(--cor-primaria, #41b8d5);
+    background-color: var(--cor-elemento, #ffffff);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+.form-grid.two-columns {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 15px 20px;
+}
+
+/* --- 5. Estilos Específicos (Slider, Checkbox) --- */
+/* (Estilos que enviei antes) */
+
+.humor-slider {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 8px;
+    background: var(--borda-suave, #e2e8f0); border-radius: 5px;
+    outline: none; margin-top: 10px; margin-bottom: 10px;
+}
+.humor-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--cor-primaria, #41b8d5);
+    border: 4px solid var(--cor-elemento, #ffffff);
+    cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    margin-top: -8px; 
+}
+.humor-slider::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--cor-primaria, #41b8d5);
+    border: 4px solid var(--cor-elemento, #ffffff);
+    cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+.humor-labels {
+    display: flex; justify-content: space-between;
+    font-size: 0.8rem; color: var(--texto-suave, #8a94a6); padding: 0 5px;
+}
+.humor-labels span { width: 20%; text-align: center; }
+.humor-labels span:first-child { text-align: left; }
+.humor-labels span:last-child { text-align: right; }
+
+.meta-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 8px;
+    border-radius: 6px; cursor: pointer; transition: background-color 0.2s ease;
+    font-size: 0.95rem; color: var(--texto-principal);
+}
+.meta-item:hover { background-color: #f0f9ff; }
+.meta-item input[type="checkbox"] {
+    width: 18px; height: 18px; flex-shrink: 0;
+    accent-color: var(--cor-primaria); cursor: pointer;
+}
+#registro-med-lista-checkboxes {
+    padding: 10px; background-color: var(--cor-fundo); border-radius: 6px;
+    border: 1px solid var(--borda-suave); display: flex; flex-direction: column; gap: 5px;
+}
+#registro-med-lista-checkboxes .meta-item { padding: 5px; font-size: 0.9rem; }
+#registro-med-lista-checkboxes .meta-item:hover { background-color: #eafcff; }
+
+
+/* --- 6. Rodapé e Botões (Onde estava o erro) --- */
+/* (Isto vem do seu prontuario-paciente.css) */
+.modal-footer-actions {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--borda-suave);
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 12px;
+    justify-content: flex-end; /* Alinha à direita */
+    align-items: center;
+}
+
+/* (Isto vem do seu prontuario-paciente.css) */
+.btn-secondary-painel {
+    width: auto;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    background-color: var(--cor-fundo);
+    border: 1px solid var(--borda-suave);
+    color: var(--texto-secundario);
+}
+.btn-secondary-painel:hover {
+    background-color: var(--borda-suave);
+}
+.btn-primary-painel {
+    width: auto;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    background-color: var(--cor-primaria);
+    border: 1px solid var(--cor-primaria);
+    color: white;
+}
+.btn-primary-painel:hover {
+    background-color: var(--cor-secundaria);
+}
+.btn-primary-painel:disabled {
+    background-color: #a0aec0;
+    border-color: #a0aec0;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================================
+   FEEDBACK DE FORMULÁRIO (SUCESSO/ERRO)
+   ========================================================== */
+
+/* Estilo base para a caixa de mensagem (que já está no HTML) */
+.feedback-message {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0;
+    text-align: left;
+    display: none; /* Começa escondido por padrão */
+    border: 1px solid transparent;
+}
+
+/* Regra para mostrar a mensagem quando o JS remover a classe .hidden */
+.feedback-message:not(.hidden) {
+    display: block;
+}
+
+/* Cor de SUCESSO (Verde) */
+.feedback-message.success {
+    background-color: #d1fae5; /* Verde claro */
+    color: #065f46; /* Verde escuro */
+    border-color: #a7f3d0;
+}
+
+/* Cor de ERRO (Vermelho) */
+.feedback-message.error {
+    background-color: #fee2e2; /* Vermelho claro */
+    color: #991b1b; /* Vermelho escuro */
+    border-color: #fecaca;
+}
+/* Responsividade (Mobile) para os botões do rodapé */
+@media (max-width: 600px) {
+     #novo-registro-diario-modal .modal-footer-actions {
+         flex-direction: column-reverse; /* Empilha botões (Salvar em cima) */
+         width: 100%;
+     }
+     #novo-registro-diario-modal .modal-footer-actions .btn-primary-painel,
+     #novo-registro-diario-modal .modal-footer-actions .btn-secondary-painel {
+         width: 100%; /* Botões ocupam largura total */
+         justify-content: center;
+     }
+     #novo-registro-feedback {
+         width: 100%;
+         text-align: center;
+         margin-bottom: 10px;
+     }
+}
+
+
+/* ==========================================================
+   CSS DA TAREFA 3: HISTÓRICO DE REGISTROS (MODAL)
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* 1. O container da lista (baseado no seu HTML) */
+.registros-individuais-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Espaço entre cada card de registro */
+}
+
+/* 2. O card individual (como na sua imagem) */
+.registro-individual-item {
+    background-color: var(--cor-elemento); /* Fundo branco */
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03); /* Sombra muito subtil */
+}
+
+/* 3. A Data (ex: 26/10/2025) */
+.registro-item-data {
+    font-size: 1rem;
+    font-weight: 600; /* Negrito */
+    color: var(--texto-principal);
+    margin-bottom: 8px;
+}
+
+/* 4. Os detalhes (ex: "7 horas de sono") */
+.registro-item-detalhes {
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+    line-height: 1.5;
+}
+
+/* 5. Placeholder (quando a lista estiver vazia) */
+.registros-individuais-lista .placeholder {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    text-align: center;
+    padding: 32px 16px;
+    background-color: var(--cor-fundo);
+    border-radius: 8px;
+    border: 1px dashed var(--borda-suave);
+}
+
+/* ==========================================================
+   CSS DA TAREFA 4: CORREÇÃO VISUAL DO MODAL HISTÓRICO
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* 1. Base do Modal (Reutilizado de prontuario-paciente.css) */
+/* (Estas regras garantem que o modal flutue corretamente) */
+.modal {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 1000; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+.modal.hidden { display: none !important; }
+
+/* 2. Card do Modal (Reutilizado de prontuario-paciente.css) */
+.modal-card {
+    background-color: var(--cor-elemento);
+    padding: 24px; /* Padding padrão */
+    border-radius: 12px;
+    max-width: 500px; 
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 3. Estilo de Modal Largo (Reutilizado de prontuario-paciente.css) */
+.modal-card.modal-consulta-largo {
+    max-width: 800px; /* Como no HTML que colamos */
+}
+
+/* 4. Cabeçalho do Modal (Títulos e "X") */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    margin-bottom: 24px; 
+    padding-right: 30px; 
+}
+.modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--texto-suave);
+    line-height: 1;
+    padding: 4px;
+    z-index: 10;
+}
+.modal-close:hover {
+    color: var(--texto-principal);
+}
+
+/* 5. !! CORREÇÃO PARA A IMAGEM-ALVO (image_fab824.png) !! */
+/* Deixa o cabeçalho do modal de histórico AZUL */
+#historico-registros-modal .modal-card {
+    padding: 0; /* Remove o padding do card para o header colar */
+}
+#historico-registros-modal .modal-header {
+    background-color: var(--cor-primaria); /* Fundo AZUL */
+    color: white; /* Texto BRANCO */
+    padding: 16px 24px; /* Padding do header */
+    margin-bottom: 0; /* Remove margem de baixo */
+    border-bottom: 1px solid var(--cor-secundaria);
+    border-radius: 12px 12px 0 0; /* Arredonda cantos superiores */
+}
+#historico-registros-modal .modal-title {
+    color: white; /* Título BRANCO */
+}
+#historico-registros-modal .modal-close {
+    color: white; /* "X" BRANCO */
+    opacity: 0.8;
+    top: 16px; /* Ajuste do "X" */
+    right: 16px;
+}
+#historico-registros-modal .modal-close:hover {
+    opacity: 1;
+}
+
+/* 6. Conteúdo do Modal (onde ficam os filtros e abas) */
+/* Adiciona o padding que removemos do .modal-card */
+#historico-periodo-filtros,
+#historico-sub-tab-nav,
+#historico-content-container {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+#historico-sub-tab-nav {
+    margin-top: 24px;
+}
+#historico-content-container {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* 7. Filtros de Período (Reutilizado de prontuario-paciente.css) [cite: 4388-4391] */
+.chart-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px; /* Espaço do topo */
+}
+.filter-btn-small {
+    padding: 8px 16px;
+    border: 1px solid var(--borda-suave);
+    height: 40px;
+    background-color: var(--cor-elemento);
+    color: var(--texto-secundario);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 8px; /* Borda arredondada completa */
+    transition: all 0.2s ease;
+}
+.filter-btn-small.active {
+    background-color: var(--cor-secundaria);
+    color: white;
+    border-color: var(--cor-secundaria);
+    font-weight: 600;
+}
+
+/* 8. Sub-Abas (Reutilizado de prontuario-paciente.css) [cite: 4367-4372] */
+.sub-tab-nav {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--borda-suave);
+    margin-bottom: 24px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.sub-tab-btn {
+    padding: 8px 16px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--texto-secundario);
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+.sub-tab-btn i {
+    font-size: 0.9em;
+}
+.sub-tab-btn.active {
+    background-color: var(--cor-elemento);
+    color: var(--cor-primaria);
+    font-weight: 600;
+    border-bottom-color: var(--cor-primaria);
+}
+.sub-tab-panel.hidden {
+    display: none;
+}
+
+/* 9. Gráfico (Reutilizado de prontuario-paciente.css) [cite: 4482] */
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+}
+
+/* 10. Lista de Registros (Da nossa tarefa anterior) */
+.registros-individuais-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+}
+.registro-individual-item {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+.registro-item-data {
+    font-size: 1rem;
+    font-weight: 600; 
+    color: var(--texto-principal);
+    margin-bottom: 8px;
+}
+.registro-item-detalhes {
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+    line-height: 1.5;
+}
+.registros-individuais-lista .placeholder {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    text-align: center;
+    padding: 32px 16px;
+    background-color: var(--cor-fundo);
+    border-radius: 8px;
+    border: 1px dashed var(--borda-suave);
+}
+
+/* 11. Rodapé do Modal (Reutilizado de prontuario-paciente.css) [cite: 4585-4587, 4566-4569] */
+.modal-footer-actions {
+    margin-top: 24px;
+    padding: 24px; /* Adiciona padding ao rodapé */
+    border-top: 1px solid var(--borda-suave);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end; 
+}
+.btn-secondary-painel {
+    width: auto;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    background-color: var(--cor-fundo);
+    border: 1px solid var(--borda-suave);
+    color: var(--texto-secundario);
+}
+.btn-secondary-painel:hover {
+    background-color: var(--borda-suave);
+}
+/* ==========================================================
+   CSS DA TAREFA 5: ESTILOS DA ABA BIOMÉTRICOS
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/*
+ Esta regra aplica-se aos títulos (h4) DENTRO da aba de Biométricos
+ (ex: "Pressão Arterial", "Glicemia")
+*/
+#historico-tab-biometricos h4 {
+    font-size: 1.2rem; /* Tamanho do título */
+    font-weight: 600; /* Negrito */
+    color: var(--cor-primaria); /* Cor azul Orion */
+    margin-top: 24px; /* Espaço ACIMA do título (para separar do gráfico anterior) */
+    margin-bottom: 16px; /* Espaço ABAIXO do título (antes do gráfico) */
+    padding-bottom: 8px; /* Espaço entre o texto e a linha */
+    border-bottom: 1px solid var(--borda-suave); /* Linha divisória suave */
+}
+
+/*
+ Esta regra especial remove a margem do topo do PRIMEIRO título
+ para que ele não fique com espaço a mais em relação às abas.
+*/
+#historico-tab-biometricos h4:first-of-type {
+    margin-top: 0;
+}
+
+/* ==========================================================
+   CSS DA TAREFA 8 (CORRIGIDO) - ESTILOS DO MODAL DE PROGRESSO
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* --- 1. Remove bordas e ajusta o container --- */
+#calendario-progresso .fc-theme-standard,
+#calendario-progresso .fc-theme-standard th,
+#calendario-progresso .fc-theme-standard td,
+#calendario-progresso .fc-scrollgrid {
+    border: none !important;
+}
+
+/* --- 2. Esconde os botões que tu NÃO queres ver --- */
+/* --- 2. Esconde os botões que tu NÃO queres ver --- */
+#calendario-progresso .fc-today-button { /* Esconde APENAS o botão "Hoje" (se ele aparecer) */
+    display: none !important;
+}
+
+/* --- 3. Estiliza a Barra de Ferramentas (Título e Setas) --- */
+#calendario-progresso .fc-header-toolbar {
+    margin-bottom: 1.5em !important;
+}
+#calendario-progresso .fc-toolbar-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+}
+
+/* --- 4. Estiliza os botões de Seta (copiado da tua agenda) --- */
+#calendario-progresso .fc-button {
+    background-color: transparent !important;
+    border: 1px solid var(--borda-suave) !important;
+    color: var(--texto-secundario) !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+}
+#calendario-progresso .fc-button:hover {
+    background-color: var(--fundo-pagina) !important;
+    border-color: var(--cor-secundaria) !important;
+    color: var(--cor-secundaria) !important;
+}
+#calendario-progresso .fc-button .fc-icon {
+    font-weight: 700;
+}
+
+/* --- 5. Estiliza os Dias (Dom, Seg, Ter...) --- */
+#calendario-progresso .fc-col-header-cell {
+    padding-bottom: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--texto-suave);
+    text-transform: capitalize;
+}
+#calendario-progresso .fc-col-header-cell-cushion {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- 6. Estiliza as Células dos Dias --- */
+#calendario-progresso .fc-daygrid-day {
+    padding: 4px;
+    border-radius: 8px;
+}
+#calendario-progresso .fc-daygrid-day-frame {
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#calendario-progresso .fc-daygrid-day-number {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--texto-secundario);
+    text-decoration: none;
+    padding: 0;
+}
+
+/* --- 7. Estiliza o Dia de "Hoje" (Borda azul) --- */
+#calendario-progresso .fc-day-today .fc-daygrid-day-frame {
+    border: 2px solid var(--cor-primaria);
+    border-radius: 12px;
+    background-color: transparent;
+}
+#calendario-progresso .fc-day-today .fc-daygrid-day-number {
+    color: var(--cor-secundaria) !important;
+    font-weight: 700;
+}
+
+/* --- 8. Esconde dias de outros meses --- */
+#calendario-progresso .fc-day-other {
+    opacity: 0.3;
+}
+
+/* --- 9. ESTILO DO DIA REGISTADO (O TEU PEDIDO ESPECIAL) --- */
+/* Esconde os "eventos" (pontos ou texto) */
+#calendario-progresso .fc-daygrid-event,
+#calendario-progresso .fc-daygrid-event-dot {
+    display: none !important;
+}
+
+/* Pinta o fundo da célula com o "azul bem clarinho" */
+#calendario-progresso .fc-bg-event {
+    background-color: #e6f7ff !important; /* Azul clarinho */
+    border: 1px solid #b6e3f0;
+    opacity: 1.0 !important;
+    border-radius: 12px;
+    top: 4px; bottom: 4px; left: 4px; right: 4px; /* Padding */
+}
+
+/* Muda o número do dia para ficar escuro (em vez de branco) */
+#calendario-progresso .fc-daygrid-day.fc-day-has-events .fc-daygrid-day-number {
+    color: var(--cor-secundaria) !important; 
+    font-weight: 700 !important;
+    position: relative;
+    z-index: 2; /* Garante que o número fique por cima */
+}
+
+
+
+/* ==========================================================
+   CSS DA TAREFA 11 (ATUALIZADO com min-height)
+   (Substitua o bloco anterior por este no paciente-perfil.css)
+   ========================================================== */
+
+/* 1. O Card Individual da Consulta */
+.consulta-historico-card {
+    background-color: var(--cor-elemento); 
+    border: 1px solid var(--borda-suave);
+    border-left: 4px solid var(--cor-primaria); 
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    padding: 0; 
+    overflow: hidden; 
+    
+    /* --- A TUA SUGESTÃO ESTÁ AQUI --- */
+    min-height: 230px; /* Garante uma altura mínima para o card */
+    display: flex; /* Ajuda a organizar o rodapé */
+    flex-direction: column; /* Empilha header, body, footer */
+}
+
+/* 2. O Cabeçalho do Card (Nome do Médico e Status) */
+.consulta-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: #f8fafc; 
+    border-bottom: 1px solid var(--borda-suave);
+}
+
+.consulta-card-header h3 {
+    margin: 0;
+    font-size: 1.1rem; 
+    font-weight: 600;
+    color: var(--texto-principal);
+}
+
+/* 3. O Badge de Status (Ex: "Realizada") */
+.consulta-card-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+.status-realizada {
+    background-color: #c6f6d5; 
+    color: #2f855a;
+}
+.status-agendada {
+    background-color: #ebf4ff; 
+    color: #4299e1;
+}
+.status-cancelada {
+    background-color: #fed7d7; 
+    color: #c53030;
+}
+
+/* 4. O Corpo do Card (Detalhes: Especialidade, Data, Tipo) */
+.consulta-card-body {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 12px; 
+    flex-grow: 1; /* Faz o corpo crescer e empurrar o rodapé */
+}
+
+.consulta-card-body p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+.consulta-card-body p i {
+    color: var(--cor-primaria); 
+    width: 16px; 
+    text-align: center;
+}
+
+/* 5. O Rodapé do Card (Link "Ver Detalhes") */
+.consulta-card-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--borda-suave);
+    background-color: #fdfdfd;
+    text-align: right; 
+    flex-shrink: 0; /* Impede o rodapé de encolher */
+}
+
+.btn-link-detalhes {
+    background: none;
+    border: none;
+    color: var(--cor-secundaria); /* O estilo que faltava */
+    font-weight: 600;
+    font-size: 0.9rem; /* O estilo que faltava */
+    cursor: pointer;
+    text-decoration: none;
+    padding: 4px;
+}
+.btn-link-detalhes:hover {
+    text-decoration: underline;
+}
+
+
+/* ==========================================================
+   CSS DA TAREFA 16 (Estilos do Modal "Master Check-in")
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* 1. O container principal do conteúdo do modal */
+.master-checkin-container {
+    padding: 24px;
+    padding-top: 16px;
+    overflow-y: auto;
+    max-height: 60vh; /* Altura máxima antes de rolar */
+    flex-grow: 1;
+}
+
+/* 2. O subtítulo (ex: "O que gostaria de registar...") */
+.master-checkin-subtitle {
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+/* 3. A lista de botões de ação */
+#master-checkin-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 4. O botão de check-in individual */
+.checkin-button-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--cor-fundo); /* Fundo cinza claro */
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 16px;
+    width: 100%; /* Largura total */
+    box-sizing: border-box; /* Para o padding não quebrar o layout */
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 5. Efeito de Hover */
+.checkin-button-item:hover {
+    background-color: #e6f7ff; /* Azul bem clarinho */
+    border-color: #b6e3f0;
+    transform: translateY(-2px); /* Efeito de "levantar" */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 6. O ícone do botão */
+.checkin-button-item > i:first-child {
+    font-size: 1.5rem;
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* 7. O texto (Título e Subtítulo) */
+.checkin-button-text {
+    flex-grow: 1; /* Empurra a seta para a direita */
+}
+.checkin-button-text strong {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+    display: block;
+    margin-bottom: 2px;
+}
+.checkin-button-text span {
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+}
+
+/* 8. A seta "chevron" da direita */
+.checkin-button-item > .fa-chevron-right {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    flex-shrink: 0;
+}
+
+/* 9. Cores dos Ícones (Reutilizadas do teu mock) */
+.icon-blue { color: #3b82f6; }
+.icon-green { color: #10b981; }
+.icon-purple { color: #8b5cf6; }
+.icon-red { color: #ef4444; }
+
+
+
+/* ==========================================================
+   CSS DA TAREFA 18 (Estilo Aba Atividade Física)
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* Define a cor do título e da borda para a nova aba */
+#historico-tab-atividade h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-primaria); /* Roxo (do icon-purple) */
+    margin-top: 24px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0; /* Borda suave */
+}
+#historico-tab-atividade h4:first-of-type {
+    margin-top: 0;
+}
+
+/* ==========================================================
+   CSS DA TAREFA 21 (Estilos da Refatoração Alimentação)
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* 1. Estilo para o novo label "Quais refeições você realizou?" */
+.form-label-bold {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--texto-secundario, #4a5568);
+    margin-bottom: 8px; /* Espaço antes da primeira checkbox */
+}
+
+/* 2. O 'div' que agrupa a checkbox e o seu textarea */
+.meal-check-group {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 0; /* O padding será no meta-item e no details */
+    overflow: hidden; /* Garante que o raio da borda funcione */
+}
+
+/* 3. Ajuste no .meta-item (a checkbox) quando está dentro deste grupo */
+.meal-check-group .meta-item {
+    padding: 12px 16px; /* Padding para a área clicável da checkbox */
+    margin-bottom: 0; /* Remove a margem padrão */
+}
+.meal-check-group .meta-item:hover {
+    background-color: #f0f9ff; /* Mantém o hover */
+}
+
+/* 4. O 'div' que contém o textarea (o que começa escondido) */
+.meal-details {
+    padding: 0px 16px 16px 16px; /* Padding (sem topo) */
+    /* Cria uma linha de separação quando ele aparece */
+    border-top: 1px solid var(--borda-suave); 
+    background-color: #fdfdfd; /* Fundo ligeiramente diferente */
+}
+
+/* 5. O <label> de dentro do .meal-details */
+.meal-details label {
+    font-size: 0.85rem; /* Fonte mais pequena */
+    font-weight: 400;
+    color: var(--texto-suave);
+}
+
+/* 6. O <textarea> de dentro do .meal-details */
+.meal-details textarea {
+    background-color: var(--cor-elemento); /* Fundo branco */
+    resize: vertical; /* Permite ao paciente aumentar a altura */
+    min-height: 60px;
+}
+
+/* 7. A linha divisória <hr> que adicionámos */
+hr.form-divider {
+    border: none;
+    border-top: 1px solid var(--borda-suave);
+    margin: 24px 0; /* Margem padrão */
+}
+
+/* ==========================================================
+   CSS DA TAREFA 22 (Estilo Botão "+ Medicação")
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* 1. Estilo do novo botão "+" */
+.btn-add-external-med {
+    background-color: transparent;
+    border: 1px dashed var(--borda-suave); /* Borda tracejada */
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%; /* Ocupa a largura toda */
+    margin-top: 10px; /* Espaço acima dele */
+    text-align: left;
+    display: flex; /* Para alinhar o ícone */
+    align-items: center;
+    gap: 8px; /* Espaço entre o "+" e o texto */
+    transition: all 0.2s ease;
+}
+
+/* 2. Efeito de Hover */
+.btn-add-external-med:hover {
+    background-color: var(--cor-fundo); /* Fundo cinza claro */
+    color: var(--cor-primaria); /* Texto fica azul */
+    border-color: var(--cor-primaria); /* Borda fica azul */
+}
+
+/* ==========================================================
+   CSS DA TAREFA 24 (Estilo Botão "X" Medicação)
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* 1. Ajusta o .meta-item para que o botão "X" fique alinhado à direita */
+.item-med-externa {
+    justify-content: space-between; /* Empurra o "X" para a direita */
+}
+
+/* 2. O próprio botão "X" */
+.btn-delete-med-externa {
+    background-color: transparent;
+    border: none;
+    color: var(--texto-suave);
+    font-size: 1.5rem; /* Tamanho do "X" */
+    line-height: 1;
+    padding: 0 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0; /* Impede que o botão encolha */
+    margin-left: 10px; /* Espaço entre o texto e o "X" */
+    transition: all 0.2s ease;
+}
+
+/* 3. Efeito Hover no "X" */
+.btn-delete-med-externa:hover {
+    color: var(--cor-delete); /* Vermelho */
+    background-color: #fee2e2; /* Fundo vermelho claro */
+}
+
+/* 4. Ajusta o texto (itálico) do "Adicionado manualmente" */
+.item-med-externa span em {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    font-style: italic;
+    margin-left: 4px;
+}
+
+/* ==========================================================
+   CSS DA TAREFA 25 (Estilo do Item de Refeição Externa)
+   (Cole isto no final do seu paciente-perfil.css)
+   ========================================================== */
+
+/* 1. O card da refeição adicionada (ex: "Pizza") */
+.meal-item-externo {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex; /* Para alinhar o "X" */
+    justify-content: space-between; /* Empurra o "X" para a direita */
+    align-items: center;
+    gap: 10px;
+}
+
+/* 2. O texto (Nome e Detalhes) */
+.meal-item-externo p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--texto-principal);
+    line-height: 1.4;
+    flex-grow: 1; /* Ocupa o espaço */
+}
+/* Nome da refeição (ex: "Pizza") */
+.meal-item-externo p strong {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--cor-secundaria); /* Azul */
+    display: block;
+}
+
+/* 3. O botão "X" de apagar (reutilizando o estilo da medicação) */
+.btn-delete-refeicao-externa {
+    background-color: transparent;
+    border: none;
+    color: var(--texto-suave);
+    font-size: 1.5rem; /* Tamanho do "X" */
+    line-height: 1;
+    padding: 0 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0; /* Impede que o botão encolha */
+    margin-left: 10px; /* Espaço entre o texto e o "X" */
+    transition: all 0.2s ease;
+}
+
+/* 4. Efeito Hover no "X" */
+.btn-delete-refeicao-externa:hover {
+    color: var(--cor-delete); /* Vermelho */
+    background-color: #fee2e2; /* Fundo vermelho claro */
+}
+
+/* ========================================================== */
+/* CSS DA ABA REGISTROS DIÁRIOS (Limpo) */
+/* ========================================================== */
+
+/* 1. Estilo para os títulos H4 dos gráficos */
+
+#historico-tab-biometricos h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-primaria); /* Cor azul Orion */
+    margin-top: 24px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--borda-suave);
+}
+
+#historico-tab-biometricos h4:first-child {
+    margin-top: 0; /* Remove a margem do primeiro título */
+}
+
+/* 2. Estilo para os títulos H4 das outras abas (Sono, Humor, etc.) */
+.sub-tab-panel h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-primaria);
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/* ========================================================== */
+/* FIM DO CSS */
+/* ========================================================== */
+
+
+/* 6. Responsividade (para telas pequenas) */
+@media (max-width: 600px) {
+    .consulta-card-body {
+        /* Faz os detalhes ficarem em uma coluna só */
+        grid-template-columns: 1fr; 
+    }
+}
+
+
+/* Media Query para layout lado a lado em telas maiores */
+@media (min-width: 992px) {
+    .split-section {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* ==========================================================
+   LAYOUT DESKTOP (Media Query)
+   ========================================================== */
+@media (min-width: 992px) { /* Ponto de quebra para desktop */
+    .profile-header {
+        padding: 0 32px; /* Mais padding no desktop */
+    }
+    
+    .hamburger-menu {
+        display: none; /* Esconde o hambúrguer no desktop */
+    }
+
+    .profile-details-header {
+        display: block; /* Mostra o nome do paciente no header */
+    }
+    .dropdown-arrow {
+        display: block; /* Mostra a seta do dropdown */
+    }
+
+    .profile-layout-container {
+        display: flex;
+        flex-direction: row; /* Lado a lado */
+    }
+    
+   .profile-sidebar {
+        position: sticky; /* Correto */
+        top: var(--header-height, 70px); /* Correto */
+        height: calc(100vh - var(--header-height, 70px)); /* Correto */
+        z-index: 900; /* Correto (consistente) */
+        transform: translateX(0); /* Correto (sempre visível) */
+    }
+    
+    .profile-main-content {
+        /* Adiciona margin-left para compensar a sidebar */
+        /* Esta linha foi removida, pois o .profile-layout-container já é flex */
+        /* margin-left: var(--sidebar-width); */ 
+        padding: 40px; /* Mais padding no desktop */
+        width: calc(100% - var(--sidebar-width)); /* Ocupa o resto */
+    }
+    
+    /* Esconde o backdrop no desktop, pois não é necessário */
+    .backdrop {
+        display: none !important;
+    }
+    
+
+    .header-logo {
+        display: block; /* Mostra o logo novamente no desktop */
+    }
+ 
+
+
+    /* Layout dos cards e seções divididas no desktop */
+    .summary-cards-section {
+        grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    }
+    .split-section {
+        grid-template-columns: 1fr 1fr; /* Lado a lado */
+    }
+
+    
+}
+/* ========================================================== */
+/* VERSÃO MOBILE (EMPILE TUDO!) */
+/* ========================================================== */
+
+@media (max-width: 1024px) {
+    /* 1. Transforma o Grid em Coluna Única */
+    .dashboard-grid {
+        display: flex !important; /* Muda de Grid para Flex */
+        flex-direction: column !important; /* Empilha verticalmente */
+        gap: 20px !important;
+    }
+
+    /* 2. Ajusta a largura dos itens para 100% */
+    .dashboard-grid > div,
+    .dashboard-grid > div:last-child,
+    .dashboard-grid .card,
+    .dashboard-grid .dashboard-card {
+        width: 100% !important;
+        height: auto !important; /* Altura automática */
+        min-height: 0 !important;
+    }
+
+    /* 3. Garante que os gráficos têm altura fixa no mobile */
+    .chart-container {
+        height: 250px !important; /* Altura fixa para o gráfico não sumir */
+    }
+}
+
+/* ================================================================= */
+/* CORREÇÃO FINAL: PRÓXIMA CONSULTA + LEMBRETES (Lado a Lado) */
+/* ================================================================= */
+
+/* 1. Container "Pai" (A caixa invisível que segura os 2 cards) */
+.split-section {
+    display: flex;
+    flex-direction: column; /* MOBILE: Começa empilhado (um em cima do outro) */
+    gap: 24px;              /* Espaço entre eles */
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+/* 2. Os Cards Individuais (Consulta e Lembretes) */
+.upcoming-appointments-section, 
+.reminders-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    
+    /* Flexbox para o conteúdo interno (para o botão ir para o fundo) */
+    display: flex;
+    flex-direction: column;
+    height: auto; 
+    min-height: 250px; /* Altura mínima para não ficarem "achatados" */
+}
+
+/* 3. O Miolo do Card (Onde aparece o nome do médico ou a lista) */
+/* Faz esta parte crescer para ocupar o espaço vazio */
+#proxima-consulta-card,
+#lembretes-lista-container {
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+/* ================================================================= */
+/* VERSÃO DESKTOP (Computador e Tablet Grande) */
+/* ================================================================= */
+@media (min-width: 1024px) {
+    .split-section {
+        display: grid;                 /* Muda para Grid */
+        grid-template-columns: 1fr 1fr; /* Duas colunas EXATAMENTE iguais */
+        gap: 30px;
+        align-items: stretch;          /* Força os dois a terem a mesma altura */
+    }
+
+    /* Garante que a secção de baixo (Indicadores) não sobe */
+    .health-indicators-section {
+        width: 100%;
+        clear: both;
+    }
+}

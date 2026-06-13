@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prontuário do Paciente - Orion.Health</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="prontuario-paciente.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <div id="loading-overlay" role="status" aria-label="A carregar prontuário">
+        <div class="spinner"></div>
+    </div>
+
+    <aside id="mobile-nav-menu" class="mobile-nav">
+        <div class="mobile-nav-header">
+            <h3>Navegação</h3>
+            <button id="close-mobile-menu-button" class="close-button" aria-label="Fechar menu">&times;</button>
+        </div>
+        <nav class="mobile-nav-list">
+            <a href="#" class="mobile-nav-link active" data-tab="receitas"><i class="fa-solid fa-prescription-bottle-medical"></i><span>Receitas</span></a>
+            <a href="#" class="mobile-nav-link" data-tab="exames"><i class="fa-solid fa-file-medical"></i><span>Exames</span></a>
+            <a href="#" class="mobile-nav-link" data-tab="anamnese"><i class="fa-solid fa-file-waveform"></i><span>Anamnese</span></a>
+            <a href="#" class="mobile-nav-link" data-tab="registros-diarios"><i class="fa-solid fa-clipboard-list"></i><span>Registros Diários</span></a>
+            <a href="#" class="mobile-nav-link" data-tab="encaminhamentos"><i class="fa-solid fa-share-from-square"></i><span>Encaminhamentos</span></a>
+        </nav>
+        <div class="mobile-nav-actions">
+            <hr>
+            <button class="mobile-action-btn" data-action="abrir-painel-clinico"><i class="fa-solid fa-notes-medical"></i> Painel Clínico</button>
+            <button type="button" data-action="pre-consulta" class="btn-secondary"> <i class="fa-solid fa-folder-open"></i> Pré-consulta </button>
+        </div>
+    </aside>
+
+    <div id="backdrop" class="backdrop hidden"></div>
+
+    <div id="page-wrapper" class="hidden">
+        <header class="patient-header">
+            <a href="professional-dashboard.html" class="back-button" aria-label="Voltar para a lista de pacientes">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <div class="patient-header-info">
+                <img id="patient-photo" src="https://placehold.co/60x60/a0d9e5/41b8d5?text=MS" alt="Foto do Paciente" class="patient-photo">
+                <div class="patient-details">
+                    <h1 id="patient-name">Carregando...</h1>
+                    <p id="patient-meta-info">Carregando...</p>
+                </div>
+            </div>
+            <div class="header-actions desktop-only">
+                <button type="button" data-action="pre-consulta" class="btn-secondary"> <i class="fa-solid fa-folder-open"></i> Pré-consulta </button>
+                <button class="btn-primary" data-action="abrir-painel-clinico"><i class="fa-solid fa-notes-medical"></i> Painel Clínico</button>
+            </div>
+            <button id="hamburger-menu" class="hamburger-menu mobile-only" aria-label="Abrir menu de navegação do prontuário">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </header>
+
+        <main class="container">
+
+            
+
+        <div id="pre-consulta-section" class="hidden" style="margin-bottom: 20px;">
+
+            <div class="info-callout" role="status" style="background-color: #e0f7fa; color: #007c91; padding: 10px 15px; border-radius: 4px; margin-bottom: 15px; border-left: 4px solid #00bcd4;">
+                <i class="fa-solid fa-circle-info" style="margin-right: 8px;" aria-hidden="true"></i> <p style="display: inline;">Estes são os dados que o paciente compartilhou previamente ou de consultas anteriores.</p>
+            </div>
+
+            <nav class="tab-nav" role="tablist" aria-label="Navegação do prontuário - Pré-consulta">
+                <button id="tab-btn-receitas" class="tab-btn" role="tab" aria-selected="false" data-tab="receitas"><i class="fa-solid fa-prescription-bottle-medical"></i><span>Receitas</span></button>
+                <button id="tab-btn-exames" class="tab-btn" role="tab" aria-selected="false" data-tab="exames"><i class="fa-solid fa-file-medical"></i><span>Exames</span></button>
+                <button id="tab-btn-anamnese" class="tab-btn" role="tab" aria-selected="false" data-tab="anamnese"><i class="fa-solid fa-file-waveform"></i><span>Anamnese</span></button>
+                <button id="tab-btn-registros-diarios" class="tab-btn" role="tab"aria-selected="false" data-tab="registros-diarios"><i class="fa-solid fa-clipboard-list"></i><span>Registros Diários</span></button>
+                <button id="tab-btn-encaminhamentos" class="tab-btn" role="tab" aria-selected="false" data-tab="encaminhamentos"><i class="fa-solid fa-share-from-square"></i><span>Encaminhamentos</span></button>
+            </nav>
+
+            <div class="tab-content-container">
+                <div id="tab-receitas" class="tab-panel hidden" role="tabpanel">
+                    <div class="panel-header"><h2>Receitas Médicas</h2><p>Gerencie as prescrições médicas do paciente</p></div>
+                    <div class="panel-toolbar"><input type="search" id="recipe-search-input" placeholder="Buscar medicamento ou médico..."><div id="recipe-filter-group" class="filter-group"><button class="filter-btn-small active" data-filter="todas">Todas</button><button class="filter-btn-small" data-filter="ativa">Ativas</button><button class="filter-btn-small" data-filter="arquivada">Arquivadas</button></div></div>
+                    <div id="recipe-list" class="card-list"></div>
+                </div>
+
+                <div id="tab-exames" class="tab-panel hidden" role="tabpanel">
+                    <div class="panel-header"><h2>Exames</h2><p>Acompanhe os pedidos e resultados de exames</p></div>
+                    <div class="sub-tab-nav"><button class="sub-tab-btn active" data-subtab="solicitacoes">Solicitações de Exames</button><button class="sub-tab-btn" data-subtab="resultados">Resultados de Exames</button></div>
+                    <div id="subtab-exames-solicitacoes" class="sub-tab-panel">
+                        <div class="panel-toolbar"><input type="search" id="exame-solicitacao-search-input" placeholder="Buscar por nome do exame..."><div id="exame-filter-group" class="filter-group"><button class="filter-btn-small active" data-filter="todos">Todos</button><button class="filter-btn-small" data-filter="solicitado">Solicitados</button><button class="filter-btn-small" data-filter="aguardando-resultado">Aguardando Resultado</button></div></div>
+                        <div id="exames-solicitacoes-container" class="card-list"></div>
+                    </div>
+                    <div id="subtab-exames-resultados" class="sub-tab-panel hidden">
+                        <div class="panel-toolbar"><input type="search" id="exame-resultado-search-input" placeholder="Buscar por nome do exame ou laboratório..."></div>
+                        <div id="exames-resultados-container" class="card-list"><p>Área de resultados de exames em construção.</p></div>
+                    </div>
+                </div>
+
+               <div id="tab-anamnese" class="tab-panel hidden" role="tabpanel">
+    
+    <div class="panel-header">
+        <h2>Anamnese Única</h2>
+        <p>Histórico de saúde preenchido pelo paciente.</p>
+    </div>
+    
+    <div class="panel-toolbar">
+        <input type="search" id="anamnese-search-input" placeholder="Buscar na ficha de anamnese..." />
+    </div>
+
+    <div class="anamnese-container">
+        
+        <div id="anamnese-vazia-aviso" class="hidden" style="padding: 40px; text-align: center; color: #666; background: #f9f9f9; border-radius: 8px; border: 1px dashed #ccc;">
+            <i class="fa-solid fa-file-circle-question" style="font-size: 2.5rem; color: #ccc; margin-bottom: 16px;"></i>
+            <p style="font-size: 1.1rem; font-weight: 500;">O paciente ainda não preencheu a anamnese.</p>
+            <p style="font-size: 0.9rem;">Solicite ao paciente que preencha os dados no perfil dele.</p>
+        </div>
+
+        <div id="anamnese-conteudo-real">
+            
+            <div class="anamnese-section">
+                <h3>História Patológica Pregressa</h3>
+                <div class="anamnese-group">
+                    <label>Doenças Importantes</label>
+                    <p id="view-anamnese-doencas">--</p>
+                </div>
+                <div class="anamnese-grid">
+                    <div class="anamnese-item"><label>Hospitalizações</label><p id="view-anamnese-hospitalizacao">--</p></div>
+                    <div class="anamnese-item"><label>Cirurgias</label><p id="view-anamnese-cirurgias">--</p></div>
+                </div>
+                <div class="anamnese-group">
+                    <label>Alergias</label>
+                    <p id="view-anamnese-alergias">--</p>
+                </div>
+                <div class="anamnese-group">
+                    <label>Medicamentos em Uso</label>
+                    <p id="view-anamnese-medicacoes">--</p>
+                </div>
+            </div>
+
+            <div class="anamnese-section">
+                <h3>História Familiar</h3>
+                <div class="anamnese-grid">
+                    <div class="anamnese-item"><label>Hipertensão</label><p id="view-anamnese-fam-hipertensao">--</p></div>
+                    <div class="anamnese-item"><label>Diabetes</label><p id="view-anamnese-fam-diabetes">--</p></div>
+                    <div class="anamnese-item"><label>Câncer</label><p id="view-anamnese-fam-cancer">--</p></div>
+                    <div class="anamnese-item"><label>Cardíacas</label><p id="view-anamnese-fam-cardiacas">--</p></div>
+                    <div class="anamnese-item"><label>Mentais</label><p id="view-anamnese-fam-mentais">--</p></div>
+                </div>
+                <div class="anamnese-group">
+                    <label>Outras Doenças Hereditárias</label>
+                    <p id="view-anamnese-fam-outras">--</p>
+                </div>
+            </div>
+
+            <div class="anamnese-section">
+                <h3>Psicossocial e Hábitos</h3>
+                <div class="anamnese-grid">
+                    <div class="anamnese-item"><label>Humor</label><p id="view-anamnese-humor">--</p></div>
+                    <div class="anamnese-item"><label>Estresse/Ansiedade</label><p id="view-anamnese-estresse">--</p></div>
+                    <div class="anamnese-item"><label>Sono</label><p id="view-anamnese-sono">--</p></div>
+                    <div class="anamnese-item"><label>Apoio Social</label><p id="view-anamnese-apoio">--</p></div>
+                </div>
+                <div class="anamnese-grid">
+                    <div class="anamnese-item"><label>Álcool</label><p id="view-anamnese-alcool">--</p></div>
+                    <div class="anamnese-item"><label>Drogas</label><p id="view-anamnese-drogas">--</p></div>
+                    <div class="anamnese-item"><label>Tabagismo</label><p id="view-anamnese-fumo">--</p></div>
+                </div>
+                <div class="anamnese-grid">
+                    <div class="anamnese-item"><label>Alimentação</label><p id="view-anamnese-alimentacao">--</p></div>
+                    <div class="anamnese-item"><label>Atividade Física</label><p id="view-anamnese-atividade">--</p></div>
+                    <div class="anamnese-item"><label>Suplementos</label><p id="view-anamnese-suplementos">--</p></div>
+                </div>
+            </div>
+
+            <div class="anamnese-section">
+                <h3>Revisão de Sistemas</h3>
+                <div class="anamnese-group">
+                    <p id="view-anamnese-sistemas" style="white-space: pre-line; line-height: 1.6;">--</p>
+                </div>
+            </div>
+
+            <div class="anamnese-section">
+                <h3>Exames e Saúde Específica</h3>
+                <div class="anamnese-group">
+                    <label>Exames e Vacinas</label>
+                    <p id="view-anamnese-exames">--</p>
+                </div>
+                <div class="anamnese-grid">
+                    <div class="anamnese-item"><label>Saúde da Mulher</label><p id="view-anamnese-mulher">--</p></div>
+                    <div class="anamnese-item"><label>Saúde do Homem</label><p id="view-anamnese-homem">--</p></div>
+                </div>
+            </div>
+
+        </div> </div> </div> ```
+
+
+
+               <div id="tab-registros-diarios" class="tab-panel hidden" role="tabpanel">
+    <div class="panel-header">
+        <h2>Registros Diários</h2>
+        <p>Acompanhe o bem-estar e evolução do paciente.</p>
+    </div>
+
+    <div class="sub-tab-nav" id="registros-diarios-sub-tab-nav" style="flex-wrap: wrap;">
+        <button class="sub-tab-btn active" data-subtab="sono"><i class="fa-solid fa-moon"></i> Sono</button>
+        <button class="sub-tab-btn" data-subtab="humor"><i class="fa-solid fa-face-smile"></i> Humor</button>
+        <button class="sub-tab-btn" data-subtab="dor"><i class="fa-solid fa-bandage"></i> Dor</button>
+        <button class="sub-tab-btn" data-subtab="alimentacao"><i class="fa-solid fa-utensils"></i> Alimentação</button>
+        <button class="sub-tab-btn" data-subtab="medicacao"><i class="fa-solid fa-pills"></i> Medicação</button>
+        <button class="sub-tab-btn" data-subtab="atividade"><i class="fa-solid fa-person-running"></i> Atividade</button>
+        <button class="sub-tab-btn" data-subtab="biometria"><i class="fa-solid fa-weight-scale"></i> Biometria</button>
+    </div>
+
+    <div class="chart-filters" style="display: flex; gap: 8px; margin: 15px 0;">
+        <button class="filter-btn-small active" data-period="7">Últimos 7 dias</button>
+        <button class="filter-btn-small" data-period="30">Últimos 30 dias</button>
+    </div>
+
+    <div id="subtab-registros-sono" class="sub-tab-panel">
+        <div class="chart-card"><div class="chart-container"><canvas id="sonoChart"></canvas></div></div>
+    </div>
+
+    <div id="subtab-registros-humor" class="sub-tab-panel hidden">
+        <div class="chart-card"><div class="chart-container"><canvas id="humorChart"></canvas></div></div>
+    </div>
+
+    <div id="subtab-registros-dor" class="sub-tab-panel hidden">
+        <div class="chart-card"><div class="chart-container"><canvas id="dorChart"></canvas></div></div>
+    </div>
+
+    <div id="subtab-registros-alimentacao" class="sub-tab-panel hidden">
+        <div class="chart-card"><div class="chart-container"><canvas id="alimentacaoChart"></canvas></div></div>
+    </div>
+
+    <div id="subtab-registros-medicacao" class="sub-tab-panel hidden">
+        <div class="chart-card">
+            <h4>Efeitos Colaterais</h4>
+            <div class="chart-container" style="height: 200px;"><canvas id="medicacaoNotaChart"></canvas></div>
+        </div>
+        <h4>Histórico de Adesão</h4>
+        <div id="medicacao-list-container" class="card-list medicacao-list"></div>
+    </div>
+
+    <div id="subtab-registros-atividade" class="sub-tab-panel hidden">
+        <div class="chart-card">
+            <h4>Minutos de Atividade Física</h4>
+            <div class="chart-container" style="height: 300px; position: relative;">
+                <canvas id="atividadeChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="subtab-registros-biometria" class="sub-tab-panel hidden">
+        <div class="chart-card">
+            <h4>Evolução Biométrica (Peso, Glicemia, Pressão)</h4>
+            <div class="chart-container" style="height: 300px; position: relative;">
+                <canvas id="biometriaChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <div id="tab-encaminhamentos" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-btn-encaminhamentos">
+                    <div class="panel-header"><h2>Encaminhamentos</h2><p>Encaminhamentos para outros especialistas</p></div>
+                    <div class="panel-toolbar"><input type="search" id="encaminhamento-search-input" placeholder="Buscar por especialidade ou motivo..."></div>
+                    <div id="encaminhamento-container" class="card-list"></div>
+                </div>
+
+             </div> <hr style="margin: 20px 0;">
+             </main>
+
+               <div id="tab-painel-clinico" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-btn-painel-clinico">
+
+                
+    
+    <section class="metricas-globais" aria-label="Métricas globais do paciente">
+        <div class="metrica-card">
+            <i class="fa-solid fa-stethoscope"></i>
+            <span class="metrica-valor" id="stat-consultas">--</span>
+            <span class="metrica-label">Consultas</span>
+        </div>
+        <div class="metrica-card">
+            <i class="fa-solid fa-person-running"></i>
+            <span class="metrica-valor" id="stat-atividade">--</span>
+            <span class="metrica-label">Ativ. Física (méd)</span>
+        </div>
+        <div class="metrica-card">
+            <i class="fa-solid fa-moon"></i>
+            <span class="metrica-valor" id="stat-sono">--</span>
+            <span class="metrica-label">Sono Médio</span>
+        </div>
+        <div class="metrica-card">
+            <i class="fa-solid fa-face-smile"></i>
+            <span class="metrica-valor" id="stat-humor">--</span>
+            <span class="metrica-label">Humor Médio</span>
+        </div>
+    </section>
+    
+    </section> <div class="iniciar-atendimento-container">
+        <button id="btn-iniciar-atendimento-painel" class="btn-primary">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            <span>Iniciar Atendimento</span>
+        </button>
+    </div>
+
+
+    <div class="painel-clinico-container">
+        
+        <div class="coluna-principal">
+            
+            <div class="sub-tab-nav" id="painel-clinico-sub-tab-nav">
+                <button class="sub-tab-btn active" data-subtab="linha-tempo"><i class="fa-solid fa-timeline"></i> Linha do Tempo</button>
+                <button class="sub-tab-btn" data-subtab="notas-medicas"> <i class="fa-solid fa-file-medical"></i> Registros de Notas Médicas </button>
+            </div>
+
+            <div id="subtab-painel-linha-tempo" class="sub-tab-panel">
+                <div class="historico-header">
+                    <h3>Histórico de Consultas</h3>
+                    <span class="total-consultas">Carregando...</span> </div>
+                        <div class="historico-consultas-lista">
+                    </div>
+            </div>
+
+            <div id="subtab-painel-notas-medicas" class="sub-tab-panel hidden">
+    <div class="header-section"> <h3>Registros de Notas Médicas: </h3>
+          <span id="total-notas">0 notas</span> 
+    </div>
+    <div id="registros-notas-medicas-lista" style="padding-top: 15px;">
+        <p class="empty-state-notas hidden" style="text-align: center; color: #888; padding: 20px;">Nenhuma nota registrada ainda.</p>
+    </div>
+</div>
+        </div>
+
+        <aside class="coluna-lateral">
+
+            <section class="card-painel-lateral" aria-labelledby="acompanhamentos-heading">
+                <h3 id="acompanhamentos-heading">Acompanhamentos Ativos</h3>
+                
+                <div id="painel-acompanhamentos-lista">
+                    <p class="placeholder" style="color: #888; font-size: 0.9rem;">Carregando acompanhamentos...</p>
+                </div>
+
+            </section>
+
+            <section class="card-painel-lateral" aria-labelledby="notas-heading">
+                <h3 id="notas-heading">Notas do Médico</h3>
+                <form id="form-notas-medico">
+                    <textarea id="notas-medico-texto" class="notas-textarea" rows="10" placeholder="Suas notas privadas sobre a evolução do paciente..."></textarea>
+                    <div class="notas-footer">
+                        <span class="char-counter"><span id="notas-char-count">0</span> / 407 caracteres</span>
+                        <button type="submit" id="salvar-notas-btn" class="btn-primary-painel">Salvar Anotações</button>
+                    </div>
+                </form>
+                <div class="dica-profissional">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <p><strong>Dica profissional:</strong> Use estas notas para registrar impressões, hipóteses ou planos para futuras consultas. <strong>Estas notas são visíveis apenas para você.</strong></p>
+                </div>
+            </section>
+        </aside>
+    </div>
+</div>
+<div id="consulta-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="consulta-modal-title">
+    <div class="modal-card modal-consulta-largo">
+        <div class="modal-header">
+            <h2 id="consulta-modal-title">Consulta de 15/10/2025</h2>
+            <button id="close-consulta-modal" class="modal-close" aria-label="Fechar">&times;</button>
+        </div>
+        
+        <div class="sub-tab-nav-modal" id="consulta-sub-tab-nav">
+            <button class="sub-tab-btn active" data-subtab="evolucao"><i class="fa-solid fa-file-waveform"></i> Evolução</button>
+            <button class="sub-tab-btn" data-subtab="sinais-vitais"><i class="fa-solid fa-heart-pulse"></i> Sinais Vitais</button>
+            <button class="sub-tab-btn" data-subtab="solicitacoes"><i class="fa-solid fa-file-medical"></i> Solicitações</button>
+            <button class="sub-tab-btn" data-subtab="acompanhamento"><i class="fa-solid fa-calendar-check"></i> Acompanhamento</button>
+            <button class="sub-tab-btn" data-subtab="dados-clinicos"><i class="fa-solid fa-notes-medical"></i> Dados da Consulta</button>
+            
+        </div>
+
+        <div class="consulta-tab-content">
+            
+            <div id="subtab-consulta-evolucao" class="sub-tab-panel">
+    <form id="form-evolucao">
+        <h4>Evolução Clínica</h4>
+        <p class="modal-subtitle">Descreva a evolução do paciente, diagnóstico, conduta e orientações.</p>
+
+        <div class="form-group">
+            <label for="evolucao-texto-input" class="sr-only">Registro de Evolução</label>
+            <textarea id="evolucao-texto-input" class="notas-textarea" rows="8" placeholder="Digite o registro de evolução..."></textarea>
+        </div>
+            <p>Esta evolucao sera salva ao clicar no botao "salvar consulta" no final de todo atendimento e salva no historico da consulta</p>
+    </form>
+</div>
+
+            <div id="subtab-consulta-sinais-vitais" class="sub-tab-panel hidden">
+    <h4 id="sinais-vitais-heading">Registro de Sinais Vitais</h4>
+    <p class="modal-subtitle">Registre os sinais vitais aferidos durante a consulta</p>
+
+    <form id="form-sinais-vitais" aria-labelledby="sinais-vitais-heading">
+
+        <input type="hidden" id="sv-edit-registro-id" value="">
+        <div class="form-grid two-columns">
+            <div class="form-group">
+                <label for="sv-glicemia">Glicemia (mg/dL)</label>
+                <input type="number" id="sv-glicemia" name="sv-glicemia" placeholder="Ex: 95" min="0" step="1">
+            </div>
+            <div class="form-group">
+                <label for="sv-peso">Peso (kg)</label>
+                <input type="number" id="sv-peso" name="sv-peso" placeholder="Ex: 70.5" min="0" step="0.1">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Pressão Arterial (mmHg)</label>
+            <div class="form-grid two-columns">
+                <div class="form-group nested-group">
+                     <label for="sv-pressao-sistolica" class="sub-label">Sistólica (máxima)</label>
+                     <input type="number" id="sv-pressao-sistolica" name="sv-pressao-sistolica" placeholder="Ex: 120" min="0" step="1">
+                </div>
+                 <div class="form-group nested-group">
+                     <label for="sv-pressao-diastolica" class="sub-label">Diastólica (mínima)</label>
+                     <input type="number" id="sv-pressao-diastolica" name="sv-pressao-diastolica" placeholder="Ex: 80" min="0" step="1">
+                </div>
+            </div>
+        </div>
+
+         <div class="form-group">
+            <label for="sv-temperatura">Temperatura (°C)</label>
+            <input type="number" id="sv-temperatura" name="sv-temperatura" placeholder="Ex: 36.5" step="0.1">
+        </div>
+
+        <div class="form-grid two-columns">
+             <div class="form-group">
+                <label for="sv-freq-cardiaca">Frequência Cardíaca (bpm)</label>
+                <input type="number" id="sv-freq-cardiaca" name="sv-freq-cardiaca" placeholder="Ex: 75" min="0" step="1">
+            </div>
+            <div class="form-group">
+                <label for="sv-freq-respiratoria">Frequência Respiratória (rpm)</label>
+                <input type="number" id="sv-freq-respiratoria" name="sv-freq-respiratoria" placeholder="Ex: 16" min="0" step="1">
+            </div>
+        </div>
+
+         <div class="form-grid two-columns">
+            <div class="form-group">
+                <label for="sv-saturacao-o2">Saturação O₂ (SpO₂ %)</label>
+                <input type="number" id="sv-saturacao-o2" name="sv-saturacao-o2" placeholder="Ex: 98" min="0" max="100" step="1">
+            </div>
+             <div class="form-group">
+                <label for="sv-altura">Altura (m)</label>
+                <input type="number" id="sv-altura" name="sv-altura" placeholder="Ex: 1.75" min="0" step="0.01">
+             </div>
+        </div>
+
+         <p id="sinais-vitais-feedback" class="feedback-message hidden" role="alert"></p>
+
+        <div class="modal-actions single-primary" style="margin-top: 24px;"> <button type="submit" id="salvar-sinais-vitais-btn" class="btn-primary-painel">
+                 <i class="fa-solid fa-save"></i> Registrar Sinais Vitais
+             </button>
+         </div>
+    </form>
+</div>
+        
+
+            <div id="subtab-consulta-solicitacoes" class="sub-tab-panel hidden">
+                <h4>Central de Ações</h4>
+                <p>A partir daqui, crie os documentos necessários para esta consulta.</p>
+                <div class="consulta-acoes-botoes">
+                    <button type="button" class="btn-primary-painel" id="btn-modal-abrir-receita">
+                        <i class="fa-solid fa-prescription-bottle-medical"></i> Criar Nova Receita
+                    </button>
+                    <button type="button" class="btn-primary-painel" id="btn-modal-abrir-exames">
+                        <i class="fa-solid fa-flask-vial"></i> Solicitar Exames
+                    </button>
+                    <button type="button" class="btn-primary-painel" id="btn-modal-abrir-encaminhamento">
+                        <i class="fa-solid fa-share-from-square"></i> Criar Encaminhamento
+                    </button>
+                    <button type="button" class="btn-primary-painel" id="btn-modal-abrir-atestado">
+                    <i class="fa-solid fa-file-invoice"></i> Criar Atestado Médico
+                     </button>
+                </div>
+            </div>
+            
+
+            <div class="consulta-tab-content">
+            
+            <div id="subtab-consulta-evolucao" class="sub-tab-panel">
+                </div>
+
+        
+            
+            <div id="subtab-consulta-solicitacoes" class="sub-tab-panel hidden">
+                </div>
+
+            
+
+           
+
+            <div id="subtab-consulta-dados-clinicos" class="sub-tab-panel hidden">
+    <h4>Dados da Consulta</h4>
+    <p class="modal-subtitle">Revise todos os registros gerados durante esta sessão de atendimento.</p>
+
+    <div class="sub-tab-nav-level2" id="dados-consulta-sub-nav">
+        <button class="sub-tab-btn-level2" data-subtab-target="dc-sinais-vitais" type="button" role="tab">Sinais Vitais</button>
+        <button class="sub-tab-btn-level2" data-subtab-target="dc-receitas" type="button" role="tab">Receitas</button>
+        <button class="sub-tab-btn-level2" data-subtab-target="dc-exames" type="button" role="tab">Exames</button>
+        <button class="sub-tab-btn-level2" data-subtab-target="dc-encaminhamentos" type="button" role="tab">Encaminhamentos</button>
+        <button class="sub-tab-btn-level2" data-subtab-target="dc-atestados" type="button" role="tab">Atestados</button>
+        <button class="sub-tab-btn-level2" data-subtab-target="dc-acompanhamento" type="button" role="tab">Acompanhamento</button>
+    </div>
+
+    <div class="sub-tab-content-level2">
+
+    <div id="panel-dc-evolucao" class="sub-tab-panel-level2 active" role="tabpanel">
+
+    <div id="dados-clinicos-evolucao-lista" class="card-list"> 
+
+        
+
+    </div>
+</div>
+
+        <div id="panel-dc-sinais-vitais" class="sub-tab-panel-level2 hidden" role="tabpanel">
+            <div id="dados-clinicos-sinais-vitais-lista" class="card-list" style="margin-top: 0;">
+                <div class="empty-state-mini" id="empty-state-sinais-vitais" style="text-align: left; padding: 10px 0;">
+                    <i class="fa-solid fa-heart-pulse" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                    <p>Nenhum sinal vital registrado nesta consulta ainda.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-dc-receitas" class="sub-tab-panel-level2 hidden" role="tabpanel">
+            <div id="dados-clinicos-receitas-lista" class="card-list">
+                <div class="empty-state-mini" style="text-align: left; padding: 10px 0;">
+                    <i class="fa-solid fa-prescription-bottle-medical" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                    <p>Nenhuma receita criada nesta consulta ainda.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-dc-exames" class="sub-tab-panel-level2 hidden" role="tabpanel">
+            <div id="dados-clinicos-exames-lista" class="card-list">
+                <div class="empty-state-mini" style="text-align: left; padding: 10px 0;">
+                    <i class="fa-solid fa-flask-vial" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                    <p>Nenhuma solicitação de exame criada nesta consulta ainda.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-dc-encaminhamentos" class="sub-tab-panel-level2 hidden" role="tabpanel">
+            <div id="dados-clinicos-encaminhamentos-lista" class="card-list">
+                <div class="empty-state-mini" style="text-align: left; padding: 10px 0;">
+                    <i class="fa-solid fa-share-from-square" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                    <p>Nenhum encaminhamento criado nesta consulta ainda.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-dc-atestados" class="sub-tab-panel-level2 hidden" role="tabpanel">
+            <div id="dados-clinicos-atestados-lista" class="card-list">
+                <div class="empty-state-mini" style="text-align: left; padding: 10px 0;">
+                    <i class="fa-solid fa-file-invoice" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                    <p>Nenhum atestado criado nesta consulta ainda.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-dc-acompanhamento" class="sub-tab-panel-level2 hidden" role="tabpanel">
+            <div id="dados-clinicos-acompanhamento-resumo">
+                <div class="empty-state-mini" style="text-align: left; padding: 10px 0;">
+                    <i class="fa-solid fa-star-of-life" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                    <p>Nenhum plano de acompanhamento definido para esta consulta.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    </div>
+
+
+
+
+          <div id="subtab-consulta-acompanhamento" class="sub-tab-panel hidden" role="tabpanel" aria-labelledby="btn-subtab-acompanhamento">
+
+    <form id="form-acompanhamento">
+
+        <div class="acompanhamento-header">
+            <h3><i class="fa-solid fa-star-of-life"></i> Acompanhamento Pós-Consulta</h3>
+            <p class="modal-subtitle">Defina metas e frequência de check-ins para o paciente.</p>
+        </div>
+
+        <div class="form-section">
+            <h4 class="metas-titulo"><i class="fa-solid fa-bullseye"></i> Metas de Acompanhamento</h4>
+            <div class="metas-grid">
+                <div class="checkbox-group-vertical" id="metas-coluna-1">
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="tomar_medicacao">
+                        <span>Tomar medicação diariamente</span>
+                    </label>
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="fazer_exercicios_3x_semana">
+                        <span>Fazer exercícios 3x por semana</span>
+                    </label>
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="evitar_cafeina_apos_16h">
+                        <span>Evitar cafeína após 16h</span>
+                    </label>
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="registrar_humor">
+                        <span>Registrar humor diariamente</span>
+                    </label>
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="alimentacao_saudavel">
+                        <span>Alimentação saudável</span>
+                    </label>
+                </div>
+                <div class="checkbox-group-vertical" id="metas-coluna-2">
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="praticar_tecnicas_respiracao">
+                        <span>Praticar técnicas de respiração</span>
+                    </label>
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="consulta_psicologo_semanal">
+                        <span>Consulta com psicólogo semanal</span>
+                    </label>
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="dormir_7_8h">
+                        <span>Dormir 7-8h por noite</span>
+                    </label>
+                    <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="controlar_glicemia">
+                        <span>Controlar glicemia</span>
+                    </label>
+                     <label class="meta-item">
+                        <input type="checkbox" name="meta-acompanhamento" value="registrar_sono">
+                        <span>Registrar sono</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+                <div class="form-section">
+            <div class="form-group">
+                <label for="meta-personalizada-input">Outra meta (opcional):</label>
+
+                <div class="outra-meta-container">
+                    <input type="text" id="meta-personalizada-input" placeholder="Digite uma meta personalizada...">
+                    <button type="button" id="btn-adicionar-meta" class="btn-primary-painel">
+                        <i class="fa-solid fa-plus"></i> Adicionar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group" style="max-width: 250px;">
+                <label for="duracao-acompanhamento">Duração do Acompanhamento</label>
+                <select id="duracao-acompanhamento">
+                    <option value="7">7 dias</option>
+                    <option value="14" selected>14 dias</option>
+                    <option value="20">20 dias</option>
+                    <option value="30">30 dias</option>
+                    <option value="60">60 dias</option>
+                    <option value="90">90 dias</option>
+                    <option value="0">Contínuo (sem data fim)</option>
+                </select>
+            </div>
+            <label class="progresso-label">Progresso geral: <span id="progresso-dias-label">0/14 dias</span></label>
+            <div class="progresso-bar-container">
+                <div class="progresso-bar-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <label class="lembretes-toggle-container">
+                <input type="checkbox" id="enviar-lembretes" checked>
+                <div class="toggle-icon-label">
+                     <i class="fa-solid fa-bell"></i>
+                     <span>Enviar lembretes diários via app</span>
+                     <small>O paciente receberá notificações diárias para cumprir as metas definidas.</small>
+                </div>
+            </label>
+        </div>
+
+         <p id="acompanhamento-feedback" class="feedback-message hidden" role="alert"></p>
+
+
+        <div class="salvar-acompanhamento-container">
+            <button type="submit" id="btn-salvar-acompanhamento" class="btn-primary-painel">
+                <i class="fa-solid fa-save"></i>
+                Salvar Acompanhamento
+            </button>
+        </div>
+
+        <p class="acompanhamento-disclaimer">
+            <i class="fa-solid fa-shield-halved"></i>
+            Dados protegidos e compartilhados apenas com autorização do profissional (LGPD/WCAG 2.1)
+        </p>
+
+    </form>
+</div>
+
+
+          
+
+        <div class="modal-footer-actions">
+            <input type="hidden" id="consulta-edit-id" value="">
+            <button type="button" id="consulta-confirmar-atendimento" class="btn-secondary-painel"><i class="fa-solid fa-check-double"></i> Confirmar Atendimento</button>
+            <button type="submit" id="consulta-salvar-alteracoes" class="btn-primary-painel"><i class="fa-solid fa-save"></i> Salvar consulta</button>
+        </div>
+    </div>
+</div>
+            </div>
+        </main>
+
+        <footer class="action-footer">
+            <button class="action-btn" data-action="acompanhar"><i class="fa-solid fa-arrows-spin"></i><span>Acompanhar</span></button>
+            <button class="action-btn" data-action="confirmar"><i class="fa-solid fa-check-double"></i><span>Confirmar</span></button>
+        </footer>
+    </div>
+
+    <div id="pdf-receipt-template" class="pdf-template">
+        <header class="pdf-header">
+            <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="pdf-logo">
+            <div class="pdf-doctor-info">
+                <strong id="pdf-doctor-name">Nome do Doutor</strong>
+                <span id="pdf-doctor-specialty">Especialidade</span>
+                <span id="pdf-doctor-crm">CRM/UF XXXXX</span>
+            </div>
+        </header>
+        <main class="pdf-main">
+            <h2>Receituário</h2>
+            <div class="pdf-patient-info">
+                <div><strong>Paciente:</strong> <span id="pdf-patient-name">Nome do Paciente</span></div>
+                <div><strong>Data de Emissão:</strong> <span id="pdf-emission-date">DD/MM/AAAA</span></div>
+            </div>
+            <div class="pdf-prescription">
+                <h3>Prescrição</h3>
+                <p>Uso Contínuo</p>
+                <ol id="pdf-medication-list">
+                    <li>Medicamento Exemplo</li>
+                </ol>
+            </div>
+        </main>
+        <footer class="pdf-footer">
+            <div class="pdf-signature">
+                <span id="pdf-signature-name">Nome do Doutor</span>
+                <span>Assinatura Digital (Simulado)</span>
+            </div>
+            <div class="pdf-contact">
+                <span>www.orion.health</span>
+            </div>
+        </footer>
+    </div>
+
+    <div id="pdf-encaminhamento-template" class="pdf-template">
+        <header class="pdf-header">
+            <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="pdf-logo">
+            <div class="pdf-doctor-info">
+                <strong id="pdf-encaminhamento-doctor-name">Dr. Luiz Nascimento</strong>
+                <span id="pdf-encaminhamento-doctor-specialty">Clínico Geral</span>
+                <span id="pdf-encaminhamento-doctor-crm">CRM/SP 123456</span>
+            </div>
+        </header>
+        <main class="pdf-main">
+            <h2>Encaminhamento Clínico</h2>
+            <div class="pdf-patient-info">
+                <div><strong>Paciente:</strong> <span id="pdf-encaminhamento-patient-name">Nome Paciente</span></div>
+                <div><strong>Data de Emissão:</strong> <span id="pdf-encaminhamento-emission-date">DD/MM/AAAA</span></div>
+            </div>
+            <div class="pdf-prescription">
+                <h3>Detalhes do Encaminhamento</h3>
+                <ul id="pdf-encaminhamento-list" style="list-style: none; padding-left: 0; font-size: 14px;">
+                    <li>Exemplo</li>
+                </ul>
+            </div>
+        </main>
+        <footer class="pdf-footer">
+            <div class="pdf-signature">
+                <span id="pdf-encaminhamento-signature-name">Dr. Luiz Nascimento</span>
+                <span>Assinatura Digital (Simulado)</span>
+            </div>
+            <div class="pdf-contact">
+                <span>www.orion.health</span>
+            </div>
+        </footer>
+    </div>
+    
+    <div id="pdf-exame-template" class="pdf-template">
+        <header class="pdf-header">
+            <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="pdf-logo">
+            <div class="pdf-doctor-info">
+                <strong id="pdf-exame-doctor-name">Nome Doutor</strong>
+                <span id="pdf-exame-doctor-specialty">Especialidade</span>
+                <span id="pdf-exame-doctor-crm">CRM/UF XXXXX</span>
+            </div>
+        </header>
+        <main class="pdf-main">
+            <h2>Solicitação de Exames</h2>
+            <div class="pdf-patient-info">
+                <div><strong>Paciente:</strong> <span id="pdf-exame-patient-name">Nome Paciente</span></div>
+                <div><strong>Data da Solicitação:</strong> <span id="pdf-exame-emission-date">DD/MM/AAAA</span></div>
+            </div>
+            <div class="pdf-prescription">
+                <h3>Exames Solicitados</h3>
+                <ul id="pdf-exame-list" style="padding-left: 20px;"><li>Exemplo</li></ul>
+                <p><strong>Motivo:</strong> <span id="pdf-exame-motivo">Motivo Exemplo</span></p>
+                <p id="pdf-exame-jejum" style="font-weight: bold;"></p>
+            </div>
+        </main>
+        <footer class="pdf-footer">
+            <div class="pdf-signature">
+                <span id="pdf-exame-signature-name">Nome Doutor</span>
+                <span>Assinatura Digital (Simulado)</span>
+            </div>
+            <div class="pdf-contact">
+                <span>www.orion.health</span>
+            </div>
+        </footer>
+    </div>
+
+
+    <div id="pdf-atestado-template" class="pdf-template">
+        <header class="pdf-header">
+            <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="pdf-logo">
+            <div class="pdf-doctor-info">
+                <strong id="pdf-atestado-doctor-name">Nome Doutor</strong>
+                <span id="pdf-atestado-doctor-specialty">Especialidade</span>
+                <span id="pdf-atestado-doctor-crm">CRM/UF XXXXX</span>
+            </div>
+        </header>
+        <main class="pdf-main">
+            <h2>Atestado Médico</h2>
+            <div class="pdf-patient-info">
+                <div><strong>Paciente:</strong> <span id="pdf-atestado-patient-name">Nome Paciente</span></div>
+                <div><strong>Data de Emissão:</strong> <span id="pdf-atestado-emission-date">DD/MM/AAAA</span></div>
+            </div>
+            <div class="pdf-prescription">
+                <h3>Declaração</h3>
+                <p id="pdf-atestado-texto" style="font-size: 14px; line-height: 1.6; text-align: justify; padding-top: 10px;">
+                    Atesto para os devidos fins que o(a) paciente <strong id="pdf-atestado-patient-name-body"></strong>, portador(a) do documento [Nº Documento], necessita de <strong id="pdf-atestado-dias"></strong> dia(s) de afastamento de suas atividades (laborais/escolares), a partir de <strong id="pdf-atestado-data-inicio"></strong>, por motivos de saúde.
+                </p>
+                <p style="font-size: 12px; margin-top: 25px;">
+                    <strong>Motivo:</strong> <span id="pdf-atestado-motivo"></span><br>
+                    <strong>CID:</strong> <span id="pdf-atestado-cid"></span><br>
+                    <strong>Observações:</strong> <span id="pdf-atestado-observacoes"></span>
+                </p>
+            </div>
+        </main>
+        <footer class="pdf-footer">
+            <div class="pdf-signature">
+                <span id="pdf-atestado-signature-name">Nome Doutor</span>
+                <span>Assinatura Digital (Simulado)</span>
+            </div>
+            <div class="pdf-contact">
+                <span>www.orion.health</span>
+            </div>
+        </footer>
+    </div>
+
+
+    <div id="pdf-acompanhamento-template" class="pdf-template">
+    <header class="pdf-header">
+        <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health Logo" class="pdf-logo">
+        <div class="pdf-doctor-info">
+            <strong id="pdf-acomp-doctor-name">Nome do Doutor</strong>
+            <span id="pdf-acomp-doctor-specialty">Especialidade</span>
+            <span id="pdf-acomp-doctor-crm">CRM/UF XXXXX</span>
+        </div>
+    </header>
+    <main class="pdf-main">
+        <h2>Plano de Acompanhamento Pós-Consulta</h2>
+        <div class="pdf-patient-info">
+            <div><strong>Paciente:</strong> <span id="pdf-acomp-patient-name">Nome Paciente</span></div>
+            <div><strong>Data de Início:</strong> <span id="pdf-acomp-emission-date">DD/MM/AAAA</span></div>
+        </div>
+        <div class="pdf-prescription">
+            <h3>Metas Definidas</h3>
+            <ul id="pdf-acomp-metas-list" style="padding-left: 20px; font-size: 12px; line-height: 1.6;">
+                <li>Meta de exemplo 1</li>
+                <li>Meta de exemplo 2</li>
+            </ul>
+
+            <p style="font-size: 12px; margin-top: 25px;">
+                <strong>Duração do Acompanhamento:</strong> <span id="pdf-acomp-duracao"></span><br>
+                <strong>Lembretes Diários:</strong> <span id="pdf-acomp-lembretes"></span>
+            </p>
+        </div>
+    </main>
+    <footer class="pdf-footer">
+        <div class="pdf-signature">
+            <span id="pdf-acomp-signature-name">Nome Doutor</span>
+            <span>Assinatura Digital (Simulado)</span>
+        </div>
+        <div class="pdf-contact">
+            <span>www.orion.health</span>
+        </div>
+    </footer>
+</div>
+
+    <div id="encaminhar-modal" class="hidden modal-overlay">
+        <div class="modal-card" style="text-align: center;">
+            <button id="close-encaminhar-modal" class="modal-close">&times;</button>
+            <h2 class="modal-title">O que você deseja fazer?</h2>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button id="btn-solicitar-exames" class="btn-primary">Solicitar Exames</button>
+                <button id="btn-solicitar-receita" class="btn-primary">Solicitar Receita</button>
+                <button id="btn-solicitar-encaminhamento" class="btn-primary">Solicitar Encaminhamento</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="form-encaminhamento-modal" class="hidden modal-overlay">
+        <div class="modal-card">
+            <button id="close-form-encaminhamento-modal" class="modal-close">&times;</button>
+            <h2 class="modal-title">Encaminhar para Especialista</h2>
+            <form id="form-encaminhamento">
+                <label for="especialidade">Especialidade Recomendada</label>
+                <select id="especialidade" required>
+                    <option value="">Selecione</option>
+                    <option value="Cardiologia">Cardiologia</option>
+                    <option value="Endocrinologia">Endocrinologia</option>
+                    <option value="Psicologia">Psicologia</option>
+                    <option value="Nutrição">Nutrição</option>
+                    <option value="Fisioterapia">Fisioterapia</option>
+                    <option value="Neurologia">Neurologia</option>
+                    <option value="Dermatologia">Dermatologia</option>
+                    <option value="Outra">Outra</option>
+                </select>
+                <input type="text" id="especialidade-outra" placeholder="Digite a especialidade" class="hidden">
+                <label for="motivo">Motivo do Encaminhamento</label>
+                <textarea id="motivo" required rows="3" placeholder="Ex: Paciente com dor torácica leve..."></textarea>
+                <label for="recomendacoes">Recomendações Clínicas (opcional)</label>
+                <textarea id="recomendacoes" rows="3" placeholder="Ex: Realizar ECG, ecocardiograma..."></textarea>
+                <label for="data-indicacao">Data da Indicação</label>
+                <input type="date" id="data-indicacao" readonly>
+                <p class="assinatura">Assinado via Orion.Health<br><em id="encaminhamento-signature-name-modal">Dr. Luiz Nascimento</em></p> <div class="modal-actions">
+                    <button type="button" id="cancel-encaminhamento-button" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar Encaminhamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="form-exame-modal" class="hidden modal-overlay">
+        <div class="modal-card">
+            <button id="close-form-exame-modal" class="modal-close">&times;</button>
+            <h2 class="modal-title">Solicitar Exames</h2>
+            <form id="form-exame">
+                <label for="exame-search-input">Adicionar Exame</label>
+                <div class="exam-search-container">
+                    <input type="search" id="exame-search-input" placeholder="Digite para buscar ou adicione um novo">
+                    <div id="exame-suggestions-container" class="suggestions-list hidden"></div>
+                </div>
+                <div id="selected-exams-container" class="selected-exams-list"></div>
+                <label for="motivo-exame">Motivo da Solicitação</label>
+                <textarea id="motivo-exame" required rows="3" placeholder="Ex: Avaliação de rotina, investigação de sintomas..."></textarea>
+                <div class="toggle-group">
+                    <label for="jejum-necessario">Jejum Necessário?</label>
+                    <label class="switch">
+                        <input type="checkbox" id="jejum-necessario">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <label for="data-solicitacao-exame">Data da Solicitação</label>
+                <input type="date" id="data-solicitacao-exame" readonly>
+                <p class="assinatura">Assinado via Orion.Health<br><em id="exame-signature-name-modal">Dr. Luiz Nascimento</em></p> <div class="modal-actions">
+                    <button type="button" id="cancel-exame-button" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar Solicitação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+   <div id="form-receita-modal" class="hidden modal-overlay">
+    <div class="modal-card">
+        <button id="close-form-receita-modal" class="modal-close">&times;</button>
+        <h2 class="modal-title"><i class="fa-solid fa-prescription-bottle-medical"></i> Criar Nova Receita</h2>
+        
+        <form id="form-add-medicamento" class="form-mini-medicamento">
+            <fieldset>
+                <legend class="mini-legend">Adicionar Medicamento</legend>
+                <div class="form-group">
+                    <label for="medicamento-nome">Medicamento *</label>
+                    <input type="text" id="medicamento-nome" placeholder="Ex: Paracetamol 500mg">
+                </div>
+                <div class="form-grid-receita"> 
+                    <div class="form-group">
+                        <label for="medicamento-dosagem">Dosagem *</label>
+                        <input type="text" id="medicamento-dosagem" placeholder="Ex: 1 comprimido">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicamento-frequencia">Frequência *</label>
+                        <input type="text" id="medicamento-frequencia" placeholder="Ex: 8/8 horas">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="medicamento-duracao">Duração *</label>
+                    <input type="text" id="medicamento-duracao" placeholder="Ex: Por 5 dias, Uso contínuo">
+                </div>
+                <div class="modal-actions single-primary">
+                     <button type="submit" id="add-medicamento-btn" class="btn-primary" style="background-color: var(--cor-secundaria);">
+                        <i class="fa-solid fa-plus"></i> Adicionar à Receita
+                     </button>
+                </div>
+            </fieldset>
+        </form>
+
+        <hr class="form-divider">
+
+        <form id="form-receita-final">
+            
+            <label class="mini-legend">Medicamentos na Receita</label>
+            <div id="medicamentos-adicionados-list" class="medicamentos-adicionados-list">
+                <p id="medicamentos-adicionados-placeholder" class="empty-state-mini">Nenhum medicamento adicionado.</p>
+                </div>
+
+            <div class="form-group">
+                <label for="observacoes-gerais">Observações Gerais (opcional)</label>
+                <textarea id="observacoes-gerais" rows="3" placeholder="Instruções gerais, recomendações..."></textarea>
+            </div>
+            
+            <p id="receita-error-message" class="error-message hidden" role="alert"></p> 
+            
+            <p class="assinatura">Assinado via Orion.Health<br><em id="receita-signature-name-modal">Carregando...</em></p>
+            
+            <div class="modal-actions"> 
+                <button type="button" id="cancel-receita-button" class="btn-secondary">Cancelar</button> 
+                <button type="submit" class="btn-primary">Salvar Receita Completa</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div id="form-atestado-modal" class="hidden modal-overlay">
+    <div class="modal-card">
+        <button id="close-form-atestado-modal" class="modal-close">&times;</button>
+        <h2 class="modal-title"><i class="fa-solid fa-file-invoice"></i> Solicitação de Atestado Médico</h2>
+        
+        <form id="form-atestado">
+            
+            <div class="form-group">
+                <label for="atestado-paciente-nome">Paciente</label>
+                <input type="text" id="atestado-paciente-nome" value="Ana Pereira da Silva" readonly>
+            </div>
+            
+            <div class="form-grid-receita"> <div class="form-group">
+                    <label for="atestado-dias">Qtde. de Dias</label>
+                    <input type="number" id="atestado-dias" placeholder="Ex: 3" min="0">
+                </div>
+                 <div class="form-group">
+                    <label for="atestado-data-inicio">Data Início</label>
+                    <input type="date" id="atestado-data-inicio">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="atestado-cid">CID (Código ou Nome)</label>
+                <input type="text" id="atestado-cid" placeholder="Ex: J00 ou Resfriado Comum">
+                </div>
+
+            <div class="form-group">
+                <label for="atestado-motivo">Motivo Clínico / Diagnóstico *</label>
+                <textarea id="atestado-motivo" rows="3" placeholder="Descreva o motivo do afastamento..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Atestado</label>
+                <div class="checkbox-group-vertical">
+                    <label><input type="radio" name="atestado-tipo" value="laboral" checked> Afastamento Laboral</label>
+                    <label><input type="radio" name="atestado-tipo" value="escolar"> Escolar</label>
+                    <label><input type="radio" name="atestado-tipo" value="outro"> Outro</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="atestado-observacoes">Observações Adicionais (opcional)</label>
+                <textarea id="atestado-observacoes" rows="2" placeholder="Ex: Repouso absoluto, evitar esforço físico..."></textarea>
+            </div>
+            
+            <p id="atestado-error-message" class="error-message hidden" role="alert"></p> 
+            
+            <p class="assinatura">Assinado via Orion.Health<br><em id="atestado-signature-name-modal">Carregando...</em></p>
+            
+            <div class="modal-actions"> 
+                <button type="button" id="cancel-atestado-button" class="btn-secondary">Cancelar</button> 
+                <button type="submit" class="btn-primary">Salvar Atestado</button>
+            </div>
+        </form>
+    </div>
+</div>
+    
+    <div id="medicacao-detalhe-modal" class="hidden modal-overlay">
+        <div class="modal-card">
+            <button id="close-medicacao-detalhe-modal" class="modal-close">&times;</button>
+            <h2 class="modal-title"><i class="fa-solid fa-comment-medical"></i> Detalhe do Registro</h2>
+            <div id="medicacao-detalhe-content">
+                <p><strong>Medicamento:</strong> <span id="detalhe-medicamento"></span></p>
+                <p><strong>Data:</strong> <span id="detalhe-data"></span></p>
+                <p><strong>Nota:</strong> <span id="detalhe-nota"></span></p>
+                <hr>
+                <p><strong>Registro do Paciente:</strong></p>
+                <p id="detalhe-texto" style="white-space: pre-wrap; background-color: #f8f9fa; padding: 10px; border-radius: 8px;"></p>
+            </div>
+            <div class="modal-actions" style="margin-top: 20px;"> <button type="button" id="fechar-medicacao-detalhe-btn" class="btn-secondary">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="visualizar-consulta-modal" class="modal hidden">
+    <div class="modal-content large" style="max-height: 90vh; overflow-y: auto;">
+
+        <button id="close-visualizar-modal" class="modal-close-btn" aria-label="Fechar modal">&times;</button>
+
+        <div class="vis-modal-header">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+        <div class="vis-logo-area">
+            <img src="img/Logo.Orion versao oficial.png" alt="Logo Orion Health" style="height: 40px; max-width: 150px;">
+            </div>
+        <div class="vis-doctor-info" style="text-align: right;">
+             <h2 id="vis-doctor-name" style="margin: 0; font-size: 1.1rem; color: #333;">Nome do Médico</h2>
+             <p id="vis-doctor-specialty" style="margin: 2px 0; font-size: 0.9rem; color: #555;">Especialidade</p>
+             <p id="vis-doctor-crm" style="margin: 2px 0; font-size: 0.9rem; color: #555;">CRM/UF XXXXX</p>
+        </div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #ccc; margin-bottom: 15px;">
+
+    <h2 style="text-align: center; margin-bottom: 15px; font-size: 1.5rem; color: #444;">Histórico da Consulta</h2>
+
+    <div class="vis-patient-box" style="border: 1px solid #eee; padding: 10px 15px; border-radius: 4px; margin-bottom: 25px; background-color: #fdfdfd;">
+        <p style="margin: 0 0 5px 0;"><strong>Paciente:</strong> <span id="vis-patient-name">Nome do Paciente</span></p>
+        <p style="margin: 0; font-size: 0.9rem;"><strong>Data da Consulta:</strong> <span id="vis-consulta-date">DD/MM/AAAA HH:MM</span> | <strong>Tipo:</strong> <span id="vis-consulta-tipo">Presencial/Online</span></p>
+    </div>
+</div>
+
+        <div class="modal-body">
+
+            <section id="vis-section-evolucao" class="vis-section hidden">
+                <h3><i class="fa-solid fa-notes-medical"></i> Evolução Clínica</h3>
+                <div class="vis-content-box">
+                    <p id="vis-evolucao-texto" style="white-space: pre-wrap;"></p>
+                </div>
+            </section>
+
+            <section id="vis-section-sinaisvitais" class="vis-section hidden">
+                <h3><i class="fa-solid fa-heart-pulse"></i> Sinais Vitais Registrados</h3>
+                <div id="vis-sinaisvitais-lista" class="vis-content-box grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <p class="placeholder col-span-full">Nenhum sinal vital registrado nesta consulta.</p>
+                </div>
+            </section>
+
+            <section id="vis-section-receitas" class="vis-section hidden">
+                <h3><i class="fa-solid fa-prescription-bottle-medical"></i> Receitas Emitidas</h3>
+                <div id="vis-receitas-lista" class="vis-content-box">
+                    <p class="placeholder">Nenhuma receita emitida nesta consulta.</p>
+                </div>
+            </section>
+
+            <section id="vis-section-exames" class="vis-section hidden">
+                <h3><i class="fa-solid fa-flask-vial"></i> Solicitações de Exames</h3>
+                <div id="vis-exames-lista" class="vis-content-box">
+                    <p class="placeholder">Nenhuma solicitação de exame nesta consulta.</p>
+                </div>
+            </section>
+
+            <section id="vis-section-atestados" class="vis-section hidden">
+                <h3><i class="fa-solid fa-file-invoice"></i> Atestados Emitidos</h3>
+                <div id="vis-atestados-lista" class="vis-content-box">
+                    <p class="placeholder">Nenhum atestado emitido nesta consulta.</p>
+                </div>
+            </section>
+
+            <section id="vis-section-encaminhamentos" class="vis-section hidden">
+                <h3><i class="fa-solid fa-share-from-square"></i> Encaminhamentos</h3>
+                <div id="vis-encaminhamentos-lista" class="vis-content-box">
+                    <p class="placeholder">Nenhum encaminhamento realizado nesta consulta.</p>
+                </div>
+            </section>
+
+            <section id="vis-section-acompanhamentos" class="vis-section hidden">
+                <h3><i class="fa-solid fa-star-of-life"></i> Planos de Acompanhamento</h3>
+                <div id="vis-acompanhamentos-lista" class="vis-content-box">
+                    <p class="placeholder">Nenhum plano de acompanhamento iniciado nesta consulta.</p>
+                </div>
+            </section>
+
+        </div> <div class="modal-footer" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+             <button type="button" id="fechar-visualizar-modal-footer" class="btn">Fechar Visualização</button>
+        </div>
+
+    </div> </div>
+
+    <div id="historico-acompanhamento-modal" class="modal-overlay hidden">
+    <div class="modal-card modal-consulta-largo">
+        <div class="modal-header">
+            <h2 id="historico-acomp-title" class="modal-title">
+                <i class="fa-solid fa-clock-rotate-left"></i> Histórico de Adesão
+            </h2>
+            <button id="close-historico-acomp-modal" class="modal-close">&times;</button>
+        </div>
+
+        <div class="consulta-tab-content" style="max-height: 70vh; overflow-y: auto; background-color: #f8f9fa;">
+            
+            <div style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center;">
+                <div>
+                    <span style="display: block; font-size: 2rem; font-weight: 700; color: #41b8d5;" id="hist-total-dias">0</span>
+                    <span style="font-size: 0.85rem; color: #666;">Dias Registrados</span>
+                </div>
+                <div>
+                    <span style="display: block; font-size: 2rem; font-weight: 700; color: #28a745;" id="hist-media-adesao">0%</span>
+                    <span style="font-size: 0.85rem; color: #666;">Média de Adesão</span>
+                </div>
+            </div>
+
+            <h4 style="margin-left: 4px; margin-bottom: 12px; color: #4a5568;">Registros Diários</h4>
+            
+            <div id="lista-historico-checkins" style="display: flex; flex-direction: column; gap: 12px;">
+                <p class="placeholder">Carregando histórico...</p>
+            </div>
+        </div>
+
+        <div class="modal-footer-actions">
+            <button type="button" id="btn-fechar-historico-acomp" class="btn-secondary-painel">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="pdf-encaminhamento-template" class="pdf-template" style="display: none;">
+    
+    <header class="pdf-header" style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #41b8d5; padding-bottom: 10px; margin-bottom: 20px;">
+        <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health" class="pdf-logo" style="width: 150px; height: auto;">
+        <div class="pdf-doctor-info" style="text-align: right; font-size: 11px; line-height: 1.4; font-family: sans-serif;">
+            <strong id="pdf-enc-doctor-name">Nome do Doutor</strong><br>
+            <span id="pdf-enc-doctor-spec">Especialidade</span><br>
+            <span id="pdf-enc-doctor-crm">CRM/UF...</span>
+        </div>
+    </header>
+
+    <main class="pdf-main" style="font-family: sans-serif; color: #333;">
+        <h2 style="text-align: center; font-size: 18px; margin: 20px 0; font-weight: bold;">Encaminhamento Clínico</h2>
+        
+        <div class="pdf-patient-info" style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 12px;">
+            <div style="margin-bottom: 4px;"><strong>Paciente:</strong> <span id="pdf-enc-patient-name">Nome do Paciente</span></div>
+            <div><strong>Data:</strong> <span id="pdf-enc-date">DD/MM/AAAA</span></div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <div style="margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                <p style="font-size: 14px; color: #718096; margin-bottom: 5px; text-transform: uppercase; font-weight: bold;">Ao Especialista em:</p>
+                <p id="pdf-enc-specialty" style="font-size: 18px; font-weight: bold; color: #41b8d5; margin: 0;">Especialidade</p>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 13px; font-weight: bold; color: #2d3748; margin-bottom: 5px;">Motivo do Encaminhamento:</p>
+                <p id="pdf-enc-reason" style="font-size: 13px; line-height: 1.6; background-color: #f8fafc; padding: 10px; border-radius: 4px; margin: 0;">...</p>
+            </div>
+
+            <div id="pdf-enc-obs-container" style="margin-bottom: 20px;">
+                <p style="font-size: 13px; font-weight: bold; color: #2d3748; margin-bottom: 5px;">Observações / Recomendações:</p>
+                <p id="pdf-enc-obs" style="font-size: 13px; line-height: 1.6; margin: 0;">...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="pdf-footer" style="position: absolute; bottom: 15mm; left: 15mm; right: 15mm; border-top: 1px solid #e2e8f0; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #718096; font-family: sans-serif;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <span id="pdf-enc-signature" style="font-weight: bold; color: #333;">Nome do Doutor</span>
+            <span>Assinatura Digital (Simulado)</span>
+        </div>
+        <div>www.orion.health</div>
+    </footer>
+</div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="prontuario-paciente.js" type="module"></script>
+</body>
+</html>

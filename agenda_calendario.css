@@ -1,0 +1,1058 @@
+:root {
+    --cor-primaria: #41b8d5;
+    --cor-secundaria: #3197b1;
+    --cor-danger: #e53e3e;
+    --fundo-pagina: #f8f9fa;
+    --fundo-elemento: #ffffff;
+    --texto-principal: #1a202c;
+    --texto-secundario: #4a5568;
+    --texto-suave: #8a94a6;
+    --borda-suave: #e2e8f0;
+    --sombra-subtil: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--fundo-pagina);
+    color: var(--texto-principal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--fundo-elemento);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.spinner {
+    border: 5px solid var(--borda-suave);
+    border-top: 5px solid var(--cor-secundaria);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.header {
+    background-color: var(--fundo-pagina);
+    padding: 16px;
+    border-bottom: 1px solid var(--borda-suave);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-left,
+.header-actions {
+    flex-shrink: 0;
+}
+
+.header-content {
+    display: none;
+}
+
+.back-button {
+    font-size: 1.5rem;
+    color: var(--texto-secundario);
+    text-decoration: none;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--cor-secundaria);
+}
+
+.btn-primary:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+}
+
+.card {
+    background-color: var(--fundo-elemento);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--borda-suave);
+}
+
+.card-header {
+    margin-bottom: 16px;
+}
+
+.card-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-header p {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    margin: 4px 0 0 0;
+}
+
+.metrics-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.metric-card {
+    background-color: var(--cor-primaria);
+    color: #ffffff;
+    border: none;
+    text-align: center;
+    padding: 16px;
+}
+
+.metric-card h3 {
+    font-size: 0.9rem;
+    margin: 0 0 8px 0;
+    font-weight: 500;
+    color: #ffffff;
+    opacity: 0.9;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.metric-card small {
+    font-size: 0.8rem;
+    color: #ffffff;
+    opacity: 0.8;
+}
+
+.fc .fc-toolbar {
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+}
+
+.fc .fc-daygrid-day-frame {
+    min-height: 70px;
+}
+
+.day-dots {
+    bottom: 5px;
+}
+
+.event-dot {
+    width: 5px;
+    height: 5px;
+}
+
+.sidebar-column {
+    order: -1;
+}
+
+.modal-content {
+    padding: 16px;
+}
+
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+    font-size: 0.8rem;
+    color: var(--texto-secundario);
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.dot-disponivel {
+    background-color: #a0d9e5;
+}
+.dot-agendado {
+    background-color: var(--cor-secundaria);
+}
+.dot-hoje {
+    border: 2px solid var(--cor-primaria);
+}
+
+.upcoming-list .empty-state {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--texto-suave);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    opacity: 0.5;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.appointment-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--borda-suave);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s ease;
+}
+
+.appointment-item:hover {
+    background-color: var(--fundo-pagina);
+    border-radius: 8px;
+}
+
+.appointment-item-time {
+    font-weight: 600;
+    color: var(--texto-principal);
+    width: 70px;
+}
+
+.appointment-item-patient {
+    flex-grow: 1;
+    color: var(--texto-secundario);
+}
+
+.appointment-item-status {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+.status-confirmado {
+    background-color: #c6f6d5;
+    color: #2f855a;
+}
+.status-pendente {
+    background-color: #feebc8;
+    color: #9c4221;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 16px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background-color: var(--fundo-elemento);
+    padding: 24px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: var(--sombra-subtil);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    color: var(--texto-principal);
+}
+
+.modal-subtitle {
+    color: var(--texto-secundario);
+    margin: 0 0 24px 0;
+    font-size: 0.95rem;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--texto-suave);
+    line-height: 1;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.3);
+}
+
+.input-with-icon {
+    position: relative;
+}
+.input-with-icon i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--texto-suave);
+}
+.input-with-icon input {
+    padding-left: 40px;
+}
+
+.input-with-currency {
+    position: relative;
+}
+.input-with-currency span {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--texto-suave);
+    font-weight: 500;
+}
+.input-with-currency input {
+    padding-left: 45px;
+}
+
+.time-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.time-group .form-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.modal-actions {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+.btn-secondary {
+    background-color: var(--fundo-pagina);
+    color: var(--texto-secundario);
+    border: 1px solid var(--borda-suave);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-secondary:hover {
+    background-color: var(--borda-suave);
+}
+
+.toggle-group {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--fundo-pagina);
+    padding: 16px;
+    border-radius: 8px;
+}
+.toggle-label {
+    font-weight: 600 !important;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+input:checked + .slider {
+    background-color: var(--cor-primaria);
+}
+.slider.round {
+    border-radius: 34px;
+}
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.error-message {
+    color: #c53030;
+    background-color: #fed7d7;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.modal-actions-edit {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-danger {
+    background-color: var(--cor-danger);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s;
+}
+.btn-danger:hover {
+    background-color: #c53030;
+}
+.btn-danger:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+    .header {
+        padding: 24px;
+    }
+    .header-content {
+        display: block;
+        text-align: center;
+        flex-grow: 1;
+    }
+    .main-layout {
+        padding: 24px;
+        gap: 24px;
+    }
+    .card {
+        padding: 24px;
+    }
+}
+
+
+
+/* ================================================= */
+/* --- ESTILOS "CLEAN" PARA O FULLCALENDAR --- */
+/* ================================================= */
+
+/* 1. Estiliza o novo cabeçalho "Calendário" que adicionámos ao HTML */
+.calendar-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--borda-suave);
+    margin-bottom: 24px;
+}
+.calendar-header .card-icon-header {
+    font-size: 2rem;
+    color: var(--cor-primaria);
+}
+.calendar-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--texto-principal);
+}
+.calendar-header p {
+    font-size: 1rem;
+    color: var(--texto-secundario);
+    margin: 0;
+}
+
+/* 2. Remove todas as bordas do FullCalendar */
+#calendar .fc-theme-standard,
+#calendar .fc-theme-standard th,
+#calendar .fc-theme-standard td,
+#calendar .fc-scrollgrid {
+    border: none !important;
+}
+
+/* 3. Estiliza a barra de ferramentas (Setas e Mês) */
+#calendar .fc-header-toolbar {
+    margin-bottom: 1.5em !important;
+    
+}
+
+/* 4. Estiliza o Título (Ex: "Outubro De 2025") */
+#calendar .fc-toolbar-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+}
+
+/* 5. Estiliza os botões de seta (Prev/Next) */
+#calendar .fc-button {
+    background-color: transparent !important;
+    border: 1px solid var(--borda-suave) !important;
+    color: var(--texto-secundario) !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+}
+#calendar .fc-button:hover {
+    background-color: var(--fundo-pagina) !important;
+    border-color: var(--cor-secundaria) !important;
+    color: var(--cor-secundaria) !important;
+}
+#calendar .fc-button .fc-icon {
+    font-weight: 700; /* Deixa as setas mais fortes */
+}
+
+/* 6. Estiliza os dias da semana (Dom, Seg, Ter...) */
+#calendar .fc-col-header-cell {
+    padding-bottom: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--texto-suave);
+    text-transform: capitalize; /* Deixa a primeira letra maiúscula */
+}
+#calendar .fc-col-header-cell-cushion { /* Link interno do FullCalendar */
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 7. Estiliza as células dos dias */
+#calendar .fc-daygrid-day {
+    padding: 4px;
+    border-radius: 8px;
+}
+#calendar .fc-daygrid-day-frame {
+    /* Garante que o conteúdo fique centralizado e com espaço */
+    min-height: 50px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 8. Estiliza o NÚMERO do dia */
+#calendar .fc-daygrid-day-number {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--texto-secundario);
+    padding: 0;
+    /* Remove o link que o FullCalendar coloca */
+    text-decoration: none; 
+}
+
+/* 9. Estilo para HOJE (Borda azul, como no '21' da imagem) */
+#calendar .fc-day-today .fc-daygrid-day-frame {
+    border: 2px solid var(--cor-primaria);
+    border-radius: 12px;
+    background-color: transparent;
+}
+
+
+/* 12. Esconde dias de outros meses (para ficar mais "clean") */
+#calendar .fc-day-other {
+    opacity: 0.3;
+}
+
+/* 13. Estiliza a LEGENDA que adicionámos no HTML */
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: flex-start;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--borda-suave);
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+.calendar-legend span {
+    display: flex;
+    align-items: center;
+}
+.legend-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+.dot-disponivel {
+    background-color: #e6f7ff;
+    border: 1px solid #b6e3f0;
+}
+.dot-agendado {
+    background-color: var(--cor-secundaria);
+}
+.dot-hoje {
+    background-color: transparent;
+    border: 2px solid var(--cor-primaria);
+}
+
+
+
+
+
+/* ================================================= */
+/* --- ESTILOS MODAL AÇÕES DO DIA (NOVO) --- */
+/* ================================================= */
+
+.day-action-buttons {
+    display: flex;
+    flex-direction: column; /* Botões empilhados */
+    gap: 16px;
+    margin-top: 24px;
+}
+
+/* Estilo base para os novos botões (inspirado nos cards do dashboard) */
+.btn-primary-card-style, 
+.btn-secondary-card-style {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box; /* Garante que o padding não estoure */
+}
+
+.btn-primary-card-style {
+    background-color: var(--cor-primaria);
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(65, 184, 213, 0.39);
+}
+.btn-primary-card-style:hover {
+    background-color: var(--cor-secundaria);
+}
+
+.btn-secondary-card-style {
+    background-color: var(--borda-suave);
+    color: var(--texto-secundario);
+}
+.btn-secondary-card-style:hover {
+    background-color: #d1d5db; /* Um cinza um pouco mais escuro */
+}
+
+/* Estilos para a Barra Lateral de Próximas Consultas */
+.appointment-item-paciente {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--borda-suave);
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+}
+
+.appointment-item-paciente:last-child {
+    border-bottom: none;
+}
+
+.appointment-item-paciente:hover {
+    background-color: var(--cor-fundo);
+}
+
+.appointment-item-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.appointment-time {
+    font-weight: 600;
+    color: var(--texto-principal);
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.appointment-patient-name {
+    font-weight: 500;
+    color: var(--texto-principal);
+    font-size: 0.95rem;
+    flex-grow: 1;
+    /* Remove o sublinhado */
+    text-decoration: none  !important;
+}
+
+.btn-atender {
+    background-color: var(--cor-secundaria);
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-atender:hover {
+    background-color: #287d9f; /* Um tom mais escuro do azul secundário */
+}
+/* ================================================= */
+/* --- ESTILOS MODAL VISUALIZAR AGENDA DO DIA --- */
+/* ================================================= */
+
+.day-details-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Espaço entre os itens */
+    margin-top: 24px;
+    max-height: 40vh; /* Limita a altura da lista */
+    overflow-y: auto; /* Adiciona scroll se a lista for longa */
+    padding: 8px;
+    background-color: var(--fundo-pagina);
+    border-radius: 8px;
+}
+
+.day-details-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--fundo-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    width: 100%; /* Garante que o botão ocupe o espaço */
+    text-align: left;
+    font-family: 'Inter', sans-serif; /* Garante a fonte */
+}
+
+.day-details-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-subtil);
+}
+
+.day-details-item .item-time {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--texto-principal);
+    width: 100px; /* Largura fixa para alinhar */
+    flex-shrink: 0;
+}
+
+.day-details-item .item-title {
+    font-weight: 500;
+    font-size: 0.9rem;
+    flex-grow: 1; /* Ocupa o espaço restante */
+}
+
+/* Estilo do Ponto (dot) */
+.day-details-item .item-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.day-details-item.item-status-disponivel .item-dot {
+    background-color: var(--cor-primaria);
+}
+.day-details-item.item-status-disponivel .item-title {
+    color: var(--cor-secundaria);
+    font-weight: 600;
+}
+
+.day-details-item.item-status-agendado .item-dot {
+    background-color: var(--cor-secundaria); /* Ou uma cor de "ocupado" */
+}
+ .day-details-item.item-status-agendado .item-title {
+    color: var(--texto-principal);
+    font-weight: 600;
+}
+
+.day-details-list-container .empty-state-mini {
+    padding: 24px 0;
+    text-align: center;
+    color: var(--texto-suave);
+}
+
+
+/* ================================================= */
+/* --- ESTILO "CLEAN" v4 (BASEADO EM BACKGROUND) --- */
+/* ================================================= */
+
+/* 1. Esconde qualquer texto de evento que possa aparecer */
+#calendar .fc-daygrid-event,
+#calendar .fc-daygrid-event-dot,
+#calendar .fc-list-event {
+    display: none !important;
+}
+
+/* 2. Estiliza o bloco de fundo que o 'display: background' cria */
+#calendar .fc-bg-event {
+    background-color: #41b8d5 !important; /* Força a cor Orion */
+    opacity: 1.0 !important; 
+    border-radius: 12px; /* Arredonda o fundo (como na imagem '9' ou '16') */
+
+    /* Correção para o "padding" da célula */
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
+}
+
+/* 3. Garante que o NÚMERO do dia fique BRANCO quando houver fundo */
+#calendar .fc-daygrid-day.fc-daygrid-day-bg .fc-daygrid-day-number {
+    color: #ffffff !important; /* Força o número a ficar branco */
+    font-weight: 700 !important;
+    position: relative; 
+    z-index: 2;
+}
+
+/* 4. Corrige o dia de HOJE (borda azul, como no '21' da imagem) */
+#calendar .fc-day-today {
+    background-color: transparent !important;
+}
+#calendar .fc-day-today .fc-daygrid-day-frame {
+    border: 2px solid var(--cor-primaria) !important; /* Borda azul */
+    border-radius: 12px !important;
+    background-color: transparent !important;
+    position: relative;
+    z-index: 1; 
+}
+
+/* 5. Se "Hoje" também tiver um evento de fundo (Fundo azul + Borda azul) */
+#calendar .fc-day-today.fc-daygrid-day-bg .fc-daygrid-day-frame {
+    /* O fundo azul (#41b8d5) será aplicado pelo .fc-bg-event */
+    /* A borda azul definida acima será mantida */
+}
+
+/* 6. Garante que o número de "Hoje" fique escuro (se NÃO tiver evento) */
+#calendar .fc-day-today .fc-daygrid-day-number {
+     color: var(--cor-secundaria) !important; 
+     font-weight: 700;
+}
+
+/* 7. Garante que o número de "Hoje" fique BRANCO (se TIVER evento) */
+#calendar .fc-day-today.fc-daygrid-day-bg .fc-daygrid-day-number {
+    color: #ffffff !important; /* Branco, pois o fundo é azul */
+}
+
+/* ================================================= */
+/* --- ESTILOS VISUAIS PARA DATAS COM EVENTOS --- */
+/* ================================================= */
+
+/* Aplica o fundo azul à célula do dia que tem a nossa classe especial */
+#calendar .fc-daygrid-day.fc-day-has-events .fc-daygrid-day-frame {
+    background-color: #41b8d5 !important; /* Cor Orion desejada */
+    border-radius: 12px; /* Mantém o arredondamento como no estilo 'Hoje' */
+    /* Garante que ocupe a célula toda, considerando padding interno do FC */
+    position: relative; /* Necessário para z-index funcionar bem */
+    margin: 2px; /* Pequena margem para não colar nas bordas */
+    box-sizing: border-box;
+}
+
+/* Garante que o NÚMERO do dia fique BRANCO e legível sobre o fundo azul */
+#calendar .fc-daygrid-day.fc-day-has-events .fc-daygrid-day-number {
+    color: #ffffff !important; /* Força a cor branca */
+    font-weight: 700 !important; /* Deixa o número em negrito */
+    position: relative; /* Para garantir que fique sobre o fundo */
+    z-index: 2;         /* Para garantir que fique sobre o fundo */
+    /* Centraliza o número se necessário (opcional, FC geralmente já faz) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Opcional: Ajuste para o dia de HOJE quando ele TAMBÉM tiver eventos */
+/* Garante que a borda azul de 'Hoje' não seja sobreposta totalmente */
+#calendar .fc-day-today.fc-day-has-events .fc-daygrid-day-frame {
+    border: 2px solid #3197b1 !important; /* Borda um pouco mais escura para destacar */
+    background-color: #41b8d5 !important; /* Mantém o fundo azul */
+    margin: 0; /* Remove a margem para a borda ficar correta */
+}
+
+/* Garante que o número de 'Hoje' com eventos também fique branco */
+#calendar .fc-day-today.fc-day-has-events .fc-daygrid-day-number {
+    color: #ffffff !important;
+}
+
+/* Remove as bolinhas (dots) dos dias que já têm o fundo colorido */
+#calendar .fc-daygrid-day.fc-day-has-events .day-dots {
+    display: none;
+}
+
+/* Ajusta o estilo 'clean v4' para não interferir */
+#calendar .fc-daygrid-day.fc-day-has-events.fc-daygrid-day-bg .fc-daygrid-day-number {
+    /* Garante branco mesmo com a classe de background do seu estilo clean */
+    color: #ffffff !important;
+}
+#calendar .fc-daygrid-day.fc-day-has-events .fc-bg-event {
+    /* Esconde o background event padrão se a célula já tem nosso fundo */
+    display: none;
+}
+/* ============================================= */
+/* --- ESTILOS PARA O NOVO <select> --- */
+/* ============================================= */
+
+.form-group select {
+    /* 1. Aparência básica (igual aos inputs) */
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    
+    /* 2. Remove a seta feia padrão do navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* 3. Adiciona a nossa própria seta (um ícone de chevron) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238a94a6'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 1.25em;
+    padding-right: 40px; /* Adiciona espaço para a seta não sobrepor o texto */
+}
+
+/* 4. Estilo de Foco (igual aos inputs) */
+.form-group select:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.3);
+}
+
+/* 5. Estilo do placeholder (o "Selecione o tipo") */
+.form-group select:invalid {
+    color: var(--texto-suave);
+}
+
+/* Cor das opções quando o menu abre */
+.form-group select option {
+    color: var(--texto-principal);
+}
+
+
+@media (min-width: 992px) {
+    .main-layout {
+        grid-template-columns: 2fr 1fr;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+    .sidebar-column {
+        order: 0;
+    }
+    .fc .fc-daygrid-day-frame {
+        min-height: 90px;
+    }
+}

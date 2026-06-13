@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion.Health - Relatórios</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="relatorio-profissional.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <header class="mobile-header">
+            <button id="mobile-menu-btn" class="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="mobile-logo">
+                <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health">
+            </div>
+            <div style="width: 24px;"></div> </header>
+
+        <div id="menu-backdrop" class="menu-backdrop"></div>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-area">
+                <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health">
+                <button id="close-menu-btn" class="close-menu-btn desktop-hidden">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="professional-dashboard.html"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
+                <a href="agenda_calendario.html"><i class="fa-solid fa-calendar-days"></i> Minha Agenda</a>
+                <a href="meus-pacientes.html"><i class="fa-solid fa-users"></i> Meus Pacientes</a>
+                <a href="#" class="active"><i class="fa-solid fa-chart-pie"></i> Relatórios</a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="professional-login.html" id="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="report-header">
+                <div class="header-titles">
+                    <h1>Relatórios Financeiros & Clínicos</h1>
+                    <p>Acompanhe o desempenho do seu consultório em tempo real.</p>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="date-filter">
+                        <i class="fa-regular fa-calendar"></i>
+                        <input type="date" id="data-inicio">
+                        <span>até</span>
+                        <input type="date" id="data-fim">
+                        <button id="btn-filtrar" class="btn-filter"><i class="fa-solid fa-filter"></i> Filtrar</button>
+                    </div>
+                    
+                </div>
+            </header>
+
+            <section class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <div class="kpi-info">
+                        <h3>Faturamento Total</h3>
+                        <strong id="kpi-faturamento">R$ 0,00</strong>
+                        <span class="kpi-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> Receita confirmada</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon blue"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div class="kpi-info">
+                        <h3>Atendimentos</h3>
+                        <strong id="kpi-consultas">0</strong>
+                        <span class="kpi-trend"><i class="fa-solid fa-check"></i> Consultas realizadas</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon purple"><i class="fa-solid fa-tags"></i></div>
+                    <div class="kpi-info">
+                        <h3>Ticket Médio</h3>
+                        <strong id="kpi-ticket">R$ 0,00</strong>
+                        <span class="kpi-trend">Valor por paciente</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon red"><i class="fa-solid fa-calendar-xmark"></i></div>
+                    <div class="kpi-info">
+                        <h3>Cancelamentos</h3>
+                        <strong id="kpi-canceladas">0</strong>
+                        <span class="kpi-trend negative">Consultas perdidas</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="charts-grid">
+                <div class="chart-card finance-chart">
+                    <div class="chart-header">
+                        <h3>Evolução Financeira (Últimos 30 dias)</h3>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="financeChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card type-chart">
+                    <div class="chart-header">
+                        <h3>Modalidade de Atendimento</h3>
+                    </div>
+                    <div class="canvas-container-pie">
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recent-table-section">
+                <h3>Histórico de Transações</h3>
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Paciente</th>
+                                <th>Tipo</th>
+                                <th>Valor (Líquido)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-body">
+                            <tr><td colspan="5" style="text-align:center; padding:20px;">A carregar dados...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script type="module" src="relatorio-profissional.js"></script>
+</body>
+</html>

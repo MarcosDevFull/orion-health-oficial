@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Orion.Health</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="pagamento.css">
+</head>
+<body>
+
+    <header class="payment-header">
+        <div class="container header-content">
+            <a href="index.html" aria-label="Voltar à página inicial">
+                <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health" class="header-logo-centered">
+            </a>
+        </div>
+    </header>
+
+    <main class="payment-content">
+        <div class="container">
+            
+            <div class="text-center mb-4">
+                <div class="icon-header"><i class="fa-regular fa-calendar-check"></i></div>
+                <h1>Seu agendamento está quase confirmado!</h1>
+                <p class="subtitle">Revise os dados abaixo antes de pagar.</p>
+            </div>
+
+            <div class="card doctor-card">
+                <div class="doctor-info">
+                    <img id="prof-photo" src="https://placehold.co/60x60/e2e8f0/a0aec0?text=Dr" alt="Foto do Médico">
+                    <div>
+                        <h3 id="prof-name">Carregando...</h3>
+                        <p id="prof-specialty">...</p>
+                        <div class="verified-badge">
+                            <i class="fa-solid fa-check-circle"></i> CRM: <span id="prof-crm">...</span> • Verificado
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card details-card">
+                <h3>Detalhes da Consulta</h3>
+                <div class="detail-item">
+                    <div class="icon-box blue-bg"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="detail-text">
+                        <strong id="consulta-tipo">...</strong>
+                        <span id="consulta-local">...</span>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="icon-box blue-bg"><i class="fa-regular fa-calendar"></i></div>
+                    <div class="detail-text">
+                        <strong id="consulta-data">...</strong>
+                        <span id="consulta-dia-semana">...</span>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="icon-box blue-bg"><i class="fa-regular fa-clock"></i></div>
+                    <div class="detail-text">
+                        <strong id="consulta-hora">...</strong>
+                        <span id="consulta-duracao">30 minutos de duração</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-section">
+                <h2>Pagamento seguro via PIX</h2>
+                <div class="price-tag" id="consulta-preco">R$ 0,00</div>
+
+                <div class="qr-code-container">
+                    <img id="pix-qrcode" src="" alt="QR Code PIX">
+                    <div class="timer-container"><i class="fa-regular fa-clock"></i> Válido por <span id="pix-timer">4:59</span></div>
+                </div>
+
+                <div class="instructions-card">
+                    <ol>
+                        <li>Abra o app do seu banco e escaneie o QR Code</li>
+                        <li>Confirme o pagamento de <strong id="consulta-preco-instrucoes">R$ 0,00</strong></li>
+                        <li>Pronto! Você receberá uma confirmação automaticamente</li>
+                    </ol>
+                </div>
+
+                <div class="guarantee-box">
+                    <p><strong>🔔 Após o pagamento, você será notificado.</strong></p>
+                    <p class="guarantee-sub"><i class="fa-solid fa-xmark" style="color: #e53e3e;"></i> Se o médico não atender em até 24h, você recebe 100% de volta.</p>
+                </div>
+
+                <button id="btn-confirmar-pagamento" class="btn-pay">Confirmar pagamento</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="pagamento.js" type="module"></script>
+</body>
+</html>

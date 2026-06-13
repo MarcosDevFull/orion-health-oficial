@@ -1,0 +1,211 @@
+/* --- ESTILOS GERAIS E RESET --- */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- CABEÇALHO --- */
+.header {
+    background-color: #3197b1; /* Tom de azul profissional */
+    color: white;
+    padding: 20px 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.logout-button {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+    background-color: white;
+    color: #3197b1;
+}
+
+
+/* --- CONTEÚDO PRINCIPAL --- */
+.status-indicator-mobile {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.status-pendente {
+    background-color: #f6ad55; /* Laranja/Amarelo */
+    color: #744210;
+}
+
+.intro-text {
+    text-align: center;
+    color: #555;
+    margin-bottom: 32px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+form h3 {
+    font-size: 1.25rem;
+    color: #3197b1;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+}
+.section-title {
+    margin-top: 32px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.form-group small {
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: #3197b1;
+    box-shadow: 0 0 0 3px rgba(49, 151, 177, 0.3);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 16px;
+    margin-top: 32px;
+    background-color: #3197b1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-submit:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background-color: #2c7a7b;
+}
+
+.success-message, .error-message {
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 16px;
+}
+
+.success-message {
+    color: #2f855a;
+    background-color: #c6f6d5;
+}
+
+.error-message {
+    color: #c53030;
+    background-color: #fed7d7;
+}
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3197b1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 1.2rem;
+    }
+}
+

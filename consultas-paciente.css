@@ -1,0 +1,289 @@
+/* ==========================================================
+   FICHEIRO: consultas-paciente.css
+   Estilos para a página Minhas Consultas
+   ========================================================== */
+
+/* --- 1. Estilos da Página (Título e Secções) --- */
+
+/* (O .container e .panel-header já vêm do perfil-de-saude.css) */
+
+/* Garante que o subtítulo "Acompanhe o histórico..." tenha a cor certa */
+.panel-header .filter-status {
+    color: var(--texto-secundario);
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* Espaçamento entre as secções "Próximas" e "Histórico" */
+.consultas-section {
+    margin-top: 32px;
+}
+
+/* Títulos (ex: "Próximas Consultas") */
+.h3.section-title-consultas {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+    margin: 0 0 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-title-consultas i {
+    color: var(--cor-primaria);
+}
+
+
+/* --- 2. Layout da Linha do Tempo (Timeline) --- */
+
+.consultas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    
+    /* Adiciona espaço à esquerda para a linha e os ícones */
+    padding-left: 32px; 
+}
+
+/* A Linha Vertical da Timeline */
+.consultas-list::before {
+    content: '';
+    position: absolute;
+    left: 11px; /* Centraliza a linha ( (32px de padding - 20px do ícone) / 2 + 10px do ícone ) */
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background-color: var(--borda-suave);
+    z-index: 1;
+}
+
+/* Mensagem "Carregando..." */
+.consultas-list .placeholder {
+    font-size: 1rem;
+    color: var(--texto-suave);
+    padding: 20px 0;
+    margin-left: -32px; /* Remove o padding da lista */
+    text-align: center;
+}
+
+
+/* --- 3. Card de Consulta Individual --- */
+
+.consulta-card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    box-shadow: var(--sombra-subtil);
+    position: relative;
+    display: flex;
+    align-items: stretch; /* Faz as colunas terem a mesma altura */
+    min-height: 100px;
+}
+
+/* O Ícone Redondo na Linha do Tempo */
+.consulta-card-icon {
+    position: absolute;
+    left: -32px; /* Puxa o ícone para o espaço do padding */
+    top: 16px; 
+    width: 24px;
+    height: 24px;
+    background-color: var(--cor-fundo); /* Fundo da página */
+    border: 2px solid var(--borda-suave);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2; /* Fica por cima da linha vertical */
+    color: var(--texto-suave);
+}
+
+/* Ícones de Status (Próximas, Realizada, Cancelada) */
+.consulta-card-icon.status-agendada {
+    color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+.consulta-card-icon.status-realizada {
+    color: var(--status-online); /* Verde */
+    border-color: var(--status-online);
+}
+.consulta-card-icon.status-cancelada {
+    color: var(--cor-delete); /* Vermelho */
+    border-color: var(--cor-delete);
+}
+
+
+/* Conteúdo Principal do Card (à direita do ícone) */
+.consulta-card-main {
+    flex-grow: 1;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column; /* Empilha header, body, actions */
+}
+
+/* Header (Badge + Data) */
+.consulta-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px;
+}
+
+.consulta-card-data {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--texto-secundario);
+}
+
+/* Badges de Status (Agendada, Realizada, Cancelada) */
+.badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+.badge.status-agendada {
+    background-color: #ebf4ff; /* Azul claro */
+    color: #4299e1; /* Azul escuro */
+}
+.badge.status-realizada {
+    background-color: #DEF7EC; /* Verde claro */
+    color: #0E9F6E; /* Verde escuro */
+}
+.badge.status-cancelada {
+    background-color: #fee2e2; /* Vermelho claro */
+    color: #c53030; /* Vermelho escuro */
+}
+
+
+/* Corpo (Nome do Doutor, Especialidade, Resumo) */
+.consulta-card-body {
+    flex-grow: 1; /* Empurra as ações para baixo */
+}
+
+.consulta-card-body h4 {
+    margin: 0 0 4px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.consulta-card-body h4 i {
+    font-size: 1rem;
+    color: var(--texto-suave);
+}
+
+.consulta-card-body p {
+    margin: 0 0 16px 26px; /* Alinha com o nome do Doutor */
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+}
+
+
+/* Ações (Botões) */
+.consulta-card-actions {
+    display: flex;
+    justify-content: flex-end; /* Alinha botões à direita */
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--borda-suave);
+}
+
+/* Botão Padrão (Reagendar, Cancelar, Ver Relatório) */
+.btn-consulta-action {
+    /* --- MUDANÇAS AQUI --- */
+    background-color: var(--cor-primaria); /* Fundo azul */
+    border: 1px solid var(--cor-primaria); /* Borda azul */
+    color: white; /* Texto branco */
+    /* --- FIM DAS MUDANÇAS --- */
+    
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-consulta-action:hover {
+    /* --- MUDANÇAS AQUI --- */
+    background-color: var(--cor-secundaria); /* Azul escuro */
+    border-color: var(--cor-secundaria); /* Borda azul escura */
+    /* --- FIM DAS MUDANÇAS --- */
+}
+/* ========================================================== */
+/* MENU MOBILE (Gaveta Lateral) */
+/* ========================================================== */
+
+/* O Menu em si (escondido à esquerda) */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background-color: white;
+    z-index: 2000;
+    transform: translateX(-100%); /* Escondido */
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    padding-top: 80px; /* Espaço para não ficar cima do header */
+}
+
+/* Classe para mostrar o menu */
+.mobile-nav.active {
+    transform: translateX(0);
+}
+
+/* Estilo dos Links no Mobile */
+.mobile-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #4a5568;
+    font-weight: 500;
+    border-left: 4px solid transparent;
+}
+
+.mobile-nav li a.active {
+    background-color: #e6f7ff;
+    color: #41b8d5;
+    border-left-color: #41b8d5;
+}
+
+.mobile-nav li a i {
+    width: 20px;
+    text-align: center;
+}
+
+/* O Fundo Escuro (Backdrop) */
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1500;
+    display: none;
+}
+.backdrop:not(.hidden) {
+    display: block;
+}

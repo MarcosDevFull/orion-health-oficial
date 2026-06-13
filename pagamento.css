@@ -1,0 +1,271 @@
+/* Variáveis (baseadas no seu projeto) */
+:root {
+    --cor-primaria: #41b8d5;
+    --cor-secundaria: #3197b1;
+    --cor-fundo: #f8f9fa;
+    --cor-elemento: #ffffff;
+    --texto-principal: #1a202c;
+    --texto-secundario: #4a5568;
+    --texto-suave: #8a94a6;
+    --borda-suave: #e2e8f0;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--texto-principal);
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px; /* Largura ideal para foco no pagamento */
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Header */
+.payment-header {
+    background-color: var(--cor-elemento);
+    border-bottom: 1px solid var(--borda-suave);
+    padding: 16px 0;
+    margin-bottom: 32px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilo do Logótipo Centralizado */
+.header-logo-centered {
+    height: 45px; /* Altura ajustada para ficar elegante */
+    width: auto;  /* Mantém a proporção */
+    display: block;
+}
+
+/* Removemos os estilos antigos (.logo, .header-title) pois já não existem no HTML */
+/* Conteúdo Principal */
+.text-center { text-align: center; }
+.mb-4 { margin-bottom: 24px; }
+
+.icon-header {
+    font-size: 2.5rem;
+    color: var(--cor-primaria);
+    margin-bottom: 16px;
+    background-color: #e6f7ff;
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: var(--texto-principal);
+}
+
+.subtitle {
+    color: var(--texto-secundario);
+    margin: 0;
+}
+
+/* Cards */
+.card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* Card Médico */
+.doctor-card .doctor-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.doctor-info img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.doctor-info h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.1rem;
+}
+
+.doctor-info p {
+    margin: 0 0 8px 0;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+}
+
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: #2f855a; /* Verde escuro */
+    font-weight: 600;
+}
+
+/* Card Detalhes */
+.details-card h3 {
+    margin: 0 0 20px 0;
+    font-size: 1rem;
+    color: var(--texto-principal);
+}
+
+.detail-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+}
+
+.detail-item:last-child { margin-bottom: 0; }
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.blue-bg {
+    background-color: #e6f7ff;
+    color: var(--cor-primaria);
+}
+
+.detail-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+}
+
+.detail-text strong {
+    color: var(--texto-principal);
+    margin-bottom: 2px;
+}
+
+.detail-text span {
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+}
+
+/* Secção Pagamento */
+.payment-section {
+    text-align: center;
+    margin-top: 32px;
+}
+
+.payment-section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.price-tag {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    margin-bottom: 24px;
+}
+
+.qr-code-container {
+    border: 1px solid #b6e3f0;
+    border-radius: 12px;
+    padding: 24px;
+    display: inline-block;
+    margin-bottom: 24px;
+    background-color: #ffffff;
+}
+
+.qr-code-container img {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 16px;
+}
+
+.timer-container {
+    font-size: 0.9rem;
+    color: #d69e2e; /* Amarelo */
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.pix-copy-paste {
+    font-size: 0.9rem;
+    color: #2f855a; /* Verde */
+    font-weight: 600;
+}
+
+/* Instruções */
+.instructions-card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.instructions-card ol {
+    margin: 0;
+    padding-left: 24px;
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+/* Garantia */
+.guarantee-box {
+    background-color: #e6f7ff;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+}
+
+.guarantee-box p {
+    margin: 0 0 4px 0;
+    color: var(--texto-principal);
+}
+
+.guarantee-box .guarantee-sub {
+    color: var(--texto-suave);
+    margin: 0;
+}
+
+/* Botão */
+.btn-pay {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-pay:hover {
+    background-color: var(--cor-secundaria);
+}

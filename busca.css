@@ -1,0 +1,170 @@
+/* ==========================================================
+   FICHEIRO: busca.css
+   Estilos específicos da página de resultados de busca
+   ========================================================== */
+
+/* --- 1. Ajustes Gerais da Página --- */
+.main-content { 
+    padding: 24px 0; 
+    background-color: var(--cor-fundo); 
+}
+
+/* --- 2. Secção do Sumário de Filtros (Topo) --- */
+.filter-summary { 
+    background-color: var(--cor-elemento); 
+    padding: 24px; 
+    border-radius: 12px; 
+    border: 1px solid var(--borda-suave); 
+    box-shadow: var(--sombra-subtil); 
+    margin-bottom: 32px; 
+}
+
+#filter-summary-title { 
+    font-size: 1.25rem; 
+    font-weight: 600; 
+    color: var(--texto-principal); 
+    margin-top: 0; 
+    margin-bottom: 16px; 
+}
+
+.filter-tags { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 12px; 
+}
+
+.filter-tag { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    padding: 8px 8px 8px 14px; 
+    border-radius: 20px; 
+    background-color: var(--cor-primaria); 
+    color: white; 
+    font-size: 0.9rem; 
+    font-weight: 500; 
+}
+
+.filter-tag i { font-size: 0.8rem; opacity: 0.8; }
+
+.remove-tag-button { 
+    display: inline-flex; align-items: center; justify-content: center; 
+    width: 20px; height: 20px; border-radius: 50%; border: none; 
+    background-color: rgba(255, 255, 255, 0.2); color: white; 
+    font-size: 0.9rem; font-weight: bold; cursor: pointer; 
+    transition: all 0.2s ease; padding: 0; line-height: 1; 
+}
+.remove-tag-button:hover { background-color: rgba(255, 255, 255, 0.4); }
+
+/* --- 3. Secção de Resultados --- */
+.results-section h2 { 
+    font-size: 1.75rem; font-weight: 700; color: var(--texto-principal); 
+    margin-top: 0; margin-bottom: 24px; border-bottom: 1px solid var(--borda-suave); 
+    padding-bottom: 12px; 
+}
+
+.results-grid { 
+    display: grid; grid-template-columns: 1fr; gap: 24px; 
+}
+
+.loading-placeholder { 
+    display: flex; flex-direction: column; align-items: center; 
+    justify-content: center; padding: 60px 0; gap: 16px; 
+    color: var(--texto-secundario); 
+}
+
+/* --- 4. Card do Profissional --- */
+.professional-card { 
+    background-color: var(--cor-elemento); border: 1px solid var(--borda-suave); 
+    border-radius: 12px; box-shadow: var(--sombra-subtil); 
+    display: flex; flex-direction: column; padding: 24px; gap: 20px; 
+}
+.card-header { display: flex; gap: 16px; align-items: flex-start; }
+
+.profile-pic-container { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
+.status-dot { position: absolute; bottom: 0px; right: 0px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 0 1px var(--borda-suave); z-index: 10; }
+.status-dot.status-online { background-color: #48bb78; }
+.status-dot.status-offline { background-color: var(--texto-suave); }
+.profile-pic { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 3px solid var(--cor-elemento); box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; }
+
+.professional-info { flex-grow: 1; }
+.professional-info h3 { margin: 0 0 4px 0; font-size: 1.25rem; font-weight: 700; color: var(--texto-principal); display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.verified-badge { display: inline-flex; align-items: center; gap: 4px; background-color: #DEF7EC; color: #0E9F6E; padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+.verified-badge i { font-size: 0.7rem; }
+.professional-info p { font-size: 0.95rem; color: var(--texto-secundario); margin: 0 0 12px 0; }
+.professional-meta { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: var(--texto-suave); }
+.professional-meta span { display: flex; align-items: center; gap: 6px; }
+.professional-meta i { font-size: 0.9rem; width: 16px; text-align: center; }
+
+.card-body p { font-size: 0.9rem; color: var(--texto-secundario); line-height: 1.6; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card-footer { border-top: 1px solid var(--borda-suave); padding-top: 20px; }
+
+.professional-actions { display: flex; flex-direction: column; gap: 12px; }
+
+.btn-agenda { width: 100%; box-sizing: border-box; text-align: center; text-decoration: none; padding: 12px 16px; font-weight: 600; font-size: 0.95rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; }
+.btn-agenda-online { background-color: var(--cor-primaria); color: white; border: 1px solid var(--cor-primaria); }
+.btn-agenda-online:hover { background-color: var(--cor-secundaria); border-color: var(--cor-secundaria); }
+.btn-agenda-presencial { background-color: var(--cor-elemento); color: var(--cor-secundaria); border: 1px solid var(--cor-secundaria); }
+.btn-agenda-presencial:hover { background-color: #e6f7ff; }
+
+/* --- 5. Nova Secção de Busca (Filtros) --- */
+.new-search-section { padding: 24px 0; background-color: var(--cor-elemento); border-bottom: 1px solid var(--borda-suave); }
+.header-search-form { display: flex; flex-direction: column; gap: 8px; }
+#header-search-input, #header-search-loc, #header-search-tipo { padding: 12px 14px 12px 45px; border: 1px solid var(--borda-suave); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif; background-color: var(--cor-fundo); color: var(--texto-secundario); box-sizing: border-box; width: 100%; }
+#header-search-tipo { -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238a94a6'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 1.25em; padding-right: 40px; }
+.btn-header-search { background-color: var(--cor-primaria); color: var(--cor-elemento); border: 1px solid var(--cor-primaria); padding: 12px 16px; font-size: 1rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; width: 100%; }
+.btn-header-search:hover { background-color: var(--cor-secundaria); border-color: var(--cor-secundaria); }
+#header-search-input, #header-search-loc { text-transform: capitalize; }
+
+/* --- 6. Paginação --- */
+.pagination-container { display: flex; flex-wrap: nowrap; justify-content: flex-start; gap: 8px; padding-top: 32px; margin-top: 32px; border-top: 1px solid var(--borda-suave); overflow-x: auto; padding-bottom: 8px; }
+.pagination-button { display: inline-flex; align-items: center; justify-content: center; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--borda-suave); background-color: var(--cor-elemento); color: var(--texto-secundario); font-weight: 600; font-size: 0.9rem; text-decoration: none; cursor: pointer; transition: all 0.2s ease; }
+.pagination-button:hover { background-color: #e6f7ff; border-color: var(--cor-primaria); color: var(--cor-primaria); }
+.pagination-button.active { background-color: var(--cor-primaria); border-color: var(--cor-primaria); color: white; cursor: default; }
+.pagination-button.active:hover { background-color: var(--cor-primaria); border-color: var(--cor-primaria); color: white; }
+.pagination-button[data-page="prev"], .pagination-button[data-page="next"] { background-color: var(--cor-primaria); border-color: var(--cor-primaria); color: white; }
+.pagination-button[data-page="prev"]:hover, .pagination-button[data-page="next"]:hover { background-color: var(--cor-secundaria); border-color: var(--cor-secundaria); color: white; }
+.pagination-button.disabled { color: var(--borda-suave); background-color: var(--cor-fundo); cursor: not-allowed; }
+.pagination-button.disabled:hover { background-color: var(--cor-fundo); border-color: var(--borda-suave); color: var(--borda-suave); }
+
+/* ==========================================================
+   LÓGICA DO RODAPÉ (O SEU PEDIDO)
+   ========================================================== */
+
+/* 1. Mobile (Padrão): Oculta o Footer */
+.site-footer {
+    display: none;
+}
+
+/* ==========================================================
+   MEDIA QUERIES (DESKTOP)
+   ========================================================== */
+
+@media (min-width: 768px) {
+    .results-grid { grid-template-columns: repeat(2, 1fr); }
+    
+    /* 2. Desktop: Mostra o Footer */
+    .site-footer {
+        display: block;
+    }
+}
+
+@media (min-width: 992px) {
+    .logo-img { height: 48px; }
+    .nav-toggle { display: none; }
+    .nav-link-login, .nav-actions .btn-primary { display: inline-flex; }
+    .nav-menu { display: flex; flex-direction: row; gap: 32px; position: absolute; left: 50%; transform: translateX(-50%); padding: 0; border: none; box-shadow: none; width: auto; top: auto; }
+    .nav-menu.nav-menu--open { flex-direction: row; padding: 0; position: absolute; top: auto; width: auto; border: none; box-shadow: none; }
+    .nav-menu.nav-menu--open .nav-link { padding: 0; background-color: transparent; color: var(--texto-secundario); }
+    .nav-menu.nav-menu--open .nav-link:hover { background-color: transparent; color: var(--cor-primaria); }
+    .nav-actions-mobile { display: none !important; }
+    
+    .header-search-form { flex-direction: row; gap: 12px; align-items: center; }
+    #header-search-input, #header-search-loc, #header-search-tipo { width: auto; }
+    #header-search-input { flex: 3; }
+    #header-search-loc { flex: 2; }
+    #header-search-tipo { flex: 1.5; }
+    .btn-header-search { width: auto; flex: 1; }
+    .results-grid { grid-template-columns: repeat(2, 1fr); }
+    .pagination-container { justify-content: center; overflow-x: hidden; }
+}

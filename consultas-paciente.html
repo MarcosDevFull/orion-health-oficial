@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Consultas - Orion.Health</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="perfil-de-saude.css">
+    <link rel="stylesheet" href="consultas-paciente.css">
+    <link rel="manifest" href="manifest.json">
+
+    <script src='https://meet.jit.si/external_api.js'></script>
+</head>
+<body>
+
+    <div id="loading-overlay" role="status" aria-label="Carregando consultas">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="page-wrapper" class="hidden">
+        
+        <header class="patient-header">
+            <a href="paciente-perfil.html" class="back-button" aria-label="Voltar para o Dashboard">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            
+            <div class="patient-header-info">
+                <img id="patient-photo" src="https://placehold.co/60x60/a0d9e5/41b8d5?text=P" alt="Foto do Paciente" class="patient-photo">
+                <div class="patient-details">
+                    <h1 id="patient-name">Carregando...</h1>
+                    <p>
+                        <span id="patient-convenio">...</span>
+                        <span class="divider"> • </span>
+                        <span id="patient-id">ID: ...</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="header-actions desktop-only">
+
+                <button class="btn-header-action primary" id="btn-agendar-consulta-atalho">
+                    <i class="fa-solid fa-calendar-plus"></i>
+                    <span>Agendar Consulta</span>
+                </button>
+            </div>
+            <button class="btn-header-action-icon desktop-only" aria-label="Notificações">
+                <i class="fa-solid fa-bell"></i>
+            </button>
+            
+            <button id="hamburger-menu" class="hamburger-menu mobile-only" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </header>
+
+        <aside id="mobile-nav-menu" class="mobile-nav"></aside>
+        <div id="backdrop" class="backdrop hidden"></div>
+
+        <main class="container">
+            <div class="panel-header">
+                <h2>Minhas Consultas</h2>
+                <span class="filter-status">Acompanhe o histórico e as próximas consultas agendadas</span>
+            </div>
+
+            <section class="consultas-section" id="proximas-consultas">
+                <h3 class="section-title-consultas">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    Próximas Consultas
+                </h3>
+                <div class="consultas-list" id="proximas-consultas-lista">
+                    <p class="placeholder">Carregando próximas consultas...</p>
+                </div>
+            </section>
+
+            <section class="consultas-section" id="historico-consultas">
+                <h3 class="section-title-consultas">
+                    <i class="fa-solid fa-history"></i>
+                    Histórico de Consultas
+                </h3>
+                <div class="consultas-list" id="historico-consultas-lista">
+                    <p class="placeholder">Carregando histórico...</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="cancelamento-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+        <div class="modal-content" style="background: white; padding: 24px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 style="margin: 0; font-size: 1.2rem; color: #333;">Cancelar Consulta</h2>
+                <button class="close-button" onclick="document.getElementById('cancelamento-modal').classList.add('hidden')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 12px; color: #666;">Tem a certeza que deseja cancelar esta consulta?</p>
+                
+                <label for="motivo-cancelamento" style="display:block; margin-bottom:8px; font-weight:600; font-size: 0.9rem;">Motivo:</label>
+                <select id="motivo-cancelamento" class="form-input" style="width:100%; margin-bottom:20px; padding: 8px; border: 1px solid #ccc; border-radius: 6px;">
+                    <option value="" disabled selected>Selecione um motivo...</option>
+                    <option value="Imprevisto pessoal">Imprevisto pessoal</option>
+                    <option value="Problemas de saúde">Problemas de saúde</option>
+                    <option value="Conflito de horário">Conflito de horário</option>
+                    <option value="Financeiro">Questões financeiras</option>
+                    <option value="Melhora do quadro">Melhora do quadro (não preciso mais)</option>
+                    <option value="Outro">Outro</option>
+                </select>
+                
+                <div class="modal-footer-actions" style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button class="btn-secondary" onclick="document.getElementById('cancelamento-modal').classList.add('hidden')" style="padding: 8px 16px; border: 1px solid #ccc; background: white; border-radius: 6px; cursor: pointer;">Voltar</button>
+                    <button id="btn-confirmar-cancelamento" class="btn-danger" style="padding: 8px 16px; background:#e53e3e; color:white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Confirmar Cancelamento</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="detalhes-consulta-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+    <div class="modal-content" style="background: white; padding: 24px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative;">
+        
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <h2 style="margin: 0; font-size: 1.2rem; color: #333;">Detalhes da Consulta</h2>
+            <button class="close-button" onclick="document.getElementById('detalhes-consulta-modal').classList.add('hidden')" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div style="margin-bottom: 15px;">
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 4px;">Status:</p>
+                <span id="detalhe-status" class="badge" style="padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Status</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 4px;">Data:</p>
+                    <strong id="detalhe-data" style="color: #333;">--/--/----</strong>
+                </div>
+                <div>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 4px;">Hora:</p>
+                    <strong id="detalhe-hora" style="color: #333;">--:--</strong>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 4px;">Profissional:</p>
+                <strong id="detalhe-medico" style="color: #333;">Dr. Nome</strong>
+                <p id="detalhe-especialidade" style="color: #718096; font-size: 0.85rem; margin: 2px 0 0 0;">Especialidade</p>
+            </div>
+
+            <div id="area-cancelamento" style="background: #fff5f5; padding: 12px; border-radius: 8px; border-left: 4px solid #e53e3e; margin-top: 20px; display: none;">
+                <p style="color: #c53030; font-weight: 600; margin-bottom: 5px;">Motivo do Cancelamento:</p>
+                <p id="detalhe-motivo" style="color: #333; margin: 0;">...</p>
+                <p id="detalhe-cancelado-por" style="color: #718096; font-size: 0.8rem; margin-top: 5px; font-style: italic;">Cancelado por: ...</p>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="margin-top: 24px; text-align: right;">
+            <button onclick="document.getElementById('detalhes-consulta-modal').classList.add('hidden')" style="padding: 8px 16px; border: 1px solid #ccc; background: white; border-radius: 6px; cursor: pointer;">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="avaliacao-modal" class="modal-backdrop hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; display: none; align-items: center; justify-content: center;">
+    <div class="modal-content" style="background: white; padding: 30px; border-radius: 16px; width: 90%; max-width: 450px; text-align: center; position: relative;">
+        <button class="close-button" onclick="document.getElementById('avaliacao-modal').style.display='none'" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        
+        <h3 style="color: #2d3748; margin-bottom: 10px;">Avaliar Atendimento</h3>
+        <p style="color: #718096; font-size: 0.9rem; margin-bottom: 20px;">Como foi a sua consulta com <strong id="aval-medico-nome">Dr. Médico</strong>?</p>
+
+        <div class="star-rating" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
+            <i class="fa-solid fa-star star-icon" data-value="1" style="font-size: 2rem; color: #e2e8f0; cursor: pointer; transition: color 0.2s;"></i>
+            <i class="fa-solid fa-star star-icon" data-value="2" style="font-size: 2rem; color: #e2e8f0; cursor: pointer; transition: color 0.2s;"></i>
+            <i class="fa-solid fa-star star-icon" data-value="3" style="font-size: 2rem; color: #e2e8f0; cursor: pointer; transition: color 0.2s;"></i>
+            <i class="fa-solid fa-star star-icon" data-value="4" style="font-size: 2rem; color: #e2e8f0; cursor: pointer; transition: color 0.2s;"></i>
+            <i class="fa-solid fa-star star-icon" data-value="5" style="font-size: 2rem; color: #e2e8f0; cursor: pointer; transition: color 0.2s;"></i>
+        </div>
+        
+        <textarea id="aval-comentario" placeholder="Escreva um comentário (opcional)..." style="width: 100%; height: 100px; padding: 10px; border: 1px solid #cbd5e0; border-radius: 8px; resize: none; font-family: inherit; margin-bottom: 20px;"></textarea>
+
+        <button id="btn-enviar-avaliacao" style="width: 100%; padding: 12px; background: #41b8d5; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Enviar Avaliação</button>
+    </div>
+</div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js" type="module"></script>
+    
+    <script src="consultas-paciente.js" type="module"></script>
+
+</body>
+</html>

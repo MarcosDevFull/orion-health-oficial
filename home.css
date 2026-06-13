@@ -1,0 +1,1201 @@
+/* ==========================================================
+   FICHEIRO: home.css
+   Estilos para a Landing Page (Mobile-First)
+   (VERSÃO CORRIGIDA E ORGANIZADA)
+   ========================================================== */
+
+/* --- 1. Variáveis de Cor e Reset Básico --- */
+:root {
+--cor-primaria: #41b8d5;
+--cor-secundaria: #3197b1;
+--cor-fundo: #f8f9fa;
+--cor-elemento: #ffffff;
+--texto-principal: #1a202c;
+--texto-secundario: #4a5568;
+--texto-suave: #8a94a6;
+--borda-suave: #e2e8f0;
+--sombra-subtil: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body {
+ margin: 0;
+font-family: 'Inter', sans-serif;
+background-color: var(--cor-fundo);
+color: var(--texto-principal);
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+width: 100%;
+max-width: 1100px;
+margin: 0 auto;
+padding: 0 24px;
+box-sizing: border-box;
+}
+
+.hidden {
+display: none !important;
+}
+
+/* --- 2. Botão Principal (Reutilizável) --- */
+.btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+padding: 10px 18px;
+border: 1px solid transparent;
+border-radius: 8px;
+font-weight: 600;
+font-size: 0.95rem;
+cursor: pointer;
+text-decoration: none;
+transition: all 0.2s ease;
+}
+
+.btn-primary {
+background-color: var(--cor-primaria);
+color: white;
+}
+.btn-primary:hover {
+background-color: var(--cor-secundaria);
+}
+
+/* --- 3. Cabeçalho (Header) - Mobile-First --- */
+.home-header {
+background-color: var(--cor-elemento);
+border-bottom: 1px solid var(--borda-suave);
+padding: 16px 0;
+position: sticky;
+top: 0;
+z-index: 1000;
+}
+
+.navbar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.nav-logo {
+font-weight: 700;
+font-size: 1.25rem;
+color: var(--cor-primaria);
+text-decoration: none;
+display: flex;
+align-items: center;
+}
+
+.logo-img {
+height: 32px; /* Altura correta para o header mobile */
+width: auto;
+}
+
+.nav-menu {
+display: none;
+list-style: none;
+margin: 0;
+padding: 0;
+}
+
+.nav-link {
+color: var(--texto-secundario);
+text-decoration: none;
+font-weight: 500;
+font-size: 0.95rem;
+}
+.nav-link:hover {
+color: var(--cor-primaria);
+}
+
+.nav-actions {
+display: flex;
+align-items: center;
+gap: 16px;
+}
+
+.nav-link-login,
+.nav-actions .btn-primary {
+display: none; /* Escondidos no mobile */
+}
+
+.nav-toggle {
+background: none;
+border: none;
+font-size: 1.5rem;
+color: var(--texto-principal);
+cursor: pointer;
+display: block;
+}
+
+/* --- 3.1 Estilo do Menu Mobile Aberto --- */
+.nav-menu.nav-menu--open {
+display: flex; 
+flex-direction: column; 
+padding: 16px; 
+position: absolute;
+top: 100%; 
+left: 0;
+width: 100%;
+box-sizing: border-box; 
+background-color: var(--cor-elemento);
+border-bottom: 1px solid var(--borda-suave);
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.nav-menu.nav-menu--open li {
+margin-bottom: 8px; /* Espaço entre os links */
+}
+.nav-menu.nav-menu--open li:last-child {
+margin-bottom: 0;
+}
+
+.nav-menu.nav-menu--open .nav-link {
+display: block; 
+padding: 14px 16px; 
+width: 100%;
+box-sizing: border-box;
+border-radius: 8px; 
+transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-menu.nav-menu--open .nav-link:hover {
+background-color: var(--cor-primaria); 
+color: white; 
+}
+
+
+/* --- 4. Secção Hero (Mobile) --- */
+.hero-section {
+background-color: var(--cor-elemento);
+padding: 40px 0;
+text-align: center;
+}
+
+.hero-text h1 {
+font-size: 2.25rem;
+font-weight: 700;
+margin: 0;
+line-height: 1.2;
+min-height: 2.8em; /* Para o cursor da digitação */
+}
+
+.hero-text .text-blue {
+color: var(--cor-primaria);
+}
+
+.hero-text p {
+font-size: 1rem;
+color: var(--texto-secundario);
+line-height: 1.6;
+max-width: 600px;
+margin: 16px auto 0 auto;
+}
+
+/* Cursor Piscante */
+.blinking-cursor {
+font-weight: 700;
+font-size: 2.5rem;
+color: var(--texto-secundario);
+animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+from, to { color: transparent; }
+50% { color: var(--texto-secundario); }
+}
+
+/* --- 5. Card de Busca (Mobile) --- */
+.search-card {
+background-color: var(--cor-elemento);
+border: 1px solid var(--borda-suave);
+border-radius: 12px;
+padding: 24px;
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+margin-top: 32px;
+text-align: left;
+}
+
+.search-card h3 {
+text-align: center;
+font-size: 1.1rem;
+font-weight: 600;
+margin: 0 0 20px 0;
+}
+
+.search-form {
+display: flex;
+flex-direction: column; 
+gap: 16px;
+}
+
+.input-group {
+position: relative;
+width: 100%;
+}
+
+.input-group i {
+position: absolute;
+left: 14px;
+top: 50%;
+transform: translateY(-50%);
+color: var(--texto-suave);
+font-size: 0.9rem;
+}
+
+.input-group input[type="text"],
+.input-group select {
+width: 100%;
+padding: 14px 14px 14px 45px;
+border: 1px solid var(--borda-suave);
+border-radius: 8px;
+font-size: 1rem;
+font-family: 'Inter', sans-serif;
+background-color: var(--cor-fundo);
+box-sizing: border-box;
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+}
+
+.input-group select {
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238a94a6'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 14px center;
+background-size: 1.25em;
+padding-right: 45px;
+}
+
+.input-group select:invalid {
+color: var(--texto-secundario);
+}
+
+.btn-buscar {
+width: 100%;
+padding: 14px;
+font-size: 1rem;
+}
+
+/* --- 6. Sinais de Confiança (Mobile) --- */
+.trust-signals {
+display: flex;
+flex-wrap: wrap; 
+justify-content: center;
+gap: 12px 24px;
+margin-top: 32px;
+font-size: 0.85rem;
+font-weight: 500;
+color: var(--texto-secundario);
+}
+
+.trust-signals span {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.trust-signals i {
+color: var(--cor-primaria);
+}
+
+/* ==========================================================
+   SECÇÃO: COMO FUNCIONA (V4 - Mobile 1-coluna)
+   ========================================================== */
+
+.how-it-works-section {
+padding: 60px 0; 
+background-color: var(--cor-fundo); 
+}
+
+.section-title {
+text-align: center;
+font-size: 2rem; 
+font-weight: 700;
+color: var(--texto-principal);
+margin: 0 0 12px 0;
+}
+
+.section-subtitle {
+text-align: center;
+font-size: 1.1rem;
+color: var(--texto-secundario);
+line-height: 1.6;
+max-width: 600px;
+margin: 0 auto 48px auto; 
+}
+
+/* --- Mobile-First é 1 coluna (Empilhados) --- */
+.how-it-works-grid {
+display: grid;
+grid-template-columns: 1fr; 
+gap: 24px; 
+}
+
+.step-card {
+background-color: var(--cor-elemento); 
+border-radius: 12px;
+border: 1px solid var(--borda-suave);
+padding: 32px; /* Padding original grande */
+text-align: center;
+box-shadow: var(--sombra-subtil);
+flex: 1; 
+}
+
+.step-icon-wrapper {
+position: relative; 
+display: inline-block; 
+margin-bottom: 24px;
+}
+
+.step-card i {
+font-size: 2.5rem; /* Tamanho original grande */
+color: var(--cor-primaria);
+background-color: #e6f7ff; 
+border-radius: 12px;
+width: 64px;
+height: 64px;
+line-height: 64px; 
+box-sizing: border-box; 
+display: inline-block; 
+}
+
+.step-number {
+display: none; /* Números removidos */
+}
+
+.step-card h3 {
+font-size: 1.25rem; /* Fonte original grande */
+font-weight: 600;
+color: var(--texto-principal);
+margin: 0 0 8px 0;
+}
+
+.step-card p {
+font-size: 0.95rem; /* Fonte original grande */
+color: var(--texto-secundario);
+line-height: 1.6;
+margin: 0;
+}
+
+/* ==========================================================
+   SECÇÃO: POR QUE ESCOLHER (V2 - Mobile 2-colunas)
+   ========================================================== */
+
+.why-orion-section {
+padding: 60px 0;
+background-color: var(--cor-elemento); 
+}
+
+/* --- Mobile-First é 2 colunas --- */
+.why-grid {
+display: grid;
+grid-template-columns: 1fr 1fr; 
+gap: 16px; 
+}
+
+.why-card {
+background-color: var(--cor-primaria); 
+color: white; 
+padding: 24px 16px; /* Padding menor para mobile */
+border-radius: 12px;
+transition: all 0.3s ease; 
+}
+
+.why-icon {
+ font-size: 2rem; /* Ícone menor para mobile */
+line-height: 1;
+margin-bottom: 16px;
+}
+
+.why-card h3 {
+ font-size: 1.1rem; /* Fonte menor para mobile */
+font-weight: 600;
+margin: 0 0 8px 0;
+}
+
+.why-card p {
+font-size: 0.9rem; /* Fonte menor para mobile */
+line-height: 1.5;
+ margin: 0;
+opacity: 0.9; 
+}
+
+.why-card:hover {
+background-color: var(--cor-elemento); 
+ color: var(--cor-primaria); 
+border: 1px solid var(--borda-suave); 
+ box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); 
+ transform: translateY(-5px); 
+}
+.why-card:hover .why-icon {
+ color: var(--cor-primaria);
+}
+.why-card:hover p {
+color: var(--texto-secundario);
+opacity: 1;
+}
+
+/* ==========================================================
+   SECÇÃO: RESULTADOS DA PESQUISA (Contador)
+   ========================================================== */
+
+.research-results-section {
+padding: 60px 0;
+background-color: var(--cor-fundo); 
+}
+
+/* --- Grelha (Mobile-First: 2 colunas) --- */
+.results-grid {
+display: grid;
+grid-template-columns: 1fr 1fr; 
+gap: 16px; 
+}
+
+.result-card {
+background-color: var(--cor-elemento); 
+border: 1px solid var(--borda-suave);
+border-radius: 12px;
+padding: 24px;
+text-align: center;
+box-shadow: var(--sombra-subtil);
+transition: all 0.3s ease;
+}
+
+.result-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.result-icon {
+font-size: 2.25rem; 
+color: var(--cor-primaria);
+ margin-bottom: 16px;
+ line-height: 1;
+}
+
+.result-card h3.counter {
+font-size: 2.5rem; 
+font-weight: 700;
+color: var(--cor-primaria); /* CORRIGIDO: Cor Azul */
+margin: 0 0 8px 0;
+}
+
+.result-card p {
+font-size: 0.9rem; 
+color: var(--texto-secundario);
+line-height: 1.5;
+margin: 0;
+}
+
+/* ==========================================================
+   SECÇÃO: PARA PROFISSIONAIS
+   ========================================================== */
+
+.pro-section {
+padding: 60px 0;
+background-color: var(--cor-fundo); 
+overflow: hidden; 
+}
+
+.pro-grid {
+display: grid;
+grid-template-columns: 1fr;
+gap: 48px; 
+align-items: center;
+}
+
+.pro-content {
+text-align: left;
+}
+
+.section-title-pro {
+font-size: 2.25rem;
+font-weight: 700;
+color: var(--texto-principal);
+margin: 0;
+line-height: 1.2;
+}
+
+.section-title-pro .text-blue {
+color: var(--cor-primaria);
+}
+
+.section-subtitle-pro {
+font-size: 1.1rem;
+color: var(--texto-secundario);
+line-height: 1.6;
+max-width: 500px;
+margin: 16px 0 32px 0;
+}
+
+.pro-features-list {
+list-style: none;
+padding: 0;
+margin: 0 0 32px 0;
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+.pro-features-list li {
+display: flex;
+align-items: center;
+gap: 16px;
+font-size: 1rem;
+font-weight: 500;
+color: var(--texto-secundario);
+}
+
+.pro-features-list li i {
+font-size: 1.25rem;
+color: var(--cor-primaria);
+width: 24px;
+text-align: center;
+}
+
+.pro-actions {
+display: flex;
+flex-wrap: wrap; 
+gap: 16px;
+}
+
+.btn-secondary-outline {
+background-color: var(--cor-elemento);
+color: var(--cor-primaria);
+border: 1px solid var(--cor-primaria);
+padding: 10px 18px;
+font-weight: 600;
+font-size: 0.95rem;
+border-radius: 8px;
+ cursor: pointer;
+transition: all 0.2s ease;
+}
+.btn-secondary-outline:hover {
+background-color: #e6f7ff;
+border-color: var(--cor-secundaria);
+color: var(--cor-secundaria);
+}
+
+/* === INÍCIO DA CORREÇÃO (LINHA 420) === */
+.pro-image-wrapper {
+display: none; /* Escondido por defeito (mobile-first) */
+justify-content: center;
+align-items: center;
+}
+/* === FIM DA CORREÇÃO === */
+
+.mockup-ui {
+background-color: #e6f7ff; 
+border-radius: 12px;
+padding: 24px;
+width: 100%;
+max-width: 400px; 
+box-sizing: border-box;
+}
+
+.mockup-card-mini {
+background-color: var(--cor-elemento);
+border-radius: 8px;
+padding: 16px;
+display: flex;
+align-items: center;
+gap: 12px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+.mockup-icon-mini {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+background-color: var(--borda-suave);
+flex-shrink: 0;
+}
+.mockup-text-mini {
+width: 70%;
+height: 10px;
+background-color: var(--borda-suave);
+border-radius: 5px;
+}
+
+.mockup-card-main {
+background-color: var(--cor-elemento);
+border-radius: 8px;
+padding: 16px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+margin-top: 16px;
+}
+.mockup-header-main {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+.mockup-header-main span {
+font-size: 1rem;
+font-weight: 600;
+color: var(--texto-secundario);
+}
+.mockup-header-main i {
+font-size: 1.25rem;
+color: var(--texto-suave);
+}
+
+.mockup-list-item {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 16px;
+}
+.mockup-list-item:last-child {
+margin-bottom: 0;
+}
+.mockup-icon-circle {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+background-color: var(--cor-fundo);
+flex-shrink: 0;
+}
+.mockup-text-line {
+width: 80%;
+height: 10px;
+background-color: var(--cor-fundo);
+border-radius: 5px;
+}
+
+/* ==========================================================
+   SECÇÃO: PARA PACIENTES
+   ========================================================== */
+
+.patient-section {
+padding: 60px 0;
+background-color: var(--cor-elemento); 
+overflow: hidden; 
+}
+
+.patient-grid {
+display: grid;
+grid-template-columns: 1fr;
+gap: 48px; 
+align-items: center;
+}
+
+.patient-content {
+text-align: left;
+}
+
+/* === INÍCIO DA CORREÇÃO (LINHA 456) === */
+.patient-mockup-wrapper {
+display: none; /* Escondido por defeito (mobile-first) */
+justify-content: center;
+align-items: center;
+}
+/* === FIM DA CORREÇÃO === */
+
+.mockup-ui-patient {
+background-color: #e6f7ff; 
+border-radius: 12px;
+padding: 24px;
+width: 100%;
+max-width: 450px; 
+box-sizing: border-box;
+}
+
+.mockup-card-main-patient {
+background-color: var(--cor-elemento);
+border-radius: 8px;
+padding: 16px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+margin-bottom: 16px;
+}
+
+.mockup-header-patient {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+.mockup-header-patient span {
+font-size: 1rem;
+font-weight: 600;
+color: var(--texto-secundario);
+}
+.mockup-header-patient i {
+font-size: 1.25rem;
+color: var(--texto-suave);
+}
+
+.mockup-body-patient {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.mockup-status-line {
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-size: 0.9rem;
+color: var(--texto-suave);
+font-weight: 500;
+}
+.status-badge-pronto {
+color: #0E9F6E; /* Verde */
+background-color: #DEF7EC;
+padding: 4px 10px;
+border-radius: 12px;
+font-weight: 600;
+}
+.mockup-line-long {
+width: 80%;
+height: 10px;
+background-color: var(--cor-fundo);
+border-radius: 5px;
+}
+.mockup-line-short {
+width: 50%;
+height: 10px;
+background-color: var(--cor-fundo);
+border-radius: 5px;
+}
+
+.mockup-bottom-cards {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 16px;
+}
+.mockup-card-small {
+background-color: var(--cor-elemento);
+border-radius: 8px;
+padding: 16px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 10px;
+font-size: 0.9rem;
+font-weight: 500;
+color: var(--texto-secundario);
+}
+.mockup-card-small i {
+font-size: 1.25rem;
+color: var(--texto-suave);
+}
+
+
+/* ==========================================================
+   SECÇÃO: RODAPÉ (FOOTER) - (VERSÃO CORRIGIDA)
+   ========================================================== */
+
+.site-footer {
+padding: 60px 0 0 0; 
+background-color: var(--cor-fundo); 
+color: var(--texto-secundario);
+font-size: 0.95rem;
+line-height: 1.6;
+}
+
+/* Grelha (Mobile-First: 1 coluna) */
+.footer-grid {
+display: grid;
+grid-template-columns: 1fr;
+gap: 32px; 
+padding-bottom: 48px;
+border-bottom: 1px solid var(--borda-suave);
+}
+
+.footer-column h4 {
+font-size: 1rem;
+font-weight: 600;
+color: var(--texto-principal);
+margin: 0 0 16px 0;
+}
+
+.footer-column ul {
+list-style: none;
+padding: 0;
+margin: 0;
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.footer-column ul a {
+color: var(--texto-secundario);
+text-decoration: none;
+transition: color 0.2s ease;
+}
+.footer-column ul a:hover {
+color: var(--cor-primaria);
+text-decoration: underline;
+}
+
+/* Coluna 1: Logo e Social */
+.footer-logo {
+font-weight: 700;
+font-size: 1.5rem;
+color: var(--cor-primaria);
+text-decoration: none;
+margin-bottom: 12px;
+display: inline-block;
+}
+
+#footer-brand p {
+margin: 0 0 20px 0;
+max-width: 300px;
+}
+
+.footer-socials {
+display: flex;
+gap: 16px;
+}
+
+/* --- ESTA É A CORREÇÃO (Botões de Rede Social) --- */
+.footer-socials a {
+display: inline-flex;
+justify-content: center;
+align-items: center;
+width: 40px;
+height: 40px;
+background-color: #e6f7ff; /* Fundo azul claro */
+border: 1px solid #e6f7ff; /* <-- O 'm' FOI REMOVIDO DAQUI */
+border-radius: 8px; /* Quadrado arredondado */
+color: var(--cor-primaria); /* Ícone azul */
+font-size: 1rem;
+text-decoration: none;
+transition: all 0.2s ease;
+}
+.footer-socials a:hover {
+background-color: var(--cor-primaria);
+border-color: var(--cor-primaria);
+color: white;
+}
+/* --- FIM DA CORREÇÃO --- */
+
+
+/* Coluna 4: Contato */
+.contact-list li {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.contact-list li i {
+color: var(--cor-primaria);
+width: 18px;
+text-align: center;
+}
+.contact-list li span,
+.contact-list li a {
+color: var(--texto-secundario);
+text-decoration: none;
+}
+.contact-list li a:hover {
+text-decoration: underline;
+}
+
+/* Barra de Copyright */
+.footer-copyright {
+padding: 24px 0;
+text-align: center;
+}
+.footer-copyright p {
+margin: 0;
+font-size: 0.85rem;
+color: var(--texto-suave);
+}
+
+/* ==========================================================
+   Adição: Capitalizar os inputs de busca
+   ========================================================== */
+
+/*
+ * Isto faz com que os campos de Especialidade e Localização
+ * coloquem a primeira letra de cada palavra em maiúscula
+ * automaticamente (ex: "clinico geral" -> "Clinico Geral").
+ */
+#especialidade,
+#localizacao {
+text-transform: capitalize;
+}
+
+
+/* ==========================================================
+   PASSO FINAL: LAYOUT DESKTOP (Media Query ÚNICA E CORRIGIDA)
+   ========================================================== */
+
+@media (min-width: 992px) {
+.logo-img {
+height: 48px; 
+}
+
+.nav-toggle {
+display: none; 
+}
+.nav-link-login,
+.nav-actions .btn-primary {
+display: inline-flex; 
+}
+.nav-menu {
+display: flex; 
+flex-direction: row; 
+gap: 32px;
+position: absolute;
+ left: 50%;
+transform: translateX(-50%);}
+.nav-link-login {
+color: var(--cor-primaria);
+font-weight: 600;
+text-decoration: none;
+}
+.nav-link-login:hover {
+text-decoration: underline;
+}
+
+.hero-section {
+padding: 80px 0;
+}
+.hero-text h1 {
+font-size: 3.5rem; 
+min-height: 2.8em;
+}
+.hero-text p {
+font-size: 1.1rem;
+}
+.blinking-cursor {
+font-size: 3.5rem;
+}
+
+.search-card {
+padding: 32px;
+margin-top: 48px;
+max-width: 900px;
+margin-left: auto;
+margin-right: auto;
+}
+.search-form {
+display: grid;
+grid-template-columns: repeat(3, 1fr); 
+gap: 20px;
+}
+.btn-buscar {
+grid-column: 1 / -1; 
+}
+
+
+.trust-signals {
+flex-wrap: nowrap; 
+}
+
+.how-it-works-grid {
+grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+gap: 32px;
+}
+.step-card { padding: 32px; }
+.step-card i { font-size: 2.5rem; width: 64px; height: 64px; line-height: 64px; }
+.step-card h3 { font-size: 1.25rem; }
+.step-card p { font-size: 0.95rem; }
+
+.why-grid {
+grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+gap: 32px;
+}
+.why-card { padding: 32px; }
+.why-icon { font-size: 2.5rem; margin-bottom: 20px; }
+.why-card h3 { font-size: 1.25rem; }
+.why-card p { font-size: 0.95rem; }
+
+.results-grid {
+grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+gap: 24px;
+}
+.result-icon { font-size: 2.5rem; }
+.result-card h3.counter { font-size: 3rem; }
+.result-card p { font-size: 0.95rem; }
+
+.pro-grid {
+grid-template-columns: 1fr 1fr; /* 2 colunas */
+ gap: 64px; 
+}
+.pro-content { text-align: left; }
+.section-title-pro { font-size: 2.5rem; }
+.pro-image-wrapper { 
+display: flex; /* Mostra no desktop */
+justify-content: flex-end; /* Alinha à direita */
+}
+.mockup-ui { max-width: 450px; padding: 32px; }
+
+.patient-grid {
+grid-template-columns: 1fr 1fr; /* 2 colunas */
+ gap: 64px; 
+ }
+.patient-mockup-wrapper {
+order: 1; /* Coluna da Imagem vai para a esquerda */
+ display: flex; /* Mostra no desktop */
+}
+.patient-content {
+order: 2; /* Coluna de Texto vai para a direita */
+}
+.footer-grid {
+/* Grelha de 4 colunas */
+grid-template-columns: 2fr 1fr 1fr 1.5fr; 
+gap: 32px;  }
+}
+
+/* === MEDIA QUERIES PARA MOBILE === */
+@media (max-width: 768px) {
+  .nav-actions {
+    /* display: none; */ /* REMOVA OU COMENTE ESTA LINHA */
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .nav-link-login {
+    font-size: 0.9rem;
+  }
+
+  .btn-primary {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    padding: 20px;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+
+  .nav-menu--open {
+    transform: translateY(0);
+  }
+
+  .nav-menu li {
+    margin: 10px 0;
+  }
+
+  .nav-menu a {
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+  }
+}
+/* ========================================================== */
+/* CORREÇÃO FINAL: HEADER & MENU (RESPONSIVO) */
+/* ========================================================== */
+
+/* 1. Força o Header a espalhar os itens (Logo Esq - Hambúrguer Dir) */
+.navbar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100%;
+}
+
+/* 2. Estilo dos Botões Mobile (que estavam feios) */
+.btn-mobile-entrar,
+.btn-mobile-criar {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    width: 100%; 
+    padding: 12px; 
+    margin-top: 10px;
+    border-radius: 8px; 
+    text-decoration: none; 
+    font-weight: 600; 
+    font-size: 1rem;
+}
+
+.btn-mobile-entrar {
+    background-color: white;
+    border: 1px solid #41b8d5;
+    color: #41b8d5;
+}
+
+.btn-mobile-criar {
+    background-color: #41b8d5;
+    border: 1px solid #41b8d5;
+    color: white;
+}
+
+/* --- REGRAS DE VISIBILIDADE (O Segredo) --- */
+
+/* ========================================================== */
+/* CORREÇÃO FINAL: DESKTOP (Alinhamento Perfeito) */
+/* ========================================================== */
+
+@media (min-width: 769px) {
+    /* 1. Garante que o menu mobile (gaveta) não aparece nunca */
+    .mobile-menu-drawer, 
+    .mobile-backdrop,
+    .mobile-auth-item,
+    .nav-toggle { 
+        display: none !important; 
+    }
+
+    /* 2. Mostra os botões de Desktop */
+    .desktop-only { display: flex !important; }
+    
+    /* 3. O MENU CENTRAL (A Correção do Sobreposto) */
+    .nav-menu {
+        display: flex !important;
+        flex-direction: row !important;
+        
+        /* IMPORTANTE: Reseta a posição do mobile para não flutuar */
+        position: static !important; 
+        transform: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        width: auto !important;
+        height: auto !important;
+        border: none !important;
+
+        /* Centraliza o menu empurrando as laterais */
+        margin-left: auto;
+        margin-right: auto;
+        gap: 30px;
+    }
+
+    /* Estilo dos Links Desktop */
+    .nav-menu li { margin: 0 !important; border: none !important; }
+    .nav-link { color: var(--cor-texto); font-size: 1rem; font-weight: 500; }
+    .nav-link:hover { color: var(--cor-primaria); }
+}
+
+
+/* NO MOBILE (Telemóvel) */
+@media (max-width: 768px) {
+    /* Esconde os botões de Desktop */
+    .desktop-only { display: none !important; }
+    
+    /* Mostra o hambúrguer */
+    .nav-toggle { display: block !important; margin-left: auto; } /* margin-left empurra para a direita */
+
+    /* Menu Fechado */
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute; top: 100%; left: 0; width: 100%;
+        background: white; padding: 20px;
+        border-top: 1px solid #eee;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Menu Aberto */
+    .nav-menu.nav-menu--open {
+        display: flex !important;
+    }
+    
+    /* Mostra os botões Mobile dentro do menu */
+    .mobile-auth-item { display: block !important; }
+}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orion.Health - Minha Agenda</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="agenda_calendario.css">
+    <link rel="manifest" href="manifest.json">
+    
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+
+    
+</head>
+<body>
+
+    <div id="loading-overlay" role="status" aria-label="A carregar agenda">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="page-wrapper" class="hidden">
+        <header class="header">
+            <div class="header-left">
+                <a href="professional-dashboard.html" class="back-button" aria-label="Voltar para a página anterior">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="header-content">
+                <h1>Minha Agenda</h1>
+                <p>Gerencie suas disponibilidades e consultas</p>
+            </div>
+            <div class="header-actions">
+                <button id="add-availability-button" class="btn-primary">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    <span>Adicionar Disponibilidade</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="main-layout">
+            <div class="main-column">
+                <section class="calendar-card" aria-labelledby="calendar-heading">
+                    <div class="calendar-header">
+                        <i class="fa-solid fa-calendar-days card-icon-header"></i>
+                        <div>
+                            <h2 id="calendar-heading">Calendário</h2>
+                            <p>Visualize suas disponibilidades e agendamentos</p>
+                        </div>
+                    </div>
+                    <div id="calendar"></div>
+                </section>
+            </div>
+
+            <aside class="card sidebar-column" aria-labelledby="appointments-heading">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 id="appointments-heading" style="margin: 0; font-size: 1.2rem;">
+                <i class="fa-regular fa-clock" aria-hidden="true" style="margin-right: 8px;"></i> Próximas Consultas
+            </h2>
+        </div>
+        <span id="upcoming-count" class="badge" style="background: #e2e8f0; color: #4a5568; font-size: 0.8rem; padding: 4px 10px; border-radius: 12px; font-weight: 600;">
+            --
+        </span>
+    </div>
+
+    <div id="upcoming-appointments-list" class="upcoming-list" style="margin-top: 15px; min-height: 100px;">
+        <div class="empty-state" style="text-align: center; padding: 20px; color: #888;">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 10px;"></i>
+            <p>A carregar agenda...</p>
+        </div>
+    </div>
+</aside>
+        </main>
+    </div>
+
+    <div id="availability-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="availability-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="availability-modal-title"><i class="fa-solid fa-plus"></i> Adicionar Disponibilidade</h2>
+                <button id="close-availability-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <p class="modal-subtitle">Crie um novo horário disponível para agendamento</p>
+            
+            <form id="availability-form" novalidate>
+                <div class="form-group">
+                    <label for="event-date">Data *</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+                        <input type="date" id="event-date" required>
+                    </div>
+                </div>
+                
+                <div class="time-group">
+                    <div class="form-group">
+                        <label for="start-time">Horário Início *</label>
+                        <div class="input-with-icon">
+                            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                            <input type="time" id="start-time" required step="1800">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="end-time">Horário Fim *</label>
+                        <div class="input-with-icon">
+                            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                            <input type="time" id="end-time" required step="1800">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="consulta-tipo">Tipo de Atendimento *</label>
+                    <select id="consulta-tipo" required>
+                        <option value="" disabled selected>Selecione o tipo</option>
+                        <option value="online">Online (Videochamada)</option>
+                        <option value="presencial">Presencial (Consultório)</option>
+                        <option value="domiciliar">Domiciliar (Casa do Paciente)</option>
+                    </select>
+                </div>
+
+                <p id="availability-error" class="error-message hidden" role="alert"></p>
+                
+                <div class="modal-actions">
+                    <button type="button" id="cancel-availability-button" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-availability-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="edit-modal-title"><i class="fa-solid fa-pen-to-square"></i> Gerenciar Disponibilidade</h2>
+                <button id="close-edit-modal-button" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <form id="edit-availability-form" novalidate>
+                <input type="hidden" id="edit-event-id">
+                <div class="form-group">
+                    <label for="edit-event-date">Data</label>
+                    <input type="date" id="edit-event-date" required>
+                </div>
+                <div class="time-group">
+                    <div class="form-group">
+                        <label for="edit-start-time">Horário Início</label>
+                        <input type="time" id="edit-start-time" required step="1800">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-end-time">Horário Fim</label>
+                        <input type="time" id="edit-end-time" required step="1800">
+                    </div>
+                </div>
+                
+                <p id="edit-availability-error" class="error-message hidden" role="alert"></p>
+                <div class="modal-actions-edit">
+                    <button type="button" id="delete-availability-button" class="btn-danger">Excluir Horário</button>
+                    <button type="submit" class="btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="day-action-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="day-action-modal-title">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 id="day-action-modal-title">Ações para <span id="day-action-date" style="color: var(--cor-primaria);">...</span></h2>
+                <button id="close-day-action-modal" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <p class="modal-subtitle">O que você gostaria de fazer neste dia?</p>
+            <div class="day-action-buttons">
+                <button type="button" id="btn-open-availability-form" class="btn-primary-card-style">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    <span>Adicionar Disponibilidade</span>
+                </button>
+                <button type="button" id="btn-view-day-agenda" class="btn-secondary-card-style">
+                    <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                    <span>Visualizar agenda do dia</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="day-details-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="day-details-modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="day-details-modal-title">Agenda do dia...</h2>
+                <button id="close-day-details-modal" class="close-button" aria-label="Fechar">&times;</button>
+            </div>
+            <p class="modal-subtitle">Veja ou edite os horários deste dia.</p>
+            <div id="day-details-list" class="day-details-list-container">
+                <div class="empty-state-mini" id="day-details-empty">
+                    <i class="fa-solid fa-calendar-times" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                    <p>Nenhum horário cadastrado para este dia.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="agenda_calendario.js" type="module"></script>
+</body>
+</html>

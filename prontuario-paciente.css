@@ -1,0 +1,2294 @@
+:root {
+    --cor-primaria: #41b8d5;
+    --cor-secundaria: #3197b1;
+    --cor-fundo: #f8f9fa;
+    --cor-elemento: #ffffff;
+    --texto-principal: #1a202c;
+    --texto-secundario: #4a5568;
+    --texto-suave: #8a94a6;
+    --borda-suave: #e2e8f0;
+    --sombra-subtil: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --cor-status-solicitado: #FEF3C7;
+    --texto-status-solicitado: #92400E;
+    --cor-status-aguardando: #E0E7FF;
+    --texto-status-aguardando: #3730A3;
+    --cor-delete: #e53e3e;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--texto-principal);
+    padding-bottom: 80px; /* Espaço para o footer mobile */
+    -webkit-font-smoothing: antialiased; /* Melhora renderização da fonte */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.hidden { display: none !important; }
+
+/* --- Overlay de Carregamento --- */
+#loading-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--cor-elemento); display: flex;
+    justify-content: center; align-items: center; z-index: 2000;
+}
+.spinner {
+    border: 5px solid var(--borda-suave); border-top: 5px solid var(--cor-primaria);
+    border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- Header --- */
+.patient-header {
+    background-color: var(--cor-elemento); padding: 16px;
+    border-bottom: 1px solid var(--borda-suave); display: flex;
+    align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100;
+}
+.back-button { font-size: 1.5rem; color: var(--texto-secundario); text-decoration: none; }
+.patient-header-info {
+    display: flex; align-items: center; gap: 12px;
+    flex-grow: 1; overflow: hidden;
+}
+.patient-photo { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.patient-details h1 {
+    font-size: 1.1rem; font-weight: 600; margin: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.patient-details p { color: var(--texto-secundario); margin: 2px 0 0 0; font-size: 0.85rem; }
+.hamburger-menu {
+    font-size: 1.5rem; background: none; border: none;
+    color: var(--texto-secundario); cursor: pointer; margin-left: auto;
+}
+.desktop-only { display: none; }
+.mobile-only { display: flex; }
+
+/* --- Botões --- */
+.btn-primary, .btn-secondary, .action-btn {
+    display: inline-flex; justify-content: center; align-items: center;
+    gap: 8px; border-radius: 8px; font-weight: 600; cursor: pointer;
+    text-decoration: none; transition: background-color 0.2s ease;
+    border: 1px solid transparent; width: 100%; box-sizing: border-box;
+}
+.btn-primary { background-color: var(--cor-primaria); color: white; padding: 10px 16px; }
+.btn-primary:hover { background-color: var(--cor-secundaria); }
+.action-btn {
+    background: transparent; color: var(--texto-secundario);
+    border-color: var(--borda-suave); padding: 10px 12px; font-size: 0.9rem;
+}
+.action-btn:hover { background-color: rgba(65, 184, 213, 0.1); }
+
+.btn-delete {
+    background: none; border: none;
+    color: var(--texto-suave);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+.btn-delete:hover {
+    color: var(--cor-delete);
+}
+
+/* --- Navegação Principal (Abas) --- */
+.container { padding: 16px; max-width: 1200px; margin: 0 auto; }
+.tab-nav {
+    display: none; /* Escondido por padrão, aparece em media query */
+    border-bottom: 1px solid var(--borda-suave);
+    overflow-x: auto; white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* Melhora scroll em iOS */
+}
+.tab-btn {
+    padding: 12px 16px; border: none; background-color: transparent;
+    cursor: pointer; font-size: 0.95rem; font-weight: 500;
+    color: var(--texto-secundario); border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s; display: inline-flex;
+    align-items: center; gap: 8px;
+    white-space: nowrap;
+}
+.tab-btn.active { color: var(--cor-primaria); font-weight: 600; border-bottom-color: var(--cor-primaria); }
+.tab-btn i { font-size: 1rem; }
+
+/* --- Sub-abas (Exames, Registros Diários) --- */
+.sub-tab-nav {
+    display: flex; gap: 8px;
+    border-bottom: 1px solid var(--borda-suave);
+    margin-top: 24px; margin-bottom: 24px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.sub-tab-btn {
+    padding: 8px 16px; border: none; background-color: transparent;
+    cursor: pointer; font-size: 0.9rem; font-weight: 500;
+    color: var(--texto-secundario); border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.sub-tab-btn i {
+    font-size: 0.9em;
+}
+.sub-tab-btn.active {
+    background-color: var(--cor-elemento); color: var(--cor-primaria);
+    font-weight: 600; border-bottom-color: var(--cor-primaria);
+}
+
+/* --- Menu Mobile Lateral --- */
+.mobile-nav {
+    position: fixed; top: 0; left: 0; width: 280px; height: 100%;
+    background-color: var(--cor-elemento); z-index: 1100;
+    transform: translateX(-100%); transition: transform 0.3s ease-in-out;
+    display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+.mobile-nav.open { transform: translateX(0); }
+.mobile-nav-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px; border-bottom: 1px solid var(--borda-suave);
+}
+.mobile-nav-header h3 { margin: 0; font-size: 1.2rem; }
+.close-button { background: none; border: none; font-size: 2rem; color: var(--texto-suave); cursor: pointer; }
+.mobile-nav-list { flex-grow: 1; overflow-y: auto; }
+.mobile-nav-link {
+    display: flex; align-items: center; gap: 16px; padding: 16px;
+    text-decoration: none; color: var(--texto-secundario); font-weight: 500;
+    border-left: 4px solid transparent;
+}
+.mobile-nav-link.active {
+    background-color: #f0f8ff; color: var(--cor-primaria);
+    border-left-color: var(--cor-primaria);
+}
+.mobile-nav-actions { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.mobile-nav-actions hr { width: 100%; border: none; border-top: 1px solid var(--borda-suave); margin: 8px 0; }
+.mobile-action-btn {
+    background: var(--cor-fundo); border: none; padding: 12px; border-radius: 8px;
+    text-align: left; display: flex; align-items: center; gap: 12px;
+    font-size: 1rem; font-family: 'Inter', sans-serif; color: var(--texto-secundario);
+    font-weight: 500; cursor: pointer;
+}
+.backdrop {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5); z-index: 1050;
+}
+
+/* --- Conteúdo das Abas --- */
+.tab-content-container { margin-top: 32px; }
+.panel-header h2 { font-size: 1.75rem; margin: 0; font-weight: 700; }
+.panel-header p { margin: 8px 0 0 0; color: var(--texto-secundario); font-size: 1rem; }
+.panel-toolbar {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    margin-bottom: 24px; margin-top: 32px;
+    align-items: center;
+}
+.panel-toolbar input[type="search"] {
+    flex-grow: 1; min-width: 200px; padding: 10px 14px; height: 40px;
+    border: 1px solid var(--borda-suave); border-radius: 8px; box-sizing: border-box;
+    font-family: 'Inter', sans-serif; font-size: 0.9rem;
+}
+.filter-group { display: flex; flex-shrink: 0; }
+.filter-btn-small {
+    padding: 8px 16px; border: 1px solid var(--borda-suave); height: 40px;
+    background-color: var(--cor-elemento); color: var(--texto-secundario);
+    cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.85rem;
+    display: inline-flex; align-items: center;
+}
+.filter-btn-small:first-child { border-radius: 8px 0 0 8px; }
+.filter-btn-small:last-child { border-radius: 0 8px 8px 0; border-left: none; }
+.filter-btn-small.active { background-color: var(--cor-secundaria); color: white; border-color: var(--cor-secundaria); }
+
+/* --- Listas de Cards (Receitas, Exames, Encaminhamentos) --- */
+.card-list { display: grid; gap: 16px; }
+.exame-card, .recipe-card { /* Estilo base unificado */
+    background-color: var(--cor-elemento); border: 1px solid var(--borda-suave);
+    border-radius: 12px; padding: 24px;
+}
+.recipe-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+.recipe-header h3 { margin: 0; font-size: 1.2rem; line-height: 1.4; }
+.badge { padding: 4px 10px; border-radius: 12px; font-weight: 600; font-size: 0.75rem; white-space: nowrap; }
+.status-ativa { background-color: #ebf4ff; color: #4299e1; }
+.status-arquivada { background-color: #e2e8f0; color: var(--texto-suave); }
+.status-solicitado { background-color: var(--cor-status-solicitado); color: var(--texto-status-solicitado); }
+.status-aguardando-resultado { background-color: var(--cor-status-aguardando); color: var(--texto-status-aguardando); }
+.recipe-doctor { font-size: 0.9rem; color: var(--texto-suave); margin-top: 4px; margin-bottom: 16px; }
+.recipe-details { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; font-size: 0.9rem;}
+.recipe-details span { display: flex; align-items: center; gap: 8px; color: var(--texto-secundario); }
+.recipe-details i { color: var(--cor-primaria); width: 16px; text-align: center; }
+.recipe-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--texto-suave); margin-top: 16px; border-top: 1px solid var(--borda-suave); padding-top: 16px;}
+.card-footer-actions { display: flex; align-items: center; gap: 16px; }
+.pdf-link, .btn-pdf {
+    color: var(--cor-secundaria); text-decoration: none; font-weight: 500;
+    display: flex; align-items: center; gap: 6px; cursor: pointer;
+    background: none; border: none; padding: 0; font-family: 'Inter', sans-serif; font-size: 0.85rem;
+}
+.pdf-link:hover, .btn-pdf:hover { text-decoration: underline; }
+.exame-card ul { padding-left: 20px; margin: 8px 0 16px 0; font-size: 0.9rem; color: var(--texto-secundario); }
+.exame-card ul li { margin-bottom: 4px; }
+.empty-state {
+    text-align: center; padding: 40px 20px; color: var(--texto-suave);
+    background-color: var(--cor-elemento); border: 1px dashed var(--borda-suave);
+    border-radius: 12px;
+}
+.empty-state i { font-size: 2.5rem; opacity: 0.4; margin-bottom: 16px; display: block; }
+.empty-state p { margin: 0; font-size: 1rem; font-weight: 500; }
+
+
+/* --- Anamnese --- */
+.anamnese-container {
+    background-color: var(--cor-elemento); border-radius: 12px; padding: 24px; box-shadow: var(--sombra-subtil);
+}
+.anamnese-section { margin-bottom: 32px; border-bottom: 1px solid var(--borda-suave); padding-bottom: 24px; }
+.anamnese-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.anamnese-section h3 { font-size: 1.25rem; color: var(--cor-primaria); margin-top: 0; margin-bottom: 20px; }
+.anamnese-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.anamnese-group { margin-bottom: 20px; }
+.anamnese-item label, .anamnese-group label {
+    display: block; font-size: 0.8rem; font-weight: 600; color: var(--texto-suave);
+    margin-bottom: 6px; text-transform: uppercase;
+}
+.anamnese-item p, .anamnese-group p { margin: 0; font-size: 1rem; color: var(--texto-principal); line-height: 1.5; }
+.anamnese-list p { margin: 0 0 10px 0; line-height: 1.5; }
+#anamnese-search-input { width: 100%; padding: 10px 14px; height: 40px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; font-family: 'Inter', sans-serif;}
+
+/* --- Footer Mobile --- */
+.action-footer {
+    position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--cor-elemento);
+    border-top: 1px solid var(--borda-suave); display: flex; justify-content: space-around;
+    padding: 8px 0; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); z-index: 100;
+}
+.action-footer .action-btn { flex-direction: column; font-size: 0.75rem; gap: 4px; padding: 4px 8px; border: none; background: transparent; width: auto;}
+.action-footer .action-btn i { font-size: 1.5rem; }
+.action-footer .action-btn span { display: inline; margin-top: 2px; }
+
+/* --- Template de PDF (Oculto) --- */
+/* (Restaurado e completo) */
+.pdf-template {
+    position: fixed; top: 0; left: -9999px; /* Mantém fora da tela */
+    width: 210mm; min-height: 297mm; background-color: white; padding: 15mm;
+    box-sizing: border-box; font-family: 'Helvetica', sans-serif; color: #333; font-size: 12px; line-height: 1.5;
+}
+.pdf-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    border-bottom: 2px solid var(--cor-primaria); padding-bottom: 10px; margin-bottom: 20px;
+}
+.pdf-logo { width: 150px; height: auto; }
+.pdf-doctor-info {
+    text-align: right; font-size: 11px; display: flex; flex-direction: column; line-height: 1.4;
+}
+.pdf-doctor-info strong { font-size: 12px; font-weight: bold; color: #000; }
+.pdf-main h2 {
+    text-align: center; font-size: 18px; margin: 20px 0; color: var(--texto-principal); font-weight: bold;
+}
+.pdf-patient-info {
+    border: 1px solid #ccc; padding: 10px; border-radius: 8px;
+    margin-bottom: 20px; font-size: 12px; line-height: 1.4;
+}
+.pdf-prescription h3, .pdf-encaminhamento h3 {
+    font-size: 16px; color: var(--cor-primaria); font-weight: bold;
+    border-bottom: 1px solid var(--borda-suave); padding-bottom: 5px; margin-bottom: 15px; margin-top: 25px;
+}
+.pdf-prescription p { font-size: 12px; font-style: italic; margin-bottom: 10px; }
+.pdf-prescription ol, .pdf-encaminhamento ul, #pdf-exame-list { padding-left: 20px; margin: 0; }
+.pdf-prescription li, .pdf-encaminhamento li, #pdf-exame-list li { margin-bottom: 15px; font-size: 12px; line-height: 1.5; }
+.pdf-footer {
+    position: absolute; bottom: 15mm; left: 15mm; right: 15mm;
+    border-top: 1px solid var(--borda-suave); padding-top: 15px; /* Ajustado padding */
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10px; color: var(--texto-suave);
+}
+.pdf-signature {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+}
+.pdf-signature span:first-child { font-weight: bold; color: var(--texto-principal); font-size: 11px; }
+
+/* --- Modais --- */
+.modal-overlay {
+    position: fixed; /* Posicionamento fixo na tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro semi-transparente */
+    display: flex; /* Habilita centralização com flexbox */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    z-index: 1000; /* Z-index base para modais */
+    padding: 16px; /* Espaçamento interno */
+    box-sizing: border-box; /* Inclui padding no tamanho total */
+    opacity: 1; /* Garante que não está transparente */
+    visibility: visible; /* Garante que está visível */
+    overflow-y: auto; /* Permite scroll se o conteúdo for maior que a tela */
+    /* REMOVE qualquer regra 'hidden' ou 'display: none' daqui */
+}
+.modal-card {
+    background-color: white; /* Fundo branco */
+    padding: 24px;
+    border-radius: 12px;
+    max-width: 500px; /* Largura máxima padrão */
+    width: 100%; /* Ocupa a largura disponível até o máximo */
+    position: relative; /* Para posicionar o botão fechar */
+    max-height: 90vh; /* Altura máxima (90% da altura da tela) */
+    overflow-y: auto; /* Scroll interno se o conteúdo for maior */
+    box-sizing: border-box;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Sombra para destaque */
+    opacity: 1; /* Garante visibilidade */
+    visibility: visible; /* Garante visibilidade */
+    /* Garante que não está sendo movido para fora da tela */
+    transform: translate(0, 0) scale(1);
+}
+
+/* Ajuste para o modal de consulta que é mais largo */
+.modal-consulta-largo {
+    max-width: 800px;
+}
+.modal-close {
+    position: absolute; top: 12px; right: 12px; background: none; border: none;
+    font-size: 1.5rem; cursor: pointer; color: var(--texto-suave); line-height: 1; padding: 4px;
+}
+.modal-title { margin: 0 0 24px 0; font-size: 1.25rem; color: #333; display: flex; align-items: center; gap: 8px;}
+
+/* Aplica a todos os forms dentro de modais */
+#form-encaminhamento, #form-exame, #form-receita { 
+    display: flex; flex-direction: column; 
+} 
+#form-encaminhamento label, #form-exame label, #form-receita label { 
+    margin-bottom: 6px; font-weight: 500; color: var(--texto-secundario); font-size: 0.9rem;
+}
+/* Aplica input styles a todos os forms */
+#form-encaminhamento input, #form-encaminhamento select, #form-encaminhamento textarea,
+#form-exame input, #form-exame select, #form-exame textarea,
+#form-receita input, #form-receita select, #form-receita textarea { 
+    width: 100%; padding: 10px; border-radius: 8px; 
+    border: 1px solid #ccc; background-color: #f1f5f9; font-size: 1rem; box-sizing: border-box; font-family: 'Inter', sans-serif;
+}
+
+/* --- Refinamentos Visuais para Modais --- */
+.modal-card .form-group { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; /* Espaço entre label e input */
+    margin-bottom: 24px; /* <<<=== ESPAÇAMENTO AJUSTADO ===>>> */
+} 
+.modal-card .form-group input[type="text"],
+.modal-card .form-group input[type="number"],
+.modal-card .form-group input[type="date"],  
+.modal-card .form-group input[type="time"],  
+.modal-card .form-group select,
+.modal-card .form-group textarea {
+    width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; 
+    font-size: 1rem; font-family: 'Inter', sans-serif; box-sizing: border-box; 
+    height: 48px; line-height: 1.5; margin-bottom: 0; /* Remove margem dos inputs */
+}
+.modal-card .form-group textarea { height: auto; min-height: 80px; resize: vertical; }
+.form-grid-receita { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.assinatura { 
+    font-size: 0.85rem; color: var(--texto-suave); 
+    margin-top: 16px; margin-bottom: 24px; text-align: right; line-height: 1.4;
+}
+.assinatura em { font-style: normal; font-weight: 600; color: var(--texto-secundario); }
+.modal-actions { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.modal-actions .btn-secondary,
+.modal-actions .btn-primary { width: 100%; box-sizing: border-box; padding: 12px; font-size: 1rem; }
+.modal-actions .btn-secondary { background-color: var(--borda-suave); color: var(--texto-secundario); border: none; }
+.modal-actions .btn-secondary:hover { background-color: #d1d5db; }
+
+/* Toggle Switch */
+/* (Restaurado e completo) */
+.toggle-group { display: flex; justify-content: space-between; align-items: center; background-color: #f1f5f9; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+.toggle-group label:first-child { color: var(--texto-secundario); font-weight: 500; font-size: 0.9rem; margin-right: 10px;} /* Estilo para o label do toggle */
+.switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0;}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
+input:checked + .slider { background-color: var(--cor-primaria); }
+input:focus + .slider { box-shadow: 0 0 1px var(--cor-primaria); } /* Adiciona foco */
+.slider.round { border-radius: 28px; }
+.slider.round:before { border-radius: 50%; }
+input:checked + .slider:before { transform: translateX(22px); }
+
+/* Estilos da Busca de Exames */
+/* (Restaurado e completo) */
+.exam-search-container { position: relative; margin-bottom: 8px; }
+.suggestions-list { position: absolute; background-color: white; border: 1px solid var(--borda-suave); border-radius: 8px; width: 100%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100; max-height: 150px; overflow-y: auto; box-sizing: border-box;}
+.suggestion-item { padding: 10px 12px; cursor: pointer; font-size: 0.9rem;}
+.suggestion-item:hover { background-color: #f0f8ff; }
+.selected-exams-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; background-color: #f1f5f9; border-radius: 8px; margin-bottom: 16px; min-height: 40px; border: 1px solid var(--borda-suave);}
+.selected-exam-tag { background-color: var(--cor-secundaria); color: white; padding: 6px 12px; border-radius: 16px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+.remove-exam-btn { background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer; line-height: 1; padding: 0 2px; opacity: 0.7;}
+.remove-exam-btn:hover { opacity: 1;}
+
+/* --- Gráficos de Registros Diários --- */
+/* (Restaurado e completo) */
+.chart-card { background-color: var(--cor-elemento); border-radius: 12px; padding: 24px; box-shadow: var(--sombra-subtil); margin-top: 16px; }
+.chart-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.chart-filters .filter-btn-small { transition: all 0.2s ease; } /* Reusa estilo .filter-btn-small */
+.chart-container { position: relative; height: 350px; width: 100%; }
+
+
+
+
+
+/* --- Estilos para a Aba Medicação --- */
+
+/* Ajuste no toolbar para select e filtros de período */
+#subtab-registros-medicacao .panel-toolbar {
+    justify-content: space-between; /* Tenta espaçar os itens */
+}
+
+.form-control-filter {
+    padding: 10px 14px;
+    height: 40px; /* Mesma altura dos outros filtros */
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    background-color: var(--cor-elemento);
+    flex-grow: 1; /* Permite crescer */
+    max-width: 300px; /* Limita largura máxima */
+}
+
+/* Garante que os filtros de período não quebrem linha tão fácil */
+.medicacao-period-filters {
+    flex-shrink: 0; 
+}
+
+/* Títulos H4 para separar gráfico e lista */
+#subtab-registros-medicacao h4 {
+    font-size: 1.1rem;
+    color: var(--texto-secundario);
+    margin-top: 32px; /* Espaço acima */
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+/* Estilo para a lista de registros */
+.medicacao-list {
+    display: flex; /* Muda para flex para empilhar verticalmente */
+    flex-direction: column;
+    gap: 16px;
+}
+
+.medicacao-list-item {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    padding: 16px;
+    display: grid; /* Usar grid para alinhar melhor */
+    grid-template-columns: auto 1fr auto; /* Colunas: Data | Conteúdo | Botão */
+    gap: 12px 16px; /* Espaçamento vertical e horizontal */
+    align-items: start; /* Alinha itens ao topo */
+    box-shadow: var(--sombra-subtil);
+}
+
+.medicacao-item-data {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--texto-principal);
+    white-space: nowrap;
+    grid-row: 1 / 3; /* Ocupa duas linhas na altura */
+    padding-right: 16px;
+    border-right: 1px solid var(--borda-suave);
+    align-self: center; /* Centraliza verticalmente */
+}
+
+.medicacao-item-header {
+    grid-column: 2 / 3; /* Ocupa a coluna do meio */
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline; /* Alinha pela base do texto */
+}
+
+.medicacao-item-header h5 { /* Nome do medicamento */
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.medicacao-item-nota {
+    font-size: 0.9rem;
+    color: #facc15; /* Amarelo para estrelas */
+}
+.medicacao-item-nota .fa-star-o { /* Estrela vazia (opcional) */
+     color: var(--borda-suave);
+}
+
+
+.medicacao-item-snippet {
+    grid-column: 2 / 3; /* Ocupa a coluna do meio */
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+    margin: 0;
+    /* Limita o texto a N linhas (exemplo com 2 linhas) */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+}
+
+.medicacao-item-action {
+    grid-column: 3 / 4; /* Ocupa a última coluna */
+    grid-row: 1 / 3; /* Ocupa duas linhas na altura */
+    align-self: center; /* Centraliza verticalmente */
+}
+
+.ver-completo-btn {
+    background-color: transparent;
+    border: 1px solid var(--borda-suave);
+    color: var(--texto-secundario);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.ver-completo-btn:hover {
+    background-color: var(--cor-fundo);
+    border-color: var(--texto-suave);
+    color: var(--texto-principal);
+}
+
+/* Estilos para o Modal de Detalhes */
+#medicacao-detalhe-content p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+#medicacao-detalhe-content strong {
+    color: var(--texto-principal);
+}
+#detalhe-nota {
+     font-size: 1.1rem; /* Estrelas um pouco maiores no modal */
+     color: #facc15; 
+}
+#detalhe-texto {
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+}
+
+/* --- Estilos para o Modal Multi-Medicamento --- */
+
+/* Estilo para o "mini-formulário" de adição */
+.form-mini-medicamento fieldset {
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 0;
+}
+.mini-legend {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    padding: 0 8px;
+    margin-left: 8px;
+}
+
+/* Divisor entre os formulários */
+.form-divider {
+    border: none;
+    border-top: 1px solid var(--borda-suave);
+    margin: 24px 0;
+}
+
+/* Estilo para a lista de medicamentos adicionados dentro do modal */
+.medicamentos-adicionados-list {
+    background-color: var(--cor-fundo); /* Fundo cinza claro */
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px; /* Usa a margem global que definimos */
+    min-height: 80px;
+    max-height: 200px; /* Limita a altura para scroll */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.empty-state-mini {
+    margin: 0;
+    text-align: center;
+    color: var(--texto-suave);
+    font-style: italic;
+    font-size: 0.9rem;
+    padding: 10px 0;
+}
+
+.medicamento-item-modal {
+    background-color: var(--cor-elemento);
+    border: 1px solid #cceef6; /* Borda no tom de azul */
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.medicamento-item-modal p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--texto-principal);
+    line-height: 1.4;
+    flex-grow: 1; /* Ocupa o espaço */
+}
+
+.medicamento-item-modal strong {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--cor-secundaria);
+    display: block; /* Quebra linha */
+}
+
+.medicamento-item-modal .btn-delete-mini {
+    background: none;
+    border: none;
+    color: var(--texto-suave);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.2s ease;
+    flex-shrink: 0; /* Não encolhe */
+}
+.medicamento-item-modal .btn-delete-mini:hover {
+    color: var(--cor-delete);
+}
+
+
+/* ============================================= */
+/* --- ESTILOS DO PAINEL CLÍNICO --- */
+/* ============================================= */
+
+/* --- 1. Métricas Globais (Topo) --- */
+.metricas-globais {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 colunas no mobile */
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.metrica-card {
+    background-color: var(--cor-elemento);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: var(--sombra-subtil);
+    gap: 4px;
+}
+
+.metrica-card i {
+    font-size: 1.5rem;
+    color: var(--cor-primaria);
+    margin-bottom: 8px;
+}
+
+.metrica-valor {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+    line-height: 1.2;
+}
+
+.metrica-label {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    font-weight: 500;
+}
+
+
+
+/* --- 2. Layout Principal (Mobile-First) --- */
+.painel-clinico-container {
+    display: flex;
+    flex-direction: column; /* Empilhado no mobile */
+    gap: 24px;
+}
+
+.coluna-principal {
+    flex-grow: 1;
+    min-width: 0; /* Impede overflow */
+}
+
+.coluna-lateral {
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+
+
+
+
+
+
+/* --- 3. Linha do Tempo (Coluna Principal) --- */
+.historico-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--borda-suave);
+    padding-bottom: 8px;
+}
+.historico-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+.total-consultas {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    font-weight: 500;
+}
+
+.historico-consultas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    /* Linha vertical da timeline (apenas visual) */
+    padding-left: 28px; 
+}
+.historico-consultas-lista::before {
+    content: '';
+    position: absolute;
+    left: 11px; /* (28px de padding - 16px de largura do ícone) / 2 + 2px (ajuste) */
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background-color: var(--borda-suave);
+}
+
+.consulta-card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--sombra-subtil);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+.consulta-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.consulta-timeline-icon {
+    position: absolute;
+    left: -28px; /* Move para o espaço do padding-left */
+    top: 16px;
+    width: 24px;
+    height: 24px;
+    background-color: var(--cor-primaria);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    border: 3px solid var(--fundo-pagina);
+}
+
+.consulta-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.consulta-data {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.consulta-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    color: white;
+}
+.consulta-tag.presencial { background-color: var(--cor-secundaria); }
+.consulta-tag.online { background-color: #6d28d9; } /* Roxo */
+
+.consulta-resumo {
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+}
+
+.consulta-docs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--borda-suave);
+}
+.doc-tag {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background-color: var(--fundo-pagina);
+    border: 1px solid var(--borda-suave);
+    color: var(--texto-secundario);
+}
+.doc-tag i {
+    margin-right: 4px;
+    opacity: 0.7;
+}
+
+.consulta-metricas-dia {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+.consulta-metricas-dia span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.consulta-metricas-dia i {
+    font-size: 1rem;
+}
+.consulta-metricas-dia strong {
+    color: var(--texto-principal);
+    font-weight: 600;
+}
+
+/* --- 4. Coluna Lateral (Acompanhamentos / Notas) --- */
+.card-painel-lateral {
+    background-color: var(--cor-elemento);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--sombra-subtil);
+}
+.card-painel-lateral h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.25rem;
+    color: var(--texto-principal);
+}
+
+.acompanhamento-item h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+}
+.acompanhamento-progresso {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin-bottom: 8px;
+}
+.progresso-percentual {
+    font-weight: 600;
+    color: var(--cor-primaria);
+}
+.progress-bar-container-painel {
+    width: 100%; height: 8px;
+    background-color: var(--borda-suave);
+    border-radius: 4px; overflow: hidden;
+}
+.progress-bar-fill-painel {
+    height: 100%; background-color: var(--cor-primaria);
+    border-radius: 4px;
+}
+.acompanhamento-dias {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+.metas-lista {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.metas-lista li {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.metas-lista i {
+    font-size: 1.1rem;
+}
+.meta-concluida { color: var(--texto-secundario); }
+.meta-concluida i { color: var(--status-online); }
+.meta-pendente { color: var(--texto-principal); font-weight: 500; }
+.meta-pendente i { color: var(--texto-suave); }
+
+.btn-secondary-painel, .btn-primary-painel {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box; /* Garante que padding não estoure */
+}
+.btn-secondary-painel {
+    background-color: var(--cor-fundo);
+    border: 1px solid var(--borda-suave);
+    color: var(--texto-secundario);
+}
+.btn-secondary-painel:hover {
+    background-color: var(--borda-suave);
+}
+.btn-primary-painel {
+    background-color: var(--cor-primaria);
+    border: 1px solid var(--cor-primaria);
+    color: white;
+}
+.btn-primary-painel:hover {
+    background-color: var(--cor-secundaria);
+}
+
+.notas-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    resize: vertical;
+    margin-bottom: 12px;
+}
+.notas-textarea:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+.notas-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.char-counter {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+.dica-profissional {
+    background-color: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+.dica-profissional i {
+    font-size: 1.1rem;
+    margin-top: 2px;
+}
+.dica-profissional p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* --- 5. Estilos do Modal de Consulta --- */
+.modal-consulta-largo {
+    max-width: 800px; /* Modal mais largo */
+    width: 95%;
+}
+
+.sub-tab-nav-modal {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--borda-suave);
+    margin-bottom: 24px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.sub-tab-nav-modal .sub-tab-btn { /* Reutiliza a classe .sub-tab-btn */
+    padding: 10px 16px;
+    border-radius: 6px 6px 0 0;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.consulta-tab-content {
+    min-height: 10px; /* Altura mínima para o conteúdo */
+}
+.consulta-tab-content h4 {
+    font-size: 1.2rem;
+    color: var(--texto-principal);
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+.consulta-tab-content .sub-titulo-modal {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+.consulta-original-snippet {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    background-color: var(--fundo-pagina);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 0;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.modal-footer-actions {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--borda-suave);
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar linha no mobile */
+    gap: 12px;
+    justify-content: flex-end; /* Alinha à direita */
+}
+.modal-footer-actions .btn-primary-painel,
+.modal-footer-actions .btn-secondary-painel {
+    width: auto; /* Tamanho automático no rodapé */
+    flex-grow: 1; /* Ocupa espaço no mobile */
+}
+
+
+/* --- Estilos para o Modal de Atestado --- */
+
+.checkbox-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: #f8fafc;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--borda-suave);
+}
+.checkbox-group-vertical label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+    cursor: pointer;
+    margin-bottom: 0; /* Reseta margem padrão do label */
+}
+.checkbox-group-vertical input[type="radio"] {
+    width: auto;
+    height: auto;
+    margin: 0;
+}
+
+/* ============================================= */
+/* === ESTILOS DOS CARDS DE EVOLUÇÃO (Dados da Consulta) === */
+/* ============================================= */
+
+.evolucao-card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--sombra-subtil);
+    margin-bottom: 12px; /* Espaço entre os cards de evolução */
+}
+
+.evolucao-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--borda-suave);
+}
+
+.evolucao-card-header strong {
+    font-weight: 600;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.evolucao-card-header i {
+    color: var(--cor-primaria);
+}
+
+.evolucao-card-header .sv-card-time { /* Reutiliza estilo de Sinais Vitais */
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--texto-suave);
+}
+
+.evolucao-card-texto {
+    font-size: 0.95rem;
+    color: var(--texto-secundario);
+    line-height: 1.6;
+    white-space: pre-wrap; /* Preserva quebras de linha e espaços */
+    margin: 0;
+}
+
+.evolucao-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--borda-suave);
+}
+
+
+
+
+
+
+
+/*PAINEL CLINICO PARA CONTROLE DE LARGURAS */
+
+
+.painel-clinico-container {
+  max-width: 1200px; /* limita a largura máxima */
+  margin: 0 auto; /* centraliza horizontalmente */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-sizing: border-box;
+  padding: 16px; /* para respiração */
+}
+
+.coluna-principal {
+  flex-grow: 1;
+  min-width: 0; /* previne overflow horizontal */
+}
+
+.coluna-lateral {
+  width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+
+.metricas-globais, .iniciar-atendimento-container {
+  max-width: 1200px;
+  margin: 0 auto 24px auto;
+  box-sizing: border-box;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+
+
+.metricas-globais {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  /* já deve existir, mas garanta que estão aqui */
+}
+
+
+.metrica-card {
+  min-width: 0;
+  padding: 24px 16px;
+  border-radius: 12px;
+  box-shadow: var(--sombra-subtil);
+  background: var(--cor-elemento);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#btn-iniciar-atendimento-painel {
+  min-width: 200px;
+  max-width: 100%;
+  width: 1200PX;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  margin: 0 auto;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .metricas-globais {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .metricas-globais {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .iniciar-atendimento-container,
+  .metricas-globais {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+
+
+/*PERPLEXYYYYYYYYYYYYYYYYY*/
+
+
+@media (min-width: 992px) {
+  .painel-clinico-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .coluna-lateral {
+    width: 100%;
+    position: sticky;
+    top: 94px;
+    padding: 0;
+  }
+}
+
+/* --- 6. Media Queries (Responsividade do Painel) --- */
+
+/* Telas de tablet/desktop pequenas */
+@media (min-width: 768px) {
+    .metricas-globais {
+        grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 colunas */
+    }
+    
+    .modal-footer-actions {
+        flex-wrap: nowrap; /* Não quebra linha */
+    }
+    .modal-footer-actions .btn-primary-painel,
+    .modal-footer-actions .btn-secondary-painel {
+        width: auto; /* Tamanho automático */
+        flex-grow: 0; /* Não cresce */
+    }
+}
+
+/* Telas de desktop médias/grandes */
+@media (min-width: 992px) {
+    .painel-clinico-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr; /* Layout de 2/3 e 1/3 */
+        gap: 24px;
+        align-items: flex-start; /* Alinha o topo das colunas */
+    }
+    .coluna-lateral {
+        width: 100%;
+        position: sticky; /* Coluna lateral fica "grudada" */
+        top: 94px; /* Abaixo do header + padding */
+    }
+}
+
+
+/* --- Estilos para a Aba Solicitações (Dentro do Modal) --- */
+.consulta-acoes-botoes {
+    display: flex;
+    flex-direction: column; /* Empilha os botões */
+    gap: 12px; /* Espaçamento entre eles */
+    max-width: 350px; /* Limita a largura dos botões */
+    margin-top: 20px;
+}
+
+.consulta-acoes-botoes .btn-primary-painel {
+    width: 100%; /* Faz os botões ocuparem a largura definida */
+    justify-content: flex-start; /* Alinha o texto e ícone à esquerda */
+    padding: 12px 16px; /* Um padding mais generoso */
+}
+
+
+
+
+/* ============================== */
+/* FORÇAR Z-INDEX DOS MODAIS DE AÇÃO */
+/* ============================== */
+
+#form-receita-modal,
+#form-exame-modal,
+#form-encaminhamento-modal,
+#form-atestado-modal,
+#encaminhar-modal,
+#medicacao-detalhe-modal {
+    z-index: 1100 !important; /* Maior que 1000 e !important para forçar */
+}
+
+#consulta-modal {
+    z-index: 1000 !important; /* Garante que fique abaixo e !important */
+}
+
+#backdrop {
+    
+}
+
+
+/* =========================================== */
+/* --- ESTILOS PARA ABA SINAIS VITAIS --- */
+/* =========================================== */
+
+#subtab-consulta-sinais-vitais h4 {
+    margin-bottom: 8px; /* Reduz margem padrão do h4 */
+}
+
+#subtab-consulta-sinais-vitais .modal-subtitle {
+    margin-bottom: 24px; /* Espaço após subtítulo */
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+}
+
+#form-sinais-vitais .form-group {
+    margin-bottom: 16px; /* Espaçamento padrão entre grupos */
+}
+
+#form-sinais-vitais label {
+    display: block;
+    font-weight: 500;
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+#form-sinais-vitais input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--borda-suave);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    background-color: #f8fafc; /* Fundo levemente acinzentado */
+    -moz-appearance: textfield; /* Remove setas em Firefox */
+}
+ /* Remove setas em Chrome, Safari, Edge, Opera */
+#form-sinais-vitais input[type="number"]::-webkit-outer-spin-button,
+#form-sinais-vitais input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#form-sinais-vitais input[type="number"]:focus {
+     outline: none;
+     border-color: var(--cor-primaria);
+     background-color: var(--cor-elemento); /* Fundo branco no foco */
+     box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+}
+
+/* Grid para colocar campos lado a lado em telas maiores */
+.form-grid.two-columns {
+    display: grid;
+    grid-template-columns: 1fr; /* Padrão: Uma coluna (Mobile First) */
+    gap: 16px;
+}
+
+/* Sub-label para Pressão Arterial */
+.form-group .sub-label {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    margin-bottom: 4px;
+    font-weight: 400;
+}
+.form-group.nested-group {
+    margin-bottom: 0; /* Remove margem extra dentro do grid de pressão */
+}
+
+/* Mensagem de feedback (sucesso/erro) */
+.feedback-message {
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 16px;
+    text-align: center;
+}
+.feedback-message.success {
+    background-color: #d1fae5; /* Verde claro */
+    color: #065f46; /* Verde escuro */
+}
+.feedback-message.error {
+    background-color: #fee2e2; /* Vermelho claro */
+    color: #991b1b; /* Vermelho escuro */
+}
+
+/* =========================================== */
+/* --- ESTILOS PARA CARD SINAIS VITAIS (Dados Clínicos) --- */
+/* =========================================== */
+
+.sinais-vitais-card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-left: 4px solid var(--cor-primaria); /* Barra lateral colorida */
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px; /* Espaço entre cards */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    position: relative; /* Para posicionar o footer/botões */
+}
+
+.sv-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--borda-suave);
+}
+
+.sv-card-header i {
+    color: var(--cor-primaria);
+    font-size: 1.1rem;
+}
+
+.sv-card-header strong {
+    font-weight: 600;
+    color: var(--texto-principal);
+    font-size: 1rem;
+    flex-grow: 1; /* Empurra a hora para a direita */
+}
+
+.sv-card-time {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    font-weight: 500;
+}
+
+.sv-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsivo */
+    gap: 8px 16px; /* Espaçamento vertical e horizontal */
+    font-size: 0.9rem;
+    color: var(--texto-secundario);
+}
+
+.sv-card-grid span {
+    white-space: nowrap; /* Evita quebra de linha no meio */
+}
+
+.sv-card-grid strong {
+    color: var(--texto-principal);
+    font-weight: 600;
+}
+
+.sv-card-footer {
+    position: absolute;
+    bottom: 12px; /* <-- MUDANÇA AQUI */
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.mini-btn { /* Estilo para botões pequenos de editar/excluir */
+    background: none;
+    border: none;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.mini-btn:hover {
+    color: var(--texto-principal);
+}
+
+.btn-delete-sv:hover {
+    color: var(--cor-delete);
+}
+
+
+/* =========================================== */
+/* --- AJUSTE BOTÃO PAINEL CLÍNICO (HEADER) --- */
+/* =========================================== */
+
+/*
+  Targeting a classe .btn-primary E .mobile-action-btn
+  quando eles tiverem o data-action específico.
+*/
+.btn-primary[data-action="abrir-painel-clinico"],
+.mobile-action-btn[data-action="abrir-painel-clinico"] {
+
+    /* 1. Impede que o texto "Painel Clínico" quebre em duas linhas */
+    white-space: nowrap; 
+
+    /* 2. Opcional: Anula o 'width: 100%' da regra .btn-primary 
+       para que o botão tenha a largura do seu conteúdo.
+       Isso ajuda a evitar que ele seja espremido.
+    */
+    width: auto;
+
+    /* 3. Garante que o botão não encolha se houver outros itens no header */
+    flex-shrink: 0; 
+}
+
+
+
+/* =========================================== */
+/* --- ESTILOS PARA O CALLOUT DE INFORMAÇÃO --- */
+/* (Acima da navegação principal de abas)     */
+/* =========================================== */
+
+.info-callout {
+    display: flex;
+    align-items: flex-start; /* Alinha no topo */
+    gap: 12px; /* Espaço entre ícone e texto */
+    background-color: #e6f7ff; /* Um azul bem claro (cor de informação) */
+    border-left: 4px solid var(--cor-primaria); /* Destaque na cor do tema */
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px; /* Espaço ANTES da barra de abas */
+    /* Garante quebra de linha correta se o texto for longo */
+    word-break: break-word; 
+}
+
+.info-callout i {
+    font-size: 1.25rem;
+    color: var(--cor-primaria);
+    margin-top: 2px; /* Alinhamento fino com a primeira linha de texto */
+}
+
+.info-callout p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--texto-secundario);
+    line-height: 1.5;
+}
+
+/* Ajusta a margem do container de abas que vem DEPOIS da nav */
+.tab-content-container {
+     margin-top: 24px; /* Garante espaço após a tab-nav */
+}
+
+/* ============================================= */
+/* === ESTILOS PARA O BOTÃO INICIAR ATENDIMENTO === */
+/* ============================================= */
+
+.iniciar-atendimento-container {
+    margin-top: 24px; /* Espaço acima (depois das métricas) */
+    margin-bottom: 32px; /* Espaço abaixo (antes das sub-abas) */
+    text-align: center; /* Centraliza o botão dentro do container */
+}
+
+#btn-iniciar-atendimento-painel {
+    /* A classe .btn-primary já define cor, fundo, borda, etc. */
+    /* Ajustes específicos para este botão: */
+    padding: 12px 28px; /* Deixa o botão um pouco maior */
+    font-size: 1.1rem;  /* Aumenta um pouco a fonte */
+    min-width: 250px;   /* Largura mínima para melhor visualização */
+    /* display: inline-flex;  (Já deve vir de .btn-primary) */
+    /* align-items: center; (Já deve vir de .btn-primary) */
+    /* gap: 8px;            (Já deve vir de .btn-primary) */
+
+    /* Sombra sutil opcional, usando a cor primária */
+    box-shadow: 0 4px 12px rgba(65, 184, 213, 0.3);
+    transition: all 0.2s ease; /* Adiciona transição suave */
+}
+
+#btn-iniciar-atendimento-painel:hover {
+     /* Efeito suave ao passar o mouse */
+     transform: translateY(-2px);
+     box-shadow: 0 6px 16px rgba(65, 184, 213, 0.4);
+}
+
+#btn-iniciar-atendimento-painel i {
+    /* Garante um pequeno espaço entre o ícone e o texto, se 'gap' não for suficiente */
+    margin-right: 8px;
+}
+
+
+
+/* ============================================= */
+/* === ESTILOS DA ABA ACOMPANHAMENTO (Modal) === */
+/* ============================================= */
+
+#subtab-consulta-acompanhamento {
+    padding: 8px 4px; 
+}
+
+#form-acompanhamento {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- Base Estilos Botão (Importante!) --- */
+/* Define o estilo base para os botões azuis dentro do modal */
+.btn-primary-painel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--cor-primaria); /* Cor principal */
+    color: white;
+    border: 1px solid var(--cor-primaria);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+.btn-primary-painel:hover {
+    background-color: var(--cor-secundaria); /* Cor mais escura no hover */
+    border-color: var(--cor-secundaria);
+}
+.btn-primary-painel:disabled {
+    background-color: #a0aec0;
+    border-color: #a0aec0;
+    cursor: not-allowed;
+}
+.btn-primary-painel i {
+    margin-right: 4px;
+}
+/* --- Fim Base Estilos Botão --- */
+
+
+.acompanhamento-header {
+    text-align: left;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--borda-suave);
+}
+.acompanhamento-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.acompanhamento-header h3 i {
+    color: var(--cor-primaria);
+}
+.acompanhamento-header .modal-subtitle {
+     margin-top: 4px; 
+}
+
+.form-section {
+    margin-bottom: 24px;
+}
+
+.metas-titulo {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.metas-titulo i {
+    color: var(--cor-secundaria);
+}
+
+.metas-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0 24px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.95rem;
+    color: var(--texto-principal);
+}
+.meta-item:hover {
+    background-color: #f0f9ff;
+}
+.meta-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--cor-primaria);
+}
+.meta-item.custom-meta span {
+    font-style: italic;
+}
+
+/* --- REGRAS CORRIGIDAS PARA OUTRA META --- */
+.outra-meta-container {
+    display: flex;
+    gap: 12px;
+    align-items: stretch; /* Garante que input e botão tenham a mesma altura */
+}
+/* Estilo para o input de texto, para que pareça um input normal */
+.outra-meta-container input[type="text"] {
+     flex-grow: 1; 
+     margin: 0;
+     padding: 10px 14px;
+     font-size: 1rem;
+     font-family: 'Inter', sans-serif;
+     color: var(--texto-principal);
+     border: 1px solid var(--borda-suave); /* Borda padrão */
+     border-radius: 8px;
+     box-sizing: border-box; /* Importante para o padding funcionar bem */
+     height: 48px; /* Altura explícita para alinhar com o botão */
+     line-height: 1.5;
+}
+.outra-meta-container input[type="text"]:focus {
+     border-color: var(--cor-primaria);
+     box-shadow: 0 0 0 3px rgba(65, 184, 213, 0.2);
+     outline: none;
+}
+
+/* Regra para o botão Adicionar (agora usa a classe base) */
+#btn-adicionar-meta {
+    flex-shrink: 0; /* Impede que o botão encolha */
+    font-size: 0.9rem;
+    height: 48px; /* Altura explícita para alinhar com o input */
+    padding: 0 16px; /* Padding horizontal */
+    line-height: 48px; /* Centraliza verticalmente (se height for fixa) */
+    width:10rem;
+}
+/* --- FIM DAS REGRAS CORRIGIDAS --- */
+
+/* Barra de Progresso (Visual) */
+.progresso-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    margin-bottom: 8px;
+}
+.progresso-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: var(--borda-suave);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.progresso-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--cor-secundaria);
+    border-radius: 4px;
+}
+
+/* Toggle de Lembretes */
+.lembretes-toggle-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background-color: var(--cor-fundo);
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.lembretes-toggle-container input[type="checkbox"] {
+     width: 20px;
+     height: 20px;
+     flex-shrink: 0;
+     margin-top: 2px;
+     accent-color: var(--cor-primaria);
+}
+.toggle-icon-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.toggle-icon-label i {
+    color: var(--cor-primaria);
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+}
+.toggle-icon-label span {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--texto-principal);
+}
+.toggle-icon-label small {
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+    line-height: 1.5;
+}
+
+/* Container do Botão Salvar */
+.salvar-acompanhamento-container {
+    margin-top: 32px;
+    display: flex;
+    justify-content: flex-end;
+}
+#btn-salvar-acompanhamento {
+    width: 100%; 
+    max-width: 300px;
+    font-size: 1rem;
+}
+
+/* Disclaimer/Rodapé */
+.acompanhamento-disclaimer {
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+    text-align: center;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+
+/* ============================================= */
+/* === ESTILOS DO BOTÃO APAGAR META (x) === */
+/* ============================================= */
+
+/* Faz o texto da meta crescer e empurrar o 'x' para a direita */
+.meta-item.custom-meta span.meta-text {
+    font-style: italic; /* Mantém o itálico */
+    flex-grow: 1;      /* Ocupa o espaço disponível */
+    margin-right: 8px; /* Espaço antes do botão 'x' */
+}
+
+/* Estilo do botão 'x' */
+.btn-delete-meta {
+    background: transparent;
+    border: none;
+    color: var(--texto-suave);
+    font-size: 1.5rem;  /* Tamanho do 'x' */
+    font-weight: 700;
+    line-height: 1;     /* Remove altura extra da linha */
+    padding: 2px 8px;   /* Pequeno padding para facilitar o clique */
+    border-radius: 50%; /* Deixa o fundo do hover redondo */
+    cursor: pointer;
+    flex-shrink: 0;     /* Impede que o botão encolha */
+    transition: color 0.2s, background-color 0.2s;
+}
+
+/* Efeito hover (vermelho) */
+.btn-delete-meta:hover {
+    color: var(--cor-delete); /* Vermelho */
+    background-color: #fff5f5; /* Fundo vermelho bem claro */
+}
+
+
+
+/* ============================================= */
+/* === ESTILOS DAS SUB-ABAS NÍVEL 2 (Dados da Consulta) === */
+/* ============================================= */
+
+/* A barra de navegação aninhada */
+.sub-tab-nav-level2 {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--borda-suave);
+    margin-top: 16px; /* Espaço abaixo do título/subtítulo */
+    margin-bottom: 16px;
+    overflow-x: auto; /* Permite rolar horizontalmente em telas pequenas */
+    white-space: nowrap;
+    /* Garante que a barra de rolagem (se aparecer) não cubra a borda */
+    padding-bottom: 2px; 
+}
+
+/* Os botões dentro da barra de navegação aninhada */
+.sub-tab-btn-level2 {
+    padding: 8px 12px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 0.85rem; /* Fonte menor que as abas principais */
+    font-weight: 500;
+    color: var(--texto-suave); /* Cor mais suave (cinza) */
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px; /* Alinha o botão com a borda do container */
+    transition: all 0.2s ease;
+}
+
+/* Estilo do botão ativo (Nível 2) */
+.sub-tab-btn-level2.active {
+    color: var(--cor-secundaria); /* Cor secundária para diferenciar */
+    font-weight: 600;
+    border-bottom-color: var(--cor-secundaria);
+}
+
+.sub-tab-btn-level2:hover:not(.active) {
+    color: var(--texto-principal);
+    background-color: var(--cor-fundo); /* Fundo sutil no hover */
+    border-radius: 4px 4px 0 0;
+}
+
+/* Painel de conteúdo (Nível 2) */
+.sub-tab-panel-level2 {
+    padding-top: 16px;
+    /* Animação sutil de fade-in */
+    animation: fadeInPanel 0.3s ease-out;
+}
+
+/* Esconde painéis inativos */
+.sub-tab-panel-level2.hidden {
+    display: none;
+}
+
+
+/* CSS Essencial para Modais */
+
+.modal {
+    display: none; /* Começa escondido (alternativa/reforço ao .hidden) */
+    position: fixed; /* Fica fixo na tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Overlay escuro */
+    z-index: 1000; /* Fica acima de outros conteúdos */
+
+    /* Para centralizar o modal-content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Garante que não está hidden quando openModal for chamado */
+    /* &.hidden { display: none; } /* Pode usar isto ou a classe separada */
+}
+
+/* Classe para esconder (redundante se .modal já tem display: none, mas garante) */
+.hidden {
+    display: none !important; /* !important pode ser necessário se houver conflitos */
+}
+
+
+.modal-content {
+    background-color: #fff;
+    padding: 60px 30px; /* Ajuste o padding */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative; /* Para o botão fechar posicionar-se relativamente a ele */
+    width: 90%; /* Largura padrão */
+    max-width: 800px; /* Largura máxima (ajuste) */
+    /* max-height e overflow já estão inline no seu HTML, o que é bom */
+}
+
+/* Estilo opcional para modal 'large' */
+.modal-content.large {
+    max-width: 1000px; /* Ou o tamanho desejado */
+}
+
+
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem; /* Tamanho do 'X' */
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* Estilo para o backdrop (se diferente do .modal) */
+#backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Mesmo overlay */
+  z-index: 999; /* Um pouco abaixo do modal */
+}
+#backdrop.hidden {
+  display: none;
+}
+
+/* Adicione estilos para .vis-section, .vis-content-box, .vis-item-box se desejar */
+.vis-section {
+    margin-bottom: 25px;
+}
+.vis-section h3 {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    font-size: 1.1rem;
+    color: var(--cor-primaria); /* Use sua cor primária */
+}
+.vis-content-box {
+    padding: 10px;
+    background-color: #f9f9f9; /* Um fundo leve para destacar */
+    border-radius: 4px;
+}
+.vis-item-box {
+    border-bottom: 1px dotted #ccc;
+    padding: 8px 0;
+    margin-bottom: 8px;
+}
+.vis-item-box:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+
+
+/* Animação de fade-in */
+@keyframes fadeInPanel {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajusta o card-list quando está dentro do novo painel */
+.sub-tab-panel-level2 .card-list {
+    margin-top: 0; /* Remove margem extra se houver */
+    max-height: 40vh; /* Limita a altura da lista */
+    overflow-y: auto; /* Adiciona scroll se a lista for longa */
+}
+
+/* ==========================================================
+   ESTILO PARA O BOTÃO "Fechar Visualização" NO MODAL
+   ========================================================== */
+
+/* Seleciona o botão específico pelo ID ou pela classe dentro do rodapé do modal */
+#fechar-visualizar-modal-footer,
+.modal-footer .btn { /* Use '.modal-footer .btn' se quiser estilizar todos os botões em rodapés de modal */
+    /* Cores (Exemplo de estilo secundário - ajuste conforme seu padrão) */
+    background-color: #0b1e2e; /* Cinza escuro */
+    color: white;
+    border: 1px solid #0a263f;
+
+    /* Espaçamento e Tamanho */
+    padding: 8px 16px; /* Ajuste o padding vertical e horizontal */
+    border-radius: 6px; /* Cantos arredondados */
+    font-size: 0.9rem; /* Tamanho da fonte */
+    font-weight: 500; /* Peso da fonte */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none; /* Remove sublinhado se for link */
+    display: inline-block; /* Comportamento padrão de botão */
+    line-height: 1.5; /* Espaçamento vertical do texto */
+
+    /* Transição Suave (Opcional) */
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Efeito Hover (Opcional - escurece um pouco ao passar o mouse) */
+#fechar-visualizar-modal-footer:hover,
+.modal-footer .btn:hover {
+    background-color: #5a6268; /* Cinza um pouco mais escuro */
+    border-color: #545b62;
+}
+
+/* Efeito Focus (Opcional - para acessibilidade) */
+#fechar-visualizar-modal-footer:focus,
+.modal-footer .btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5); /* Anel de foco */
+}
+
+
+
+.sinais-vitais-card.nota-medica-card .nota-medica-texto {
+    text-align: left !important;    /* Garante alinhamento INTERNO do texto */
+    align-self: stretch !important; /* FAZ O BLOCO INTEIRO esticar horizontalmente, ignorando o align-items: center do pai */
+    width: auto;                  /* Resetamos width para não conflitar com align-self */
+    box-sizing: border-box;       /* Mantém padding dentro do espaço */
+    /* Removemos o width: 100% que não funcionou */
+}
+
+
+
+
+/* ==========================================================
+   ESTILO "OUTLINE" PARA O BOTÃO PRÉ-CONSULTA
+   ========================================================== */
+
+/* Seleciona ambos os botões (desktop e mobile) pelo data-action */
+button[data-action="pre-consulta"] {
+    /* Cores */
+    background-color: var(--cor-elemento, #ffffff) !important; /* Fundo branco */
+    color: var(--cor-primaria, #41b8d5) !important;          /* Texto e Ícone na cor primária */
+    border: 2px solid var(--cor-primaria, #41b8d5) !important; /* Borda na cor primária (2px para destaque) */
+
+    /* Layout Interno (Garante Ícone à Direita se HTML estiver correto) */
+    display: inline-flex !important; /* Garante flex */
+    align-items: center;
+    justify-content: center; /* Centraliza conteúdo (ajuste se necessário) */
+    gap: 8px; /* Espaço entre texto e ícone */
+
+    /* Espaçamento e Forma */
+    padding: 8px 16px !important; /* Ajuste o padding (menor que botão primário?) */
+    border-radius: 8px !important; /* Cantos arredondados */
+    font-weight: 600 !important; /* Peso da fonte */
+    font-size: 0.9rem !important; /* Tamanho da fonte (ajuste) */
+    line-height: 1.5;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out !important; /* Transição suave */
+    white-space: nowrap; /* Impede quebra de linha */
+    width: auto !important; /* Largura automática */
+    box-shadow: none !important; /* Remove sombra se houver */
+}
+
+/* Ícone dentro do botão */
+button[data-action="pre-consulta"] i {
+    /* Opcional: Ajusta tamanho ou cor específica do ícone se necessário */
+     font-size: 1em; /* Tamanho relativo ao texto */
+     /* order: 1; */ /* Use 'order: 1;' SE o ícone estiver ANTES do texto no HTML e você quiser movê-lo para DEPOIS */
+}
+
+/* Efeito Hover */
+button[data-action="pre-consulta"]:hover {
+    background-color: var(--cor-primaria, #41b8d5) !important; /* Fundo preenche com cor primária */
+    color: white !important; /* Texto fica branco */
+    border-color: var(--cor-primaria, #41b8d5) !important;
+}
+
+/* Efeito Focus (Opcional) */
+button[data-action="pre-consulta"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(65, 184, 213, 0.4) !important; /* Anel de foco azul claro */
+}
+
+/* Ajuste específico para o botão no menu mobile, se necessário */
+.mobile-nav-actions button[data-action="pre-consulta"] {
+   width: 100% !important; /* Ocupa largura total no menu mobile */
+   justify-content: flex-start; /* Alinha conteúdo à esquerda no mobile */
+   padding: 12px 16px !important; /* Padding ligeiramente diferente no mobile */
+}
+.mobile-nav-actions button[data-action="pre-consulta"] i {
+   /* order: 0; */ /* Garante que o ícone fique à esquerda no mobile, se necessário */
+}
+
+
+/* Responsividade */
+@media (min-width: 600px) {
+    .metas-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    #btn-salvar-acompanhamento {
+         width: auto;
+    }
+}
+
+
+
+
+
+/* Media Query para telas maiores (ex: tablets e desktops) */
+@media (min-width: 600px) {
+    .form-grid.two-columns {
+        grid-template-columns: 1fr 1fr; /* Duas colunas iguais */
+    }
+     /* Faz com que o grupo Pressão Arterial alinhe os inputs */
+     #form-sinais-vitais .form-group > .form-grid.two-columns {
+         align-items: flex-end; /* Alinha inputs na base */
+     }
+}
+
+/* --- Responsividade Geral --- */
+@media (max-width: 500px) { /* Ajuste para grid do form receita */
+    .form-grid-receita { grid-template-columns: 1fr; }
+}
+@media (min-width: 768px) {
+    body { padding-bottom: 0; }
+    .container { padding: 24px; }
+    .patient-header { padding: 24px; flex-wrap: nowrap; }
+    .patient-details h1 { font-size: 1.5rem; }
+    .hamburger-menu { display: none; }
+    .desktop-only { display: flex; gap: 12px; }
+    .mobile-only { display: none; }
+    .tab-nav { display: flex; } /* Mostra abas desktop */
+    .recipe-details { grid-template-columns: repeat(3, 1fr); }
+    .action-footer { display: none; } /* Esconde footer mobile */
+    .chart-container { height: 300px; } /* Gráfico maior */
+}
+
+/* Garante que o campo de erro ocupe espaço e tenha margem */
+#receita-error-message, .error-message { 
+    min-height: 1.5em; 
+    margin-top: -10px; /* Reduz espaço acima se veio de um form-group */
+    margin-bottom: 15px; /* Espaço antes do próximo elemento */
+    padding: 10px; /* Adiciona padding interno */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+/* Estilo específico para erro (se hidden não estiver presente) */
+#receita-error-message:not(.hidden), 
+.error-message:not(.hidden) {
+    color: #c53030; background-color: #fed7d7;
+}
+/* --- HEADER MOBILE (Ajustado) --- */
+.mobile-header {
+    display: none; /* Desktop: Escondido */
+    position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+    background: white; border-bottom: 1px solid var(--borda-suave);
+    z-index: 1000;
+    /* Flexbox para distribuir: Voltar (Esq) - Logo (Centro) - Menu (Dir) */
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 16px;
+}
+
+/* Apenas visível no mobile */
+@media (min-width: 769px) {
+    .mobile-header { display: none !important; }
+}
+
+@media (max-width: 768px) {
+    .mobile-header { display: flex !important; }
+    
+    /* Botões do Header (Voltar e Menu) */
+    .mobile-icon-btn, .mobile-menu-btn {
+        background: none; border: none; 
+        font-size: 1.4rem; color: var(--cor-primaria);
+        cursor: pointer; padding: 8px;
+        display: flex; align-items: center; justify-content: center;
+    }
+    
+    .mobile-logo img { height: 28px; width: auto; }
+
+    /* Sidebar Mobile (Gaveta) */
+    .sidebar {
+        position: fixed; left: 0; top: 0; /* Cobre tudo */
+        width: 80%; max-width: 300px; 
+        height: 100vh; 
+        transform: translateX(-100%); /* Escondido */
+        transition: transform 0.3s ease;
+        z-index: 2000;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    }
+    .sidebar.active { transform: translateX(0); } /* Mostra */
+
+    /* Botão X dentro da sidebar */
+    .close-menu-btn { 
+        display: block; position: absolute; top: 20px; right: 20px;
+        background: none; border: none; font-size: 1.5rem; color: #888;
+    }
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios de Saúde - Orion.Health</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="relatorio-paciente.css"> 
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <header class="mobile-header">
+        <button id="mobile-back-btn" class="mobile-icon-btn" aria-label="Voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+        <div class="mobile-logo">
+            <img src="img/Logo.Orion versao oficial.png" alt="Orion">
+        </div>
+
+        <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+
+    <div id="menu-backdrop" class="menu-backdrop"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-area">
+            <img src="img/Logo.Orion versao oficial.png" alt="Orion.Health">
+            <button id="close-menu-btn" class="close-menu-btn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="paciente-perfil.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="perfil-de-saude.html"><i class="fa-solid fa-heart-pulse"></i> Meu Perfil de Saúde</a>
+            <a href="consultas-paciente.html"><i class="fa-solid fa-calendar-check"></i> Minhas Consultas</a>
+            
+            <a href="relatorio-paciente.html" class="active"><i class="fa-solid fa-chart-pie"></i> Relatórios</a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="#" id="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+        </div>
+    </aside>
+
+        <main class="main-content">
+            
+            <div class="report-header">
+                <div class="header-titles">
+                    <h1>Relatórios de Saúde</h1>
+                    <p>Uma visão geral do seu histórico e bem-estar.</p>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="date-filter">
+                        <i class="fa-regular fa-calendar"></i>
+                        <select id="periodo-relatorio" class="form-select-simple">
+                            <option value="30">Últimos 30 dias</option>
+                            <option value="60">Últimos 60 dias</option>
+                            <option value="90">Últimos 3 meses</option>
+                            <option value="all">Todo o período</option>
+                        </select>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon blue"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div class="kpi-info">
+                        <h3 id="total-consultas">0</h3>
+                        <p>Total de Consultas</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="fa-solid fa-check-circle"></i></div>
+                    <div class="kpi-info">
+                        <h3 id="consultas-realizadas">0</h3>
+                        <p>Consultas Realizadas</p>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon red"><i class="fa-solid fa-ban"></i></div>
+                    <div class="kpi-info">
+                        <h3 id="consultas-canceladas">0</h3>
+                        <p>Consultas Canceladas</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Evolução do Bem-Estar</h3>
+                        <p>Baseado nos registros diários</p>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="bemEstarChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tipos de Consulta</h3>
+                        <p>Online vs. Presencial</p>
+                    </div>
+                    <div class="canvas-container-pie">
+                        <canvas id="tiposConsultaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <section class="recent-table-section">
+                <h3>Histórico Detalhado</h3>
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Atividade</th>
+                                <th>Detalhes</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <tr><td colspan="4" style="text-align: center; padding: 20px; color: #888;">A carregar...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script type="module" src="relatorio-paciente.js"></script>
+</body>
+</html>

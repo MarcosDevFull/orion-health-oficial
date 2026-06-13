@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pacientes - Orion.Health</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="meus-pacientes.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <div id="loading-overlay" role="status" aria-label="A carregar pacientes">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="page-wrapper" class="hidden">
+        <header class="header">
+            <div class="header-left">
+                <a href="professional-dashboard.html" class="back-button" aria-label="Voltar para o painel principal">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="header-content">
+                <h1>Meus Pacientes</h1>
+                <p>Gerencie seu relacionamento clínico com todos os seus pacientes</p>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="toolbar">
+                <div class="search-container">
+                    <i class="fa-solid fa-search search-icon"></i>
+                    <input type="search" id="search-input" placeholder="Buscar por nome ou CPF..." aria-label="Buscar paciente por nome ou CPF">
+                </div>
+                <div class="filter-container" role="toolbar" aria-label="Filtros de pacientes">
+                    <button id="filter-all" class="filter-btn active" role="radio" aria-checked="true">Todos</button>
+                    <button id="filter-em-acompanhamento" class="filter-btn" role="radio" aria-checked="false">Em Acompanhamento</button>
+                    <button id="filter-ativo" class="filter-btn" role="radio" aria-checked="false">Ativos</button>
+                    <button id="filter-encaminhado" class="filter-btn" role="radio" aria-checked="false">Encaminhados</button>
+                </div>
+            </div>
+
+            <div id="patient-list-container">
+                </div>
+            
+            <div id="empty-state" class="empty-state hidden">
+                <i class="fa-solid fa-user-slash"></i>
+                <p>Nenhum paciente encontrado para os critérios selecionados.</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="meus-pacientes.js" type="module"></script>
+</body>
+</html>
