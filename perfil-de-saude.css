@@ -3693,3 +3693,307 @@ input[type="file"]::file-selector-button:hover {
         flex: none !important;
     }
 }
+
+/* ==========================================================
+   ESTILOS DO DASHBOARD DE PASTAS (Novo Design Flat)
+   ========================================================== */
+
+/* Esconder elementos substituídos */
+.tab-nav-container.hidden,
+#tab-content-wrapper.hidden {
+    display: none !important;
+}
+
+.folders-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.folders-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--texto-principal);
+    margin: 0 0 8px 0;
+}
+
+.folders-header p {
+    font-size: 1rem;
+    color: var(--texto-secundario);
+    margin: 0;
+}
+
+.folders-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.search-input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    padding: 0 16px;
+    flex-grow: 1;
+    max-width: 400px;
+    height: 48px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.search-input-wrapper i {
+    color: var(--texto-suave);
+    font-size: 1.1rem;
+    margin-right: 12px;
+}
+
+.search-input-wrapper input {
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    width: 100%;
+    outline: none;
+    color: var(--texto-principal);
+    font-family: 'Inter', sans-serif;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.view-toggle button {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--borda-suave);
+    background-color: var(--cor-elemento);
+    color: var(--texto-suave);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.view-toggle button.active {
+    background-color: var(--cor-primaria);
+    color: white;
+    border-color: var(--cor-primaria);
+}
+
+/* Grid de Pastas */
+.folders-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.folders-grid.grid-view {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.folders-grid.list-view {
+    grid-template-columns: 1fr;
+}
+
+.folder-card {
+    background-color: var(--cor-elemento);
+    border: 1px solid var(--borda-suave);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.folders-grid.grid-view .folder-card {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.folder-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    border-color: #cbd5e1;
+}
+
+.folder-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.folder-info h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--texto-principal);
+}
+
+.folder-info p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+
+/* Cores Pastéis dos Ícones */
+.pastel-blue { background-color: #e0f2fe; color: #0284c7; }
+.pastel-green { background-color: #dcfce7; color: #16a34a; }
+.pastel-purple { background-color: #f3e8ff; color: #9333ea; }
+.pastel-orange { background-color: #ffedd5; color: #d97706; }
+.pastel-red { background-color: #fee2e2; color: #dc2626; }
+.pastel-teal { background-color: #ccfbf1; color: #0d9488; }
+.pastel-yellow { background-color: #fef9c3; color: #ca8a04; }
+.pastel-pink { background-color: #fce7f3; color: #db2777; }
+.pastel-blue { background-color: #e6f7ff; color: #41b8d5; } /* Azul da marca Orion */
+.pastel-green { background-color: #f0fdf4; color: #22c55e; }
+.pastel-purple { background-color: #faf5ff; color: #a855f7; }
+.pastel-orange { background-color: #fff7ed; color: #f97316; }
+.pastel-red { background-color: #fef2f2; color: #ef4444; }
+.pastel-teal { background-color: #f0fdfa; color: #14b8a6; }
+.pastel-yellow { background-color: #fefce8; color: #eab308; }
+.pastel-pink { background-color: #fdf2f8; color: #ec4899; }
+
+/* Header Interno das Pastas */
+.folder-detail-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--borda-suave);
+}
+
+.folder-detail-title-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.folder-detail-title-area h2 {
+    margin: 0 0 4px 0;
+    font-size: 1.6rem;
+    color: var(--texto-principal);
+}
+
+.folder-detail-title-area p {
+    margin: 0;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+}
+
+.folder-detail-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn-primary-solid {
+    background-color: var(--cor-primaria);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary-solid:hover {
+    background-color: var(--cor-secundaria);
+}
+
+/* Layout de Arquivos (Grade/Lista) */
+.card-list.grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.card-list.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card-list.list-view > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.card-list.list-view .recipe-header {
+    margin-bottom: 0;
+    align-items: center;
+    gap: 16px;
+    flex-grow: 1;
+}
+
+.card-list.list-view .recipe-details,
+.card-list.list-view .exame-details {
+    display: flex;
+    margin: 0 16px;
+    border: none;
+    padding: 0;
+}
+
+.card-list.list-view .recipe-footer,
+.card-list.list-view .exame-footer {
+    margin: 0;
+    border: none;
+    padding: 0;
+    width: auto;
+}
+
+/* Responsividade Extra */
+@media (max-width: 768px) {
+    .folders-toolbar, .folder-detail-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-input-wrapper {
+        max-width: 100%;
+    }
+    .toolbar-actions {
+        justify-content: space-between;
+    }
+    .card-list.list-view > div {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .card-list.list-view .recipe-details {
+        margin: 10px 0;
+        flex-direction: column;
+    }
+    .card-list.list-view .recipe-footer {
+        width: 100%;
+        margin-top: 10px;
+        border-top: 1px solid var(--borda-suave);
+        padding-top: 10px;
+    }
+}

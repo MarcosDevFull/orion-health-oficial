@@ -2076,12 +2076,12 @@ function applyEncaminhamentoFilters() {
   // Seletores já existentes
   const statusEl = document.getElementById('encaminhamentos-filter-status');
 
-  if (!encaminhamentoSearchInput || !encaminhamentoFilterGroup) return;
+  if (!encaminhamentosListContainer) return;
 
-  const searchTerm = encaminhamentoSearchInput.value.toLowerCase();
+  const searchTerm = encaminhamentoSearchInput ? encaminhamentoSearchInput.value.toLowerCase() : '';
   
   // 1. Determinar o filtro ativo (Todos, Pendentes, Agendados)
-  const activeFilterBtn = encaminhamentoFilterGroup.querySelector('.filter-btn-small.active');
+  const activeFilterBtn = encaminhamentoFilterGroup ? encaminhamentoFilterGroup.querySelector('.filter-btn-small.active') : null;
   const activeFilter = activeFilterBtn ? activeFilterBtn.dataset.filter : 'todos'; // 'todos', 'pendentes', 'agendados'
   let pendentesCount = 0;
 
@@ -2423,14 +2423,13 @@ function renderVacinaCard(vacina) {
  */
 function applyRecipeFilters() {
     // Garante que os seletores existem antes de tentar usá-los
-    if (!recipeSearchInput || !recipeFilterGroup || !recipeListContainer) {
-        console.error("Erro no applyRecipeFilters: Seletores essenciais não encontrados.");
+    if (!recipeListContainer) {
         return;
     }
 
     // 1. Obter os valores atuais dos filtros
-    const searchTerm = recipeSearchInput.value.toLowerCase();
-    const activeFilterBtn = recipeFilterGroup.querySelector('.filter-btn-small.active');
+    const searchTerm = recipeSearchInput ? recipeSearchInput.value.toLowerCase() : '';
+    const activeFilterBtn = recipeFilterGroup ? recipeFilterGroup.querySelector('.filter-btn-small.active') : null;
     const activeFilter = activeFilterBtn ? activeFilterBtn.dataset.filter : 'todas'; // 'todas', 'ativa', 'arquivada'
 
     // 2. Filtrar a lista global 'allRecipes'
@@ -2523,14 +2522,13 @@ async function loadReceitas(force = false) {
  */
 function applyExameFilters() {
     // Garante que os seletores (do Passo 1) existem
-    if (!exameSearchInput || !exameFilterGroup || !examesListContainer) {
-        console.error("Erro no applyExameFilters: Seletores essenciais não encontrados.");
+    if (!examesListContainer) {
         return;
     }
 
     // 1. Obter os valores atuais dos filtros
-    const searchTerm = exameSearchInput.value.toLowerCase();
-    const activeFilterBtn = exameFilterGroup.querySelector('.filter-btn-small.active');
+    const searchTerm = exameSearchInput ? exameSearchInput.value.toLowerCase() : '';
+    const activeFilterBtn = exameFilterGroup ? exameFilterGroup.querySelector('.filter-btn-small.active') : null;
     
     // Mapeia o texto do botão para o 'status' (Ex: "Pendentes" -> "Pendente Upload")
     let activeFilter = 'todos'; // Padrão
@@ -3112,16 +3110,16 @@ async function gerarPDFAtestado(atestadoId) {
  */
 function applyAtestadoFilters() {
     // 1. Garante que os seletores e os dados (allAtestados) existem
-    if (!atestadoSearchInput || !atestadoFilterGroup || !allAtestados) {
+    if (!allAtestados || !atestadosListContainer) {
         // Se a função for chamada antes de 'allAtestados' ser preenchido, não faz nada.
         return;
     }
 
     // 2. Pega o valor da barra de BUSCA (NOVO)
-    const searchTerm = atestadoSearchInput.value.toLowerCase();
+    const searchTerm = atestadoSearchInput ? atestadoSearchInput.value.toLowerCase() : '';
 
     // 3. Pega o valor dos BOTÕES (lógica que já funcionava)
-    const activeFilterBtn = atestadoFilterGroup.querySelector('.filter-btn-small.active');
+    const activeFilterBtn = atestadoFilterGroup ? atestadoFilterGroup.querySelector('.filter-btn-small.active') : null;
     const activeFilter = activeFilterBtn ? activeFilterBtn.dataset.filter : 'todos'; // 'todos', 'validos', 'expirados'
 
     let validosCount = 0; // Vamos recalcular a contagem de válidos
@@ -3446,18 +3444,19 @@ function applyVacinaFilters() {
     const vacinaSearchInput = document.getElementById('vacina-search-input');
     const vacinaFilterGroup = document.getElementById('vacina-filter-group');
     const statusEl = document.getElementById('vacinas-filter-status');
+    const container = document.getElementById('vacinas-lista');
 
     // 1. Garante que os seletores e os dados (allVacinas) existem
-    if (!vacinaSearchInput || !vacinaFilterGroup || !allVacinas) {
+    if (!allVacinas || !container) {
         // Se esta função for chamada antes de 'allVacinas' ser preenchido, não faz nada.
         return;
     }
 
     // 2. Pega o valor da barra de BUSCA
-    const searchTerm = vacinaSearchInput.value.toLowerCase();
+    const searchTerm = vacinaSearchInput ? vacinaSearchInput.value.toLowerCase() : '';
 
     // 3. Pega o valor dos BOTÕES
-    const activeFilterBtn = vacinaFilterGroup.querySelector('.filter-btn-small.active');
+    const activeFilterBtn = vacinaFilterGroup ? vacinaFilterGroup.querySelector('.filter-btn-small.active') : null;
     const activeFilter = activeFilterBtn ? activeFilterBtn.dataset.filter : 'todos'; // 'todos', 'validas', 'expiradas'
 
     let validasCount = 0; // Para o contador
@@ -3584,15 +3583,9 @@ function applyAcompanhamentoFilters() {
     // Verificações de segurança
     if (!container || !allAcompanhamentos) return;
     
-    // Se os filtros ainda não existirem no DOM, desenha tudo sem filtrar
-    if (!acompanhamentoSearchInput || !acompanhamentoFilterGroup) {
-        renderAcompanhamentoListSegura(allAcompanhamentos);
-        return;
-    }
-
     // 1. Pega os valores dos filtros
-    const searchTerm = acompanhamentoSearchInput.value.toLowerCase();
-    const activeFilterBtn = acompanhamentoFilterGroup.querySelector('.filter-btn-small.active');
+    const searchTerm = acompanhamentoSearchInput ? acompanhamentoSearchInput.value.toLowerCase() : '';
+    const activeFilterBtn = acompanhamentoFilterGroup ? acompanhamentoFilterGroup.querySelector('.filter-btn-small.active') : null;
     // Normaliza o filtro (alguns botões usam 'em-andamento', outros 'ativo')
     let activeFilter = activeFilterBtn ? activeFilterBtn.dataset.filter : 'todos';
     

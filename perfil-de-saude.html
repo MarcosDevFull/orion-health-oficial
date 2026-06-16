@@ -26,7 +26,7 @@
 
         <header class="patient-header">
             
-            <a href="paciente-perfil.html" class="back-button" aria-label="Voltar para o Dashboard">
+            <a href="#" id="header-back-button" class="back-button" aria-label="Voltar">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
         
@@ -68,7 +68,7 @@
         <div id="backdrop" class="backdrop hidden"></div>
 
         
-        <nav class="tab-nav-container">
+        <nav class="tab-nav-container hidden">
             <div class="tab-nav" role="tablist" aria-label="Navegação do perfil">
                 <button class="tab-btn active" role="tab" data-tab="receitas">
                     <i class="fa-solid fa-prescription-bottle-medical"></i><span>Receitas</span>
@@ -99,114 +99,232 @@
 
         
         <main class="container">
-            <div class="tab-content-container">
-                
-                <div id="tab-receitas" class="tab-panel active" role="tabpanel">
-                    <div class="panel-header">
-                        <h2>Receitas Médicas</h2>
-                        <span id="receitas-filter-status" class="filter-status">Carregando...</span>
+            
+            <!-- INICIO DA NOVA VIEW DE PASTAS -->
+            <div id="folders-view" class="folders-dashboard">
+                <div class="folders-header">
+                    <h2>Meu Perfil de Saúde</h2>
+                    <p>Acesse rapidamente todos os seus documentos.</p>
+                </div>
+                <div class="folders-toolbar">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="search-folders" placeholder="Buscar pasta...">
                     </div>
-                    <div class="panel-toolbar">
-                        <input type="search" id="recipe-search-input" placeholder="Buscar medicamento...">
-                        <div id="recipe-filter-group" class="filter-group" style="margin-left: auto;">
-                            <button class="filter-btn-small active" data-filter="todas">Todas</button>
-                            <button class="filter-btn-small" data-filter="ativa">Ativas</button>
-                            <button class="filter-btn-small" data-filter="arquivada">Arquivadas</button>
+                    <div class="view-toggle">
+                        <button id="btn-grid-view" class="btn-grid-view-toggle active"><i class="fa-solid fa-border-all"></i></button>
+                        <button id="btn-list-view" class="btn-list-view-toggle"><i class="fa-solid fa-list"></i></button>
+                    </div>
+                </div>
+                <div class="folders-grid grid-view" id="folders-grid">
+                    <div class="folder-card" data-target="receitas">
+                        <div class="folder-icon-wrapper pastel-blue"><i class="fa-solid fa-prescription-bottle-medical"></i></div>
+                        <div class="folder-info">
+                            <h3>Receitas</h3>
+                            <p id="count-receitas">Carregando...</p>
                         </div>
                     </div>
-                    <div class="add-button-container">
-                        <button class="btn-primary-outline" id="btn-abrir-upload-receita">
-                            <i class="fa-solid fa-plus"></i> Adicionar Receita
-                        </button>
+                    <div class="folder-card" data-target="exames">
+                        <div class="folder-icon-wrapper pastel-green"><i class="fa-solid fa-flask-vial"></i></div>
+                        <div class="folder-info">
+                            <h3>Exames</h3>
+                            <p id="count-exames">Carregando...</p>
+                        </div>
                     </div>
-                    <div id="recipe-list" class="card-list">
+                    <div class="folder-card" data-target="encaminhamentos">
+                        <div class="folder-icon-wrapper pastel-purple"><i class="fa-solid fa-share-from-square"></i></div>
+                        <div class="folder-info">
+                            <h3>Encaminhamentos</h3>
+                            <p id="count-encaminhamentos">Carregando...</p>
+                        </div>
+                    </div>
+                    <div class="folder-card" data-target="atestados">
+                        <div class="folder-icon-wrapper pastel-orange"><i class="fa-solid fa-file-invoice"></i></div>
+                        <div class="folder-info">
+                            <h3>Atestados</h3>
+                            <p id="count-atestados">Carregando...</p>
+                        </div>
+                    </div>
+                    <div class="folder-card" data-target="acompanhamentos">
+                        <div class="folder-icon-wrapper pastel-red"><i class="fa-solid fa-calendar-check"></i></div>
+                        <div class="folder-info">
+                            <h3>Acompanhamentos</h3>
+                            <p id="count-acompanhamentos">Carregando...</p>
+                        </div>
+                    </div>
+                    <div class="folder-card" data-target="anamnese">
+                        <div class="folder-icon-wrapper pastel-teal"><i class="fa-solid fa-file-waveform"></i></div>
+                        <div class="folder-info">
+                            <h3>Anamnese</h3>
+                            <p id="count-anamnese">Único documento</p>
+                        </div>
+                    </div>
+                    <div class="folder-card" data-target="registros-diarios">
+                        <div class="folder-icon-wrapper pastel-yellow"><i class="fa-solid fa-clipboard-list"></i></div>
+                        <div class="folder-info">
+                            <h3>Registros Diários</h3>
+                            <p id="count-registros-diarios">Visualizar Histórico</p>
+                        </div>
+                    </div>
+                    <div class="folder-card" data-target="vacinas">
+                        <div class="folder-icon-wrapper pastel-pink"><i class="fa-solid fa-syringe"></i></div>
+                        <div class="folder-info">
+                            <h3>Vacinas</h3>
+                            <p id="count-vacinas">Carregando...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIM DA NOVA VIEW DE PASTAS -->
+
+            <div class="tab-content-container hidden" id="tab-content-wrapper">
+                
+                <div id="tab-receitas" class="tab-panel active" role="tabpanel">
+                    <div class="folder-detail-header">
+                        <div class="folder-detail-title-area">
+                            <div class="folder-icon-wrapper pastel-blue"><i class="fa-solid fa-prescription-bottle-medical"></i></div>
+                            <div>
+                                <h2>Receitas Médicas</h2>
+                                <p id="receitas-folder-count">Carregando...</p>
+                                <span id="receitas-filter-status" class="hidden"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="folder-detail-toolbar">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="search" id="recipe-search-input" placeholder="Buscar medicamento...">
+                        </div>
+                        <div class="view-toggle">
+                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
+                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn-primary-solid" id="btn-abrir-upload-receita">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="recipe-list" class="card-list list-view">
                         <p class="placeholder">Carregando receitas...</p>
                     </div>
                 </div>
 
                 <div id="tab-exames" class="tab-panel hidden" role="tabpanel">
-                    <div class="panel-header">
-                        <h2>Exames</h2>
-                        <span id="exames-filter-status" class="filter-status">Carregando...</span>
-                    </div>
-                    <div class="panel-toolbar">
-                        <input type="search" id="exame-search-input" placeholder="Buscar por nome do exame ou laboratório...">
-                        <div id="exame-filter-group" class="filter-group" style="margin-left: auto;">
-                            <button class="filter-btn-small active" data-filter="todos">Todos</button>
-                            <button class="filter-btn-small" data-filter="agendados">Agendados</button>
-                            <button class="filter-btn-small" data-filter="realizados">Realizados</button>
-                            <button class="filter-btn-small" data-filter="pendentes">Pendentes</button>
+                    <div class="folder-detail-header">
+                        <div class="folder-detail-title-area">
+                            <div class="folder-icon-wrapper pastel-green"><i class="fa-solid fa-flask-vial"></i></div>
+                            <div>
+                                <h2>Exames</h2>
+                                <p id="exames-folder-count">Carregando...</p>
+                                <span id="exames-filter-status" class="hidden"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="add-button-container">
-                        <button class="btn-primary-outline" id="btn-abrir-upload-exame">
-                            <i class="fa-solid fa-plus"></i> Adicionar Exame
-                        </button>
+                    <div class="folder-detail-toolbar">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="search" id="exame-search-input" placeholder="Buscar por nome do exame ou laboratório...">
+                        </div>
+                        <div class="view-toggle">
+                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
+                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn-primary-solid" id="btn-abrir-upload-exame">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
                     </div>
-                    <div id="exames-lista" class="card-list">
+                    <div id="exames-lista" class="card-list list-view">
                         <p class="placeholder">Carregando exames...</p>
                     </div>
                 </div>
                 
                 <div id="tab-encaminhamentos" class="tab-panel hidden" role="tabpanel">
-                    <div class="panel-header">
-                        <h2>Encaminhamentos</h2>
-                        <span id="encaminhamentos-filter-status" class="filter-status">Carregando...</span>
-                    </div>
-                    <div class="panel-toolbar">
-                        <input type="search" id="encaminhamento-search-input" placeholder="Buscar por especialidade ou médico...">
-                        <div id="encaminhamento-filter-group" class="filter-group" style="margin-left: auto;">
-                            <button class="filter-btn-small active" data-filter="todos">Todos</button>
-                            <button class="filter-btn-small" data-filter="pendentes">Pendentes</button>
-                            <button class="filter-btn-small" data-filter="agendados">Agendados</button>
+                    <div class="folder-detail-header">
+                        <div class="folder-detail-title-area">
+                            <div class="folder-icon-wrapper pastel-purple"><i class="fa-solid fa-share-from-square"></i></div>
+                            <div>
+                                <h2>Encaminhamentos</h2>
+                                <p id="encaminhamentos-folder-count">Carregando...</p>
+                                <span id="encaminhamentos-filter-status" class="hidden"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="add-button-container">
-                        <button class="btn-primary-outline" id="btn-abrir-upload-encaminhamento">
-                            <i class="fa-solid fa-plus"></i> Adicionar Encaminhamento
-                        </button>
+                    <div class="folder-detail-toolbar">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="search" id="encaminhamento-search-input" placeholder="Buscar por especialidade...">
+                        </div>
+                        <div class="view-toggle">
+                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
+                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn-primary-solid" id="btn-abrir-upload-encaminhamento">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
                     </div>
-                    <div id="encaminhamentos-lista" class="card-list">
+                    <div id="encaminhamentos-lista" class="card-list list-view">
                         <p class="placeholder">Carregando encaminhamentos...</p>
                     </div>
                 </div>
 
                 <div id="tab-atestados" class="tab-panel hidden" role="tabpanel">
-                    <div class="panel-header">
-                        <h2>Atestados</h2>
-                        <span id="atestados-filter-status" class="filter-status">Carregando...</span>
-                    </div>
-                    <div class="panel-toolbar">
-                        <input type="search" id="atestado-search-input" placeholder="Buscar por médico ou motivo...">
-                        <div id="atestado-filter-group" class="filter-group" style="margin-left: auto;">
-                            <button class="filter-btn-small active" data-filter="todos">Todos</button>
-                            <button class="filter-btn-small" data-filter="validos">Válidos</button>
-                            <button class="filter-btn-small" data-filter="expirados">Expirados</button>
+                    <div class="folder-detail-header">
+                        <div class="folder-detail-title-area">
+                            <div class="folder-icon-wrapper pastel-orange"><i class="fa-solid fa-file-invoice"></i></div>
+                            <div>
+                                <h2>Atestados</h2>
+                                <p id="atestados-folder-count">Carregando...</p>
+                                <span id="atestados-filter-status" class="hidden"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="add-button-container">
-                        <button class="btn-primary-outline" id="btn-abrir-upload-atestado">
-                            <i class="fa-solid fa-plus"></i> Adicionar Atestado
-                        </button>
+                    <div class="folder-detail-toolbar">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="search" id="atestado-search-input" placeholder="Buscar por médico ou motivo...">
+                        </div>
+                        <div class="view-toggle">
+                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
+                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn-primary-solid" id="btn-abrir-upload-atestado">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
                     </div>
-                    <div id="atestados-lista" class="card-list">
+                    <div id="atestados-lista" class="card-list list-view">
                         <p class="placeholder">Carregando atestados...</p>
                     </div>
                 </div>
                 
                 <div id="tab-acompanhamentos" class="tab-panel hidden" role="tabpanel">
-                    <div class="panel-header">
-                        <h2>Acompanhamentos Ativos</h2>
-                        <span id="acompanhamentos-filter-status" class="filter-status">Carregando...</span>
-                    </div>
-                    <div class="panel-toolbar">
-                        <div id="acompanhamento-filter-group" class="filter-group" style="margin-left: auto;">
-                            <button class="filter-btn-small active" data-filter="todos">Todos</button>
-                            <button class="filter-btn-small" data-filter="em-andamento">Ativo</button>
-                            <button class="filter-btn-small" data-filter="concluidos">Concluídos</button>
+                    <div class="folder-detail-header">
+                        <div class="folder-detail-title-area">
+                            <div class="folder-icon-wrapper pastel-red"><i class="fa-solid fa-calendar-check"></i></div>
+                            <div>
+                                <h2>Acompanhamentos Ativos</h2>
+                                <p id="acompanhamentos-folder-count">Carregando...</p>
+                                <span id="acompanhamentos-filter-status" class="hidden"></span>
+                            </div>
                         </div>
                     </div>
-                    <div id="acompanhamentos-lista" class="card-list">
+                    <div class="folder-detail-toolbar">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="search" id="acompanhamento-search-input" placeholder="Buscar acompanhamento...">
+                        </div>
+                        <div class="view-toggle">
+                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
+                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="acompanhamentos-lista" class="card-list list-view">
                         <p class="placeholder">Carregando acompanhamentos...</p>
                     </div>
                 </div>
@@ -360,26 +478,32 @@
                 
                        <div id="tab-vacinas" class="tab-panel hidden" role="tabpanel">
 
-    <div class="panel-header">
-        <h2>Carteirinha de Vacinação</h2>
-        <span id="vacinas-filter-status" class="filter-status">Carregando...</span>
-    </div>
-
-    <div class="panel-toolbar">
-        <input type="search" id="vacina-search-input" placeholder="Buscar por vacina...">
-        <div id="vacina-filter-group" class="filter-group" style="margin-left: auto;">
-            <button class="filter-btn-small active" data-filter="todos">Todas</button>
-            <button class="filter-btn-small" data-filter="validas">Válidas</button>
-            <button class="filter-btn-small" data-filter="expiradas">Expiradas</button>
-        </div>
-    </div>
-    <div class="add-button-container">
-        <button class="btn-primary-outline" id="btn-abrir-upload-vacina">
-            <i class="fa-solid fa-plus"></i> Adicionar Carteirinha de Vacina
-        </button>
-    </div>
-
-    <div id="vacinas-lista" class="card-list">
+                    <div class="folder-detail-header">
+                        <div class="folder-detail-title-area">
+                            <div class="folder-icon-wrapper pastel-pink"><i class="fa-solid fa-syringe"></i></div>
+                            <div>
+                                <h2>Carteirinha de Vacinação</h2>
+                                <p id="vacinas-folder-count">Carregando...</p>
+                                <span id="vacinas-filter-status" class="hidden"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="folder-detail-toolbar">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="search" id="vacina-search-input" placeholder="Buscar por vacina...">
+                        </div>
+                        <div class="view-toggle">
+                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
+                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn-primary-solid" id="btn-abrir-upload-vacina">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="vacinas-lista" class="card-list list-view">
         <p class="placeholder">Carregando carteirinhas de vacinação...</p>
     </div>
 
@@ -1753,5 +1877,125 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="perfil-de-saude.js" type="module"></script>
 
+    <!-- INJETAR CONTROLADOR DA UI AQUI -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const foldersView = document.getElementById('folders-view');
+        const tabContentContainer = document.getElementById('tab-content-wrapper');
+        const backBtn = document.getElementById('header-back-button');
+        const folderCards = document.querySelectorAll('.folder-card');
+        
+        let currentFolder = null;
+
+        // Initialize view
+        if(foldersView) foldersView.classList.remove('hidden');
+        if(tabContentContainer) tabContentContainer.classList.add('hidden');
+        
+        // Listen for folder click
+        folderCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const targetTab = card.dataset.target;
+                
+                // Hide folders, show tab container
+                foldersView.classList.add('hidden');
+                tabContentContainer.classList.remove('hidden');
+                
+                // Trigger original tab button click to run Firebase logic
+                const originalTabBtn = document.querySelector(`.tab-btn[data-tab="${targetTab}"]`);
+                if (originalTabBtn) {
+                    originalTabBtn.click();
+                }
+                
+                currentFolder = targetTab;
+            });
+        });
+
+        // Back button logic
+        if (backBtn) {
+            backBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentFolder) {
+                    // We are in a folder, go back to folders view
+                    foldersView.classList.remove('hidden');
+                    tabContentContainer.classList.add('hidden');
+                    currentFolder = null;
+                } else {
+                    // We are in folders view, go to dashboard
+                    window.location.href = 'paciente-perfil.html';
+                }
+            });
+        }
+
+        // Search Folders
+        const searchFolders = document.getElementById('search-folders');
+        if (searchFolders) {
+            searchFolders.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                folderCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    card.style.display = title.includes(term) ? '' : 'none';
+                });
+            });
+        }
+
+        // Grid/List Toggle (Aplicar layout em lists)
+        const gridBtns = document.querySelectorAll('.btn-grid-view-toggle');
+        const listBtns = document.querySelectorAll('.btn-list-view-toggle');
+        const foldersGrid = document.getElementById('folders-grid');
+
+        gridBtns.forEach(btnGrid => {
+            btnGrid.addEventListener('click', () => {
+                gridBtns.forEach(b => b.classList.add('active'));
+                listBtns.forEach(b => b.classList.remove('active'));
+                foldersGrid.classList.remove('list-view');
+                foldersGrid.classList.add('grid-view');
+                document.querySelectorAll('.card-list').forEach(list => {
+                    list.classList.remove('list-view');
+                    list.classList.add('grid-view');
+                });
+            });
+        });
+        listBtns.forEach(btnList => {
+            btnList.addEventListener('click', () => {
+                listBtns.forEach(b => b.classList.add('active'));
+                gridBtns.forEach(b => b.classList.remove('active'));
+                foldersGrid.classList.remove('grid-view');
+                foldersGrid.classList.add('list-view');
+                document.querySelectorAll('.card-list').forEach(list => {
+                    list.classList.remove('grid-view');
+                    list.classList.add('list-view');
+                });
+            });
+        });
+
+        // Dynamic Counts Update (Polling wrapper)
+        const countMap = {
+            'recipe-list': { card: 'count-receitas', folder: 'receitas-folder-count' },
+            'exames-lista': { card: 'count-exames', folder: 'exames-folder-count' },
+            'encaminhamentos-lista': { card: 'count-encaminhamentos', folder: 'encaminhamentos-folder-count' },
+            'atestados-lista': { card: 'count-atestados', folder: 'atestados-folder-count' },
+            'acompanhamentos-lista': { card: 'count-acompanhamentos', folder: 'acompanhamentos-folder-count' },
+            'vacinas-lista': { card: 'count-vacinas', folder: 'vacinas-folder-count' }
+        };
+
+        const updateCounts = () => {
+            for (const [listId, ids] of Object.entries(countMap)) {
+                const list = document.getElementById(listId);
+                const cardCounter = document.getElementById(ids.card);
+                const folderCounter = document.getElementById(ids.folder);
+                
+                if (list) {
+                    const count = list.querySelectorAll(':scope > div:not(.placeholder):not(.empty-state)').length;
+                    const text = count === 1 ? '1 arquivo' : `${count} arquivos`;
+                    
+                    if (cardCounter) cardCounter.textContent = text;
+                    if (folderCounter) folderCounter.textContent = `${text} nesta pasta`;
+                }
+            }
+        };
+
+        setInterval(updateCounts, 1000); 
+    });
+    </script>
 </body>
 </html>
