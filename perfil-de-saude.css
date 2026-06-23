@@ -3675,6 +3675,63 @@ input[type="file"]::file-selector-button:hover {
     }
 }
 
+/* ========================================================== */
+/* CORREÇÃO LAYOUT MOBILE: BARRA DE FERRAMENTAS DE PASTAS     */
+/* ========================================================== */
+
+@media (max-width: 768px) {
+    /* Ajusta o container principal para alinhar em linha */
+    .folders-toolbar {
+        flex-direction: column;
+        align-items: stretch; /* Faz os itens ocuparem 100% da largura */
+        gap: 16px; /* Espaço entre a busca e o botão Adicionar */
+    }
+
+    .folder-detail-toolbar {
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap; /* Permite quebra de linha se não couber */
+        gap: 16px; /* Espaço entre os itens */
+    }
+    .folder-detail-toolbar .search-input-wrapper {
+        width: 100%;
+    }
+    .folder-detail-toolbar .toolbar-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Faz a busca ocupar o espaço principal */
+    .folders-toolbar .search-input-wrapper {
+        flex-grow: 1;
+    }
+
+    /* Esconde os botões de visualização (Grid/Lista) no mobile */
+    .view-toggle {
+        display: none !important; /* Garante que a regra seja aplicada */
+    }
+
+    /* Força o layout de lista e desativa o de grade */
+    .folders-grid.grid-view {
+        grid-template-columns: 1fr;
+    }
+    .card-list.grid-view {
+        /* Força o layout de lista no mobile, independentemente da classe */
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .card-list {
+        margin-top: 24px; /* Espaço entre a toolbar e os cards */
+    }
+
+    /* Garante que os cards em modo lista ocupem 100% da largura */
+    .card-list.list-view .recipe-card,
+    .card-list.list-view .exame-card {
+        width: 100%;
+    }
+}
+
 /* 2. Ajuste Mobile (Para empilhar tudo verticalmente) */
 @media (max-width: 1023px) {
     .dashboard-grid {
@@ -3871,6 +3928,10 @@ input[type="file"]::file-selector-button:hover {
     margin-bottom: 24px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--borda-suave);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
 }
 
 .folder-detail-title-area {
@@ -3883,6 +3944,18 @@ input[type="file"]::file-selector-button:hover {
     margin: 0 0 4px 0;
     font-size: 1.6rem;
     color: var(--texto-principal);
+}
+
+.add-button-container {
+    margin-left: 12px;
+}
+.add-button-container .btn-primary-solid {
+    padding: 8px 18px;
+    border-radius: 9999px; /* Pill shape like the mock */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
 }
 
 .folder-detail-title-area p {
@@ -3939,29 +4012,29 @@ input[type="file"]::file-selector-button:hover {
     gap: 12px;
 }
 
-.card-list.list-view > div {
-    display: flex;
-    flex-direction: row;
+/* LIST VIEW: Layout em Grid para alinhar colunas */
+.card-list.list-view .recipe-card,
+.card-list.list-view .exame-card {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr auto; /* [Nome/Status] [Médico] [Data] [Ações] */
     align-items: center;
-    justify-content: space-between;
-    padding: 16px;
+    gap: 16px;
+    padding: 16px 24px;
 }
 
+/* Coluna 1: Nome e Status */
 .card-list.list-view .recipe-header {
     margin-bottom: 0;
     align-items: center;
-    gap: 16px;
-    flex-grow: 1;
 }
 
+/* Coluna 2 e 3: Detalhes (Médico, Data) */
 .card-list.list-view .recipe-details,
 .card-list.list-view .exame-details {
-    display: flex;
-    margin: 0 16px;
-    border: none;
-    padding: 0;
+    display: contents; /* Faz os filhos se comportarem como itens diretos do grid */
 }
 
+/* Coluna 4: Ações (Botões) */
 .card-list.list-view .recipe-footer,
 .card-list.list-view .exame-footer {
     margin: 0;
@@ -3969,31 +4042,21 @@ input[type="file"]::file-selector-button:hover {
     padding: 0;
     width: auto;
 }
-
-/* Responsividade Extra */
-@media (max-width: 768px) {
-    .folders-toolbar, .folder-detail-toolbar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .search-input-wrapper {
-        max-width: 100%;
-    }
-    .toolbar-actions {
-        justify-content: space-between;
-    }
-    .card-list.list-view > div {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .card-list.list-view .recipe-details {
-        margin: 10px 0;
-        flex-direction: column;
-    }
-    .card-list.list-view .recipe-footer {
-        width: 100%;
-        margin-top: 10px;
-        border-top: 1px solid var(--borda-suave);
-        padding-top: 10px;
-    }
+/* Header Interno das Pastas */
+.folder-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px; /* Espaço para a toolbar abaixo */
 }
+
+/* Toolbar (Busca e Controles de Visualização) */
+.folder-detail-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.folder-detail-toolbar .search-input-wrapper { flex-grow: 1; }
