@@ -111,12 +111,8 @@
                         <i class="fa-solid fa-search"></i>
                         <input type="text" id="search-folders" placeholder="Buscar pasta...">
                     </div>
-                    <div class="view-toggle">
-                        <button id="btn-grid-view" class="btn-grid-view-toggle active"><i class="fa-solid fa-border-all"></i></button>
-                        <button id="btn-list-view" class="btn-list-view-toggle"><i class="fa-solid fa-list"></i></button>
-                    </div>
                 </div>
-                <div class="folders-grid grid-view" id="folders-grid">
+                <div class="folders-grid" id="folders-grid">
                     <div class="folder-card" data-target="receitas">
                         <div class="folder-icon-wrapper pastel-blue"><i class="fa-solid fa-prescription-bottle-medical"></i></div>
                         <div class="folder-info">
@@ -189,24 +185,22 @@
                                 <span id="receitas-filter-status" class="hidden"></span>
                             </div>
                         </div>
-                        <div class="add-button-container">
-                            <button class="btn-primary-solid" id="btn-abrir-upload-receita">
-                                <i class="fa-solid fa-plus"></i> Adicionar Receita
-                            </button>
-                        </div>
                     </div>
                     <div class="folder-detail-toolbar">
                         <div class="search-input-wrapper">
                             <i class="fa-solid fa-search"></i>
                             <input type="search" id="recipe-search-input" placeholder="Buscar medicamento...">
                         </div>
-                        <div class="view-toggle">
-                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
-                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
-                        </div>
-                        
                     </div>
-                    <div id="recipe-list" class="card-list list-view">
+                    <div class="folder-action-row">
+                        <div class="add-button-container">
+                            <button class="btn-primary-solid btn-add-action" id="btn-abrir-upload-receita">
+                                <i class="fa-solid fa-plus btn-add-icon"></i>
+                                <span class="btn-add-label">Adicionar Receita</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="recipe-list" class="card-list">
                         <p class="placeholder">Carregando receitas...</p>
                     </div>
                 </div>
@@ -227,17 +221,16 @@
                             <i class="fa-solid fa-search"></i>
                             <input type="search" id="exame-search-input" placeholder="Buscar por nome do exame ou laboratório...">
                         </div>
-                        <div class="view-toggle">
-                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
-                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
-                        </div>
-                        <div class="toolbar-actions">
-                            <button class="btn-primary-solid" id="btn-abrir-upload-exame">
-                                <i class="fa-solid fa-plus"></i> Adicionar Exame
+                    </div>
+                    <div class="folder-action-row">
+                        <div class="add-button-container">
+                            <button class="btn-primary-solid btn-add-action" id="btn-abrir-upload-exame">
+                                <i class="fa-solid fa-plus btn-add-icon"></i>
+                                <span class="btn-add-label">Adicionar Exame</span>
                             </button>
                         </div>
                     </div>
-                    <div id="exames-lista" class="card-list list-view">
+                    <div id="exames-lista" class="card-list">
                         <p class="placeholder">Carregando exames...</p>
                     </div>
                 </div>
@@ -258,17 +251,16 @@
                             <i class="fa-solid fa-search"></i>
                             <input type="search" id="encaminhamento-search-input" placeholder="Buscar por especialidade...">
                         </div>
-                        <div class="view-toggle">
-                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
-                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
-                        </div>
-                        <div class="toolbar-actions">
-                            <button class="btn-primary-solid" id="btn-abrir-upload-encaminhamento">
-                                <i class="fa-solid fa-plus"></i> Adicionar Encaminhamento
+                    </div>
+                    <div class="folder-action-row">
+                        <div class="add-button-container">
+                            <button class="btn-primary-solid btn-add-action" id="btn-abrir-upload-encaminhamento">
+                                <i class="fa-solid fa-plus btn-add-icon"></i>
+                                <span class="btn-add-label">Adicionar Encaminhamento</span>
                             </button>
                         </div>
                     </div>
-                    <div id="encaminhamentos-lista" class="card-list list-view">
+                    <div id="encaminhamentos-lista" class="card-list">
                         <p class="placeholder">Carregando encaminhamentos...</p>
                     </div>
                 </div>
@@ -289,17 +281,16 @@
                             <i class="fa-solid fa-search"></i>
                             <input type="search" id="atestado-search-input" placeholder="Buscar por médico ou motivo...">
                         </div>
-                        <div class="view-toggle">
-                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
-                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
-                        </div>
-                        <div class="toolbar-actions">
-                            <button class="btn-primary-solid" id="btn-abrir-upload-atestado">
-                                <i class="fa-solid fa-plus"></i> Adicionar Atestado
+                    </div>
+                    <div class="folder-action-row">
+                        <div class="add-button-container">
+                            <button class="btn-primary-solid btn-add-action" id="btn-abrir-upload-atestado">
+                                <i class="fa-solid fa-plus btn-add-icon"></i>
+                                <span class="btn-add-label">Adicionar Atestado</span>
                             </button>
                         </div>
                     </div>
-                    <div id="atestados-lista" class="card-list list-view">
+                    <div id="atestados-lista" class="card-list">
                         <p class="placeholder">Carregando atestados...</p>
                     </div>
                 </div>
@@ -320,12 +311,8 @@
                             <i class="fa-solid fa-search"></i>
                             <input type="search" id="acompanhamento-search-input" placeholder="Buscar acompanhamento...">
                         </div>
-                        <div class="view-toggle">
-                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
-                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
-                        </div>
                     </div>
-                    <div id="acompanhamentos-lista" class="card-list list-view">
+                    <div id="acompanhamentos-lista" class="card-list">
                         <p class="placeholder">Carregando acompanhamentos...</p>
                     </div>
                 </div>
@@ -494,17 +481,8 @@
                             <i class="fa-solid fa-search"></i>
                             <input type="search" id="vacina-search-input" placeholder="Buscar por vacina...">
                         </div>
-                        <div class="view-toggle">
-                            <button class="btn-grid-view-toggle"><i class="fa-solid fa-border-all"></i></button>
-                            <button class="btn-list-view-toggle active"><i class="fa-solid fa-list"></i></button>
-                        </div>
-                        <div class="toolbar-actions">
-                            <button class="btn-primary-solid" id="btn-abrir-upload-vacina">
-                                <i class="fa-solid fa-plus"></i> Adicionar Vacina
-                            </button>
-                        </div>
                     </div>
-                    <div id="vacinas-lista" class="card-list list-view">
+                    <div id="vacinas-lista" class="card-list">
         <p class="placeholder">Carregando carteirinhas de vacinação...</p>
     </div>
 
@@ -1939,35 +1917,6 @@
             });
         }
 
-        // Grid/List Toggle (Aplicar layout em lists)
-        const gridBtns = document.querySelectorAll('.btn-grid-view-toggle');
-        const listBtns = document.querySelectorAll('.btn-list-view-toggle');
-        const foldersGrid = document.getElementById('folders-grid');
-
-        gridBtns.forEach(btnGrid => {
-            btnGrid.addEventListener('click', () => {
-                gridBtns.forEach(b => b.classList.add('active'));
-                listBtns.forEach(b => b.classList.remove('active'));
-                foldersGrid.classList.remove('list-view');
-                foldersGrid.classList.add('grid-view');
-                document.querySelectorAll('.card-list').forEach(list => {
-                    list.classList.remove('list-view');
-                    list.classList.add('grid-view');
-                });
-            });
-        });
-        listBtns.forEach(btnList => {
-            btnList.addEventListener('click', () => {
-                listBtns.forEach(b => b.classList.add('active'));
-                gridBtns.forEach(b => b.classList.remove('active'));
-                foldersGrid.classList.remove('grid-view');
-                foldersGrid.classList.add('list-view');
-                document.querySelectorAll('.card-list').forEach(list => {
-                    list.classList.remove('grid-view');
-                    list.classList.add('list-view');
-                });
-            });
-        });
 
         // Dynamic Counts Update (Polling wrapper)
         const countMap = {
