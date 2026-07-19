@@ -774,11 +774,11 @@ function renderRecipeList(recipesToRender) {
             </button>
         `;
 
-        // Só mostra "Apagar" se foi o paciente que fez upload
+        // Só mostra o ícone de apagar se foi o paciente que fez upload
         if (receita.origem === 'paciente') {
             botoesHtml += `
-                <button class="btn-pdf btn-apagar-receita" data-action="apagar" data-recipe-id="${receita.id}">
-                    <i class="fa-solid fa-trash"></i> Apagar
+                <button class="btn-apagar-receita" data-action="apagar" data-recipe-id="${receita.id}" aria-label="Apagar receita" title="Apagar receita">
+                    <i class="fa-solid fa-trash"></i>
                 </button>
             `;
         }
@@ -787,7 +787,7 @@ function renderRecipeList(recipesToRender) {
         const cardHTML = `
             <div class="recipe-card" data-recipe-id="${receita.id}">
                 <div class="recipe-header">
-                    <h3><i class="fa-solid fa-prescription-bottle-medical"></i> ${tituloReceita}</h3>
+                    <h3><i class="fa-solid fa-pills"></i> ${tituloReceita}</h3>
                     <span class="badge ${statusClass}">${receita.status || 'Ativa'}</span>
                 </div>
                 
@@ -1926,8 +1926,8 @@ function renderExameList(examesToRender) {
         // Botão Apagar (Só se foi o paciente a criar, ou se for regra de negócio)
         if (exame.origem === 'paciente') {
             botoesHtml += `
-                <button class="btn-pdf btn-apagar-receita" data-action="apagar-exame" data-exame-id="${exame.id}">
-                    <i class="fa-solid fa-trash"></i> Apagar
+                <button class="btn-apagar-receita" data-action="apagar-exame" data-exame-id="${exame.id}" aria-label="Apagar exame" title="Apagar exame">
+                    <i class="fa-solid fa-trash"></i>
                 </button>`;
         }
         
@@ -2377,8 +2377,8 @@ function renderVacinaCard(vacina) {
     `;
     if (vacina.origem === 'paciente' || vacina.origem === undefined) {
         footerHtml += `
-            <button class="btn-pdf btn-apagar-receita" data-action="apagar-vacina">
-                <i class="fa-solid fa-trash"></i> Apagar
+            <button class="btn-apagar-receita" data-action="apagar-vacina" aria-label="Apagar vacina" title="Apagar vacina">
+                <i class="fa-solid fa-trash"></i>
             </button>
         `;
     }
@@ -2952,8 +2952,8 @@ function renderAtestados(lista) {
         // Botão Apagar (apenas se origem for paciente)
         if (atestado.origem === 'paciente') {
             botoesEsquerda += `
-                <button class="btn-pdf btn-apagar-receita" data-action="apagar-atestado" data-atestado-id="${atestado.id}">
-                    <i class="fa-solid fa-trash"></i> Apagar
+                <button class="btn-apagar-receita" data-action="apagar-atestado" data-atestado-id="${atestado.id}" aria-label="Apagar atestado" title="Apagar atestado">
+                    <i class="fa-solid fa-trash"></i>
                 </button>
             `;
         }

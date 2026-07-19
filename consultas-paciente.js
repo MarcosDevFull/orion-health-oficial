@@ -52,11 +52,98 @@ document.addEventListener('DOMContentLoaded', () => {
     const proximasConsultasLista = document.getElementById('proximas-consultas-lista');
     const historicoConsultasLista = document.getElementById('historico-consultas-lista');
 
+    // --- Seletores do Novo Modal de Inserção ---
+    const btnInserirConsulta = document.getElementById('btn-inserir-consulta');
+    const modalInserirConsulta = document.getElementById('modal-inserir-consulta');
+    const closeInserirConsultaModal = document.getElementById('close-inserir-consulta-modal');
+    const btnCancelarInserir = document.getElementById('btn-cancelar-inserir');
+    const formInserirConsulta = document.getElementById('form-inserir-consulta');
+    const feedbackInserirConsulta = document.getElementById('inserir-consulta-feedback');
+
+
     // --- FUNÇÕES AUXILIARES ---
     const showLoading = (show) => {
         if (loadingOverlay) loadingOverlay.classList.toggle('hidden', !show);
         if (pageWrapper) pageWrapper.classList.toggle('hidden', show);
     };
+
+    // --- 5. SALVAR CONSULTA EXTERNA (NOVA FUNÇÃO) ---
+    async function salvarConsultaExterna(e) {
+        e.preventDefault();
+        if (!currentUser) {
+            alert("Erro: Usuário não autenticado.");
+            return;
+        }
+
+        const btnSalvar = document.getElementById('btn-salvar-consulta-externa');
+        const feedbackEl = document.getElementById('inserir-consulta-feedback');
+
+        if (feedbackEl) feedbackEl.classList.add('hidden');
+        if (btnSalvar) {
+            btnSalvar.disabled = true;
+            btnSalvar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
+        }
+
+        try {
+            // 1. Captura os dados do formulário
+            const categoria = document.getElementById('inserir-categoria').value;
+            const profissionalNome = document.getElementById('inserir-profissional').value;
+            const especialidade = document.getElementById('inserir-especialidade').value;
+            const data = document.getElementById('inserir-data').value;
+            const hora = document.getElementById('inserir-hora').value; // <-- NOVO: Captura o horário
+            const local = document.getElementById('inserir-local').value;
+
+            // 2. Validação simples
+            if (!categoria || !profissionalNome || !especialidade || !data || !hora) { // <-- NOVO: Valida o horário
+                throw new Error("Preencha todos os campos obrigatórios.");
+            }
+
+            // 3. Monta o objeto para o Firestore
+            const dataHoraCompleta = new Date(`${data}T${hora}`); // <-- NOVO: Combina data e hora
+            const consultaExternaData = {
+                paciente_id: currentUser.uid,
+                tipo: 'Externa', // Identifica que foi inserido manualmente
+                categoria: categoria, // 'Consulta' ou 'Exame'
+                data: dataHoraCompleta, // Salva o objeto Date completo
+                data_hora: dataHoraCompleta.toISOString(), // Campo compatível
+                profissional_nome: profissionalNome,
+                medico_nome: profissionalNome, // Campo compatível
+                especialidade: especialidade,
+                local: local,
+                status: 'Agendada', // Status padrão para registros externos
+                criado_em: serverTimestamp()
+            };
+
+            // 4. Salva na coleção 'agendamentos' para aparecer na lista
+            await addDoc(collection(db, 'agendamentos'), consultaExternaData);
+
+            // 5. Feedback de sucesso e atualização
+            if (feedbackEl) {
+                feedbackEl.textContent = "Registro salvo com sucesso!";
+                feedbackEl.className = 'feedback-message success';
+                feedbackEl.classList.remove('hidden');
+            }
+
+            setTimeout(() => {
+                const modal = document.getElementById('modal-inserir-consulta');
+                if (modal) modal.classList.add('hidden');
+                // A lista já deve atualizar em tempo real por causa do onSnapshot
+            }, 1500);
+
+        } catch (error) {
+            console.error("Erro ao salvar consulta externa:", error);
+            if (feedbackEl) {
+                feedbackEl.textContent = `Erro: ${error.message}`;
+                feedbackEl.className = 'feedback-message error';
+                feedbackEl.classList.remove('hidden');
+            }
+        } finally {
+            if (btnSalvar) {
+                btnSalvar.disabled = false;
+                btnSalvar.innerHTML = 'Salvar Registro';
+            }
+        }
+    }
 
     const capitalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 
@@ -505,6 +592,37 @@ document.addEventListener('DOMContentLoaded', () => {
             populateHeader(user.uid);
             loadAndRenderConsultas(user.uid);
             addCardListeners();
+
+            // --- Listeners do Novo Modal de Inserção ---
+            if (btnInserirConsulta) {
+                btnInserirConsulta.addEventListener('click', () => {
+                    if (formInserirConsulta) formInserirConsulta.reset();
+                    if (feedbackInserirConsulta) feedbackInserirConsulta.classList.add('hidden');
+                    if (modalInserirConsulta) {
+                        modalInserirConsulta.classList.remove('hidden');
+                        modalInserirConsulta.style.display = 'flex'; // Garante a centralização
+                    }
+                });
+            }
+            if (closeInserirConsultaModal) {
+                closeInserirConsultaModal.addEventListener('click', () => { // Botão 'X'
+                    if (modalInserirConsulta) {
+                        modalInserirConsulta.classList.add('hidden');
+                        modalInserirConsulta.style.display = 'none'; // Garante que ele suma
+                    }
+                });
+            }
+            if (btnCancelarInserir) {
+                btnCancelarInserir.addEventListener('click', () => { // Botão 'Cancelar'
+                    if (modalInserirConsulta) {
+                        modalInserirConsulta.classList.add('hidden');
+                        modalInserirConsulta.style.display = 'none'; // Garante que ele suma
+                    }
+                });
+            }
+            if (formInserirConsulta) {
+                formInserirConsulta.addEventListener('submit', salvarConsultaExterna);
+            }
             
             showLoading(false);
         } else {

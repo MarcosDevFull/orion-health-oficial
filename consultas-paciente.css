@@ -1,4 +1,15 @@
 /* ==========================================================
+   CORREÇÃO: Alinhamento do Header da Seção
+   ========================================================== */
+.section-header-consultas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* ==========================================================
    FICHEIRO: consultas-paciente.css
    Estilos para a página Minhas Consultas
    ========================================================== */

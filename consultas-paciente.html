@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <link rel="stylesheet" href="perfil-de-saude.css">
+    <link rel="stylesheet" href="perfil-de-saude.css"> <!-- Estilos Globais -->
     <link rel="stylesheet" href="consultas-paciente.css">
     <link rel="manifest" href="manifest.json">
 
@@ -67,10 +67,16 @@
             </div>
 
             <section class="consultas-section" id="proximas-consultas">
-                <h3 class="section-title-consultas">
-                    <i class="fa-solid fa-calendar-day"></i>
-                    Próximas Consultas
-                </h3>
+                <div class="section-header-consultas">
+                    <h3 class="section-title-consultas">
+                        <i class="fa-solid fa-calendar-day"></i>
+                        Próximas Consultas
+                    </h3>
+                <button id="btn-inserir-consulta" class="btn-primary-outline">
+                        <i class="fa-solid fa-plus"></i> Inserir Consulta
+                    </button>
+                </div>
+
                 <div class="consultas-list" id="proximas-consultas-lista">
                     <p class="placeholder">Carregando próximas consultas...</p>
                 </div>
@@ -180,6 +186,79 @@
         <button id="btn-enviar-avaliacao" style="width: 100%; padding: 12px; background: #41b8d5; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Enviar Avaliação</button>
     </div>
 </div>
+
+<!-- ========================================================== -->
+<!-- NOVO MODAL: INSERIR CONSULTA/EXAME EXTERNO -->
+<!-- ========================================================== -->
+<div id="modal-inserir-consulta" class="modal-backdrop hidden">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2 class="modal-title" style="font-size: 1.2rem;"><i class="fa-solid fa-edit"></i> Inserir Registro Externo</h2>
+            <button id="close-inserir-consulta-modal" class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="form-inserir-consulta">
+                <div class="form-group">
+                    <label for="inserir-categoria">Tipo de Registro</label>
+                    <select id="inserir-categoria" class="form-input">
+                        <option value="Consulta">Consulta</option>
+                        <option value="Exame">Exame</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inserir-profissional" id="label-inserir-profissional">Nome do Médico</label>
+                    <input type="text" id="inserir-profissional" class="form-input" placeholder="Ex: Dr. Carlos Andrade" required>
+                </div>
+                <div class="form-group">
+                    <label for="inserir-especialidade" id="label-inserir-especialidade">Especialidade</label>
+                    <input type="text" id="inserir-especialidade" class="form-input" placeholder="Ex: Cardiologia" required>
+                </div>
+                <div class="form-grid two-columns" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label for="inserir-data">Data</label>
+                        <input type="date" id="inserir-data" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inserir-hora">Horário</label>
+                        <input type="time" id="inserir-hora" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inserir-local">Local (Clínica/Hospital)</label>
+                    <input type="text" id="inserir-local" class="form-input" placeholder="Ex: Hospital São Lucas">
+                </div>
+
+                <div id="inserir-consulta-feedback" class="feedback-message hidden"></div>
+
+                <div class="modal-footer-actions" style="margin-top: 20px;">
+                    <button type="button" id="btn-cancelar-inserir" class="btn-secondary">Cancelar</button>
+                    <button type="submit" id="btn-salvar-consulta-externa" class="btn-primary">Salvar Registro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Lógica simples para o modal de inserção
+    document.addEventListener('DOMContentLoaded', () => {
+        const categoriaSelect = document.getElementById('inserir-categoria');
+        const labelProfissional = document.getElementById('label-inserir-profissional');
+        const labelEspecialidade = document.getElementById('label-inserir-especialidade');
+
+        if (categoriaSelect) {
+            categoriaSelect.addEventListener('change', (e) => {
+                if (e.target.value === 'Exame') {
+                    labelProfissional.textContent = 'Médico Solicitante';
+                    labelEspecialidade.textContent = 'Nome do Exame';
+                } else {
+                    labelProfissional.textContent = 'Nome do Médico';
+                    labelEspecialidade.textContent = 'Especialidade';
+                }
+            });
+        }
+    });
+</script>
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" type="module"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" type="module"></script>
